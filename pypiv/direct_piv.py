@@ -8,8 +8,9 @@ class DirectPIV(object):
         self._interogation_ws = window_size
         self._search_ws= search_size
         self._distance = distance
-        self._dt = dt
+        self.dt = dt
         self._correlator = FFTCorrelator(window_size, search_size)
+        self._grid_creator()
 
     def set_images(self, img_a, img_b):
         '''Set the correlation images of the PIV algorithm'''
@@ -37,8 +38,8 @@ class DirectPIV(object):
         sx, sy = self._padded_fb.strides
         strides_b = (sx*distance, sy*distance, sx, sy)
 
-        self._grid_a = as_strided(self.frame_a, strides=strides_a, shape=shape_a)
-        self._grid_b = as_strided(self._padded_fb, strides=strides_b, shape=shape_b)
+        self.grid_a = as_strided(self.frame_a, strides=strides_a, shape=shape_a)
+        self.grid_b = as_strided(self._padded_fb, strides=strides_b, shape=shape_b)
 
     def _get_field_shape(self):
         lx, ly = self.frame_a.shape
@@ -46,19 +47,18 @@ class DirectPIV(object):
                 (ly - self._interogation_ws)//self._distance+1)
 
     def correlate_frames(self):
-        self._grid_creator()
-        lx, ly, _, _ = self._grid_a.shape
+        lx, ly, _, _ = self.grid_a.shape
         self.u = np.empty((lx, ly))
         self.v = np.empty((lx, ly))
         for i in range(lx):
             for j in range(ly):
-                correlation = self._correlator.evaluate_windows(self._grid_a[i, j],
-                                                                self._grid_b[i, j])
+                correlation = self._correlator.evaluate_windows(self.grid_a[i, j],
+                                                                self.grid_b[i, j])
 
                 xi, yi = find_subpixel_peak(correlation, subpixel_method='gaussian')
                 cx, cy = correlation.shape
                 corr_pad = (self._search_ws - self._interogation_ws)/2.
-                self.u[i, j] = (cx/2. - xi - corr_pad)/self._dt
-                self.v[i, j] = (cy/2. - yi - corr_pad)/self._dt
+                self.u[i, j] = (cx/2. - xi - corr_pad)/self.dt
+                self.v[i, j] = (cy/2. - yi - corr_pad)/self.dt
         return  self.u, self.v
 
