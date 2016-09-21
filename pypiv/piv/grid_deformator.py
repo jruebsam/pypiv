@@ -1,4 +1,5 @@
 import numpy as np
+
 from numpy.lib.stride_tricks import as_strided
 from scipy.interpolate import RectBivariateSpline as RBS
 from scipy.ndimage import map_coordinates
@@ -101,7 +102,9 @@ class GridDeformator(object):
             for j in range(ly):
                 #out[i, j]  =  rbs.ev(ptsax[i, j], ptsay[i, j])
                 p, q = ptsax[i, j].shape
-                test =   ndimage.map_coordinates(self._padded_fb, [ptsax[i, j].flatten(), ptsay[i, j].flatten()], order=1).reshape(p, q)
+                test = map_coordinates(self._padded_fb,
+                        [ptsax[i, j].flatten(), ptsay[i, j].flatten()], order=1).reshape(p, q)
+
                 out[i,j] = test
 
         return out

@@ -4,15 +4,18 @@ from fft_correlator import FFTCorrelator
 from process import find_subpixel_peak
 
 class DirectPIV(object):
-    def __init__(self, window_size=32, search_size=32, distance=16, dt=1.):
+    def __init__(self, image_a, image_b, window_size=32, search_size=32, distance=16, dt=1.):
         self._interogation_ws = window_size
         self._search_ws= search_size
         self._distance = distance
         self.dt = dt
         self._correlator = FFTCorrelator(window_size, search_size)
+
+        self._set_images(image_a, image_b)
         self._grid_creator()
 
-    def set_images(self, img_a, img_b):
+
+    def _set_images(self, img_a, img_b):
         '''Set the correlation images of the PIV algorithm'''
         img_a = img_a.astype('float64')
         img_b = img_b.astype('float64')
