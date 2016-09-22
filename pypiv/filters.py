@@ -8,13 +8,14 @@ from skimage.filters.rank import median
 from skimage.morphology import disk
 from scipy.ndimage import median_filter as mf
 
-def median_filter(f, size=2):
-    return mf(f, footprint=disk(size))
+def median_filter(piv, size=2):
+     piv.u = mf(piv.u, footprint=disk(size))
+     piv.v = mf(piv.v, footprint=disk(size))
 
-def replace_outliers(u, v, mask):
-    u_out = replace_field(u, mask)
-    v_out = replace_field(v, mask)
-    return u_out, v_out
+def replace_outliers(piv):
+    mask = np.isnan(piv.u) + np.isnan(piv.v)
+    piv.u = replace_field(piv.u, mask)
+    piv.v = replace_field(piv.v, mask)
 
 def replace_field(f, mask):
     lx, ly = f.shape
@@ -22,7 +23,7 @@ def replace_field(f, mask):
     C = intp((x[~mask],y[~mask]),f[~mask], fill_value=0)
     return C(x, y)
 
-def local_median_filter(u, v, treshold=2.0):
+def outlier_from_local_median(piv, treshold=2.0):
     '''
     Implementation of a local median filter according to
     "J. Westerweel, F. Scarano, Universalo outlier detection for PIV data,\
@@ -34,10 +35,12 @@ def local_median_filter(u, v, treshold=2.0):
     Returns:
         m: Boolean masking function where 1 corresponds to an outliers
     '''
-    u_res = get_normalized_residual(u)
-    v_res = get_normalized_residual(v)
+    u_res = get_normalized_residual(piv.u)
+    v_res = get_normalized_residual(piv.v)
     res_total = np.sqrt(u_res**2 + v_res**2)
-    return res_total > treshold
+    mask =  res_total > treshold
+    piv.u[mask] = np.nan
+    piv.v[mask] = np.nan
 
 
 def get_normalized_residual(f, epsilon=0.1):
@@ -61,55 +64,3 @@ def get_normalized_residual(f, epsilon=0.1):
     rm  = np.sort(ris, 1)[:, 4][:, np.newaxis]
 
     return np.abs((f - um.reshape((lx, ly)))/(rm.reshape((lx, ly)) + epsilon))
-
-def local_median( u, v, u_threshold, v_threshold, size=1 ):
-    """Eliminate spurious vectors with a local median threshold.
-
-    This validation method tests for the spatial consistency of the data.
-    Vectors are classified as outliers and replaced with Nan (Not a Number) if
-    the absolute difference with the local median is greater than a user
-    specified threshold. The median is computed for both velocity components.
-
-    Parameters
-    ----------
-    u : 2d np.ndarray
-        a two dimensional array containing the u velocity component.
-
-    v : 2d np.ndarray
-        a two dimensional array containing the v velocity component.
-
-    u_threshold : float
-        the threshold value for component u
-
-    v_threshold : float
-        the threshold value for component v
-
-    Returns
-    -------
-    u : 2d np.ndarray
-        a two dimensional array containing the u velocity component,
-        where spurious vectors have been replaced by NaN.
-
-    v : 2d np.ndarray
-        a two dimensional array containing the v velocity component,
-        where spurious vectors have been replaced by NaN.
-
-    mask : boolean 2d np.ndarray
-        a boolean array. True elements corresponds to outliers.
-
-    """
-
-    um = median_filter( u, size=2*size+1 )
-    vm = median_filter( v, size=2*size+1 )
-
-    ind = (np.abs( (u-um) ) > u_threshold) | (np.abs( (v-vm) ) > v_threshold)
-
-    ind = (um*u + v*vm) < 0
-
-    u[ind] = np.nan
-    v[ind] = np.nan
-
-    mask = np.zeros(u.shape, dtype=bool)
-    mask[ind] = True
-
-    return u, v, mask

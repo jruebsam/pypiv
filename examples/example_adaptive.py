@@ -12,34 +12,29 @@ def main():
     piv = pypiv.DirectPIV(frame_a, frame_b, window_size=32,
                             search_size=32, distance=16, dt=1)
     piv.correlate_frames()
-    mask = pypiv.filters.local_median_filter(piv.u, piv.v)
-    mask += np.isnan(piv.u) + np.isnan(piv.v)
-    piv.u, piv.v = pypiv.filters.replace_outliers(piv.u, piv.v, mask)
-    piv.u = pypiv.filters.median_filter(piv.u, 2)
-    piv.v = pypiv.filters.median_filter(piv.v, 2)
+    pypiv.filters.outlier_from_local_median(piv, 2.0)
+    pypiv.filters.replace_outliers(piv)
+    pypiv.filters.median_filter(piv)
 
 
     #PIV2
     piv = pypiv.AdaptivePIV(piv, window_size=32,
                                   search_size=32, distance=16)
     piv.correlate_frames()
-    mask = pypiv.filters.local_median_filter(piv.u, piv.v)
-    mask += np.isnan(piv.u) + np.isnan(piv.v)
-    piv.u, piv.v = pypiv.filters.replace_outliers(piv.u, piv.v, mask)
-    piv.u = pypiv.filters.median_filter(piv.u, 2)
-    piv.v = pypiv.filters.median_filter(piv.v, 2)
+    pypiv.filters.outlier_from_local_median(piv, 2.0)
+    pypiv.filters.replace_outliers(piv)
+    pypiv.filters.median_filter(piv)
 
     #PIV3
     piv = pypiv.AdaptivePIV(piv, window_size=32,
                                   search_size=32, distance=8)
-    u, v = piv.correlate_frames()
-    mask = pypiv.filters.local_median_filter(piv.u, piv.v)
-    mask += np.isnan(piv.u) + np.isnan(piv.v)
-    piv.u, piv.v = pypiv.filters.replace_outliers(piv.u, piv.v, mask)
-    piv.u = pypiv.filters.median_filter(piv.u, 2)
-    piv.v = pypiv.filters.median_filter(piv.v, 2)
+    piv.correlate_frames()
+    pypiv.filters.outlier_from_local_median(piv, 2.0)
+    pypiv.filters.replace_outliers(piv)
+    pypiv.filters.median_filter(piv)
+
     #OUTPUT
-    plt.imshow(u)
+    plt.imshow(piv.u)
     plt.show()
 
 
