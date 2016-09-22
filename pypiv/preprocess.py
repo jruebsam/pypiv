@@ -1,3 +1,5 @@
+import numpy as np
+
 from scipy.misc import imread
 from scipy.ndimage import gaussian_filter
 from skimage.exposure import equalize_adapthist
@@ -8,7 +10,7 @@ def substract_background2file(images, output_file):
     '''
     data = []
     for  img in images:
-        data.append(plt.imread(img))
+        data.append(imread(img))
     bg =np.array(data)
     np.save(output_file, np.min(bg, axis=0))
 

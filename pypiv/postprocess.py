@@ -1,4 +1,4 @@
-def compute_coordinate_transformations(piv, width, height, dt):
+def compute_coordinate_transformations(piv, width=100, height=77, dt):
     ''''
     Compute Coordinate system  transformation from
           ------ y              y
