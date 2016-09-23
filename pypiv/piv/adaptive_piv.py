@@ -19,7 +19,6 @@ class AdaptivePIV(object):
                                  np.copy(piv_object.frame_b),
                                  window_size, search_size, distance)
 
-        self.dt = self._last_piv.dt
         self._set_frames()
 
     def _set_frames(self):
@@ -73,6 +72,6 @@ class AdaptivePIV(object):
                 xi, yi = find_subpixel_peak(correlation, subpixel_method='gaussian')
                 cx, cy = correlation.shape
                 corr_pad = (self._search_ws - self._interogation_ws)/2.
-                self.u[i, j] += (cx/2. - xi - corr_pad)/self.dt
-                self.v[i, j] += (cy/2. - yi - corr_pad)/self.dt
+                self.u[i, j] += (cx/2. - xi - corr_pad)
+                self.v[i, j] += (cy/2. - yi - corr_pad)
         return  self.u, self.v

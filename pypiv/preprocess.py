@@ -4,15 +4,14 @@ from scipy.misc import imread
 from scipy.ndimage import gaussian_filter
 from skimage.exposure import equalize_adapthist
 
-def substract_background2file(images, output_file):
+def subtract_background2file(images, output_file):
     '''
     Compute Background from image list and save it as numpy array
     '''
-    data = []
+    data = imread(images[0])
     for  img in images:
-        data.append(imread(img))
-    bg =np.array(data)
-    np.save(output_file, np.min(bg, axis=0))
+        data = np.min(np.array([data, imread(img)]), axis=0)
+    np.save(output_file, data)
 
 def cap_image(img, cap_min, cap_max):
     img[img<cap_min] = cap_min
