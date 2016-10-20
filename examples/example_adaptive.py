@@ -1,10 +1,13 @@
+import matplotlib as mt
+mt.use('TKAGG')
 import pypiv
 import numpy as np
 import matplotlib.pyplot as plt
 from glob import glob
 
 def main():
-    imgs = ['images/finger1.png', 'images/finger2.png']
+    #imgs = ['images/finger1.png', 'images/finger2.png']
+    imgs = ['images/test1.png', 'images/test2.png']
     frames = [plt.imread(x) for x in imgs]
     frame_a, frame_b = frames[0], frames[1]
 
@@ -35,7 +38,20 @@ def main():
 
     #OUTPUT
     x, y, u, v = pypiv.postprocess.compute_coordinate_transformations(piv)
-    plt.imshow(v.T, origin='lower', extent=[np.min(x), np.max(x), np.min(y), np.max(y)])
+
+    fig1 = plt.figure()
+    ax1 = fig1.add_subplot(111)
+    ax1.quiver(x,y,u.T,v.T)
+
+    fig2 = plt.figure()
+    ax2 = fig2.add_subplot(111)
+    cax2 = ax2.imshow(v.T, origin='lower', extent=[np.min(x), np.max(x), np.min(y), np.max(y)])
+    fig2.colorbar(cax2)
+
+    fig3 = plt.figure()
+    ax3 = fig3.add_subplot(111)
+    cax3 = ax3.imshow(u.T, origin='lower', extent=[np.min(x), np.max(x), np.min(y), np.max(y)])
+    fig3.colorbar(cax3)
     plt.show()
 
 

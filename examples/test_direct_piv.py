@@ -1,3 +1,7 @@
+import matplotlib as mt
+backend = mt.get_backend()
+if backend == 'agg':
+	mt.use('TKagg')
 import pypiv
 import matplotlib.pyplot as plt
 from glob import glob
@@ -11,7 +15,7 @@ def main():
 
 
     piv = pypiv.DirectPIV(frame_a, frame_b, window_size=32,
-                            search_size=32, distance=16, dt=1)
+                            search_size=32, distance=16)
 
     u, v = piv.correlate_frames()
     plt.imshow(u)
