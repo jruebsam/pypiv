@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 from glob import glob
 
 def main():
-    #imgs = ['images/finger1.png', 'images/finger2.png']
-    imgs = ['images/test1.png', 'images/test2.png']
+    imgs = ['images/finger1.png', 'images/finger2.png']
+    #imgs = ['images/test1.png', 'images/test2.png']
     frames = [plt.imread(x) for x in imgs]
     frame_a, frame_b = frames[0], frames[1]
 
