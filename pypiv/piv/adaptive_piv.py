@@ -63,15 +63,10 @@ class AdaptivePIV(object):
         grid_a = self._newpiv.grid_a
         grid_b = g.create_deformed_grid(self.u, self.v)
 
-        lx, ly, _, _ = grid_a.shape
-        for i in range(lx):
-            for j in range(ly):
-                correlation = self._correlator.evaluate_windows(grid_a[i, j],
-                                                                grid_b[i, j])
+        for i, j in np.ndindex(grid_a.shape[:2]):
+            displacement = (self._correlator
+                            .get_displacement(grid_a[i, j], grid_b[i, j]))
+            self.u[i, j] += displacement[0]
+            self.v[i, j] += displacement[1]
 
-                xi, yi = find_subpixel_peak(correlation, subpixel_method='gaussian')
-                cx, cy = correlation.shape
-                corr_pad = (self._search_ws - self._interogation_ws)/2.
-                self.u[i, j] += (cx/2. - xi - corr_pad)
-                self.v[i, j] += (cy/2. - yi - corr_pad)
         return  self.u, self.v

@@ -1,7 +1,6 @@
 import numpy as np
 from numpy.lib.stride_tricks import as_strided
 from fft_correlator import FFTCorrelator
-from process import find_subpixel_peak
 
 class DirectPIV(object):
     def __init__(self, image_a, image_b, window_size=32, search_size=32, distance=16):
@@ -50,17 +49,10 @@ class DirectPIV(object):
 
     def correlate_frames(self):
         lx, ly, _, _ = self.grid_a.shape
-        self.u = np.empty((lx, ly))
-        self.v = np.empty((lx, ly))
-        for i in range(lx):
-            for j in range(ly):
-                correlation = self._correlator.evaluate_windows(self.grid_a[i, j],
-                                                                self.grid_b[i, j])
+        self.u, self.v = np.empty((lx, ly)), np.empty((lx, ly))
+        for i, j in np.ndindex(self.grid_a.shape[:2]):
+            self.u[i,j], self.v[i, j] = (self._correlator .get_displacement(
+                                         self.grid_a[i, j], self.grid_b[i, j]))
 
-                xi, yi = find_subpixel_peak(correlation, subpixel_method='gaussian')
-                cx, cy = correlation.shape
-                corr_pad = (self._search_ws - self._interogation_ws)/2.
-                self.u[i, j] = (cx/2. - xi - corr_pad)
-                self.v[i, j] = (cy/2. - yi - corr_pad)
         return  self.u, self.v
 

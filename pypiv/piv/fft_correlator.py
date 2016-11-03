@@ -1,6 +1,8 @@
 import pyfftw
 import numpy as np
 
+from process import find_subpixel_peak
+
 class FFTCorrelator(object):
     '''
     An FFT Correlation Class for a PIV Evaluation of two frames
@@ -32,7 +34,7 @@ class FFTCorrelator(object):
             pad =  2**np.ceil(np.log2(2*windows_size))
         return (pad, pad)
 
-    def evaluate_windows(self, window_a, window_b):
+    def _evaluate_windows(self, window_a, window_b):
         fft_a = self._fa_fft(window_a - np.mean(window_a))
         fft_b = self._fb_fft(window_b - np.mean(window_b))
 
@@ -41,3 +43,9 @@ class FFTCorrelator(object):
         #return np.fft.fftshift(inv_fft.real, axes=(0, 1))
         return np.fft.fftshift(inv_fft)
 
+    def get_displacement(self, window_a, window_b):
+        correlation = self._evaluate_windows(window_a, window_b)
+        xi, yi = find_subpixel_peak(correlation, subpixel_method='gaussian')
+        cx, cy = correlation.shape
+        corr_pad = (window_b.shape[0] - window_a.shape[0])/2.
+        return (cx/2. - xi - corr_pad, cy/2. - yi - corr_pad)
