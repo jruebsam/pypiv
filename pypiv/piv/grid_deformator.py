@@ -51,8 +51,8 @@ class GridDeformator(object):
         f_x,  f_y  = np.gradient(f  , dx)
         f_xx, f_xy = np.gradient(f_x, dx)
         f_yx, f_yy = np.gradient(f_y, dx)
-        return lambda i, j, x, y : f[i, j] + x*f_x[i, j]  + y*f_y[i, j]\
-                    + 0.5*(f_xx[i, j]*x**2 + 2*f_xy[i, j]*x*y + f_yy[i, j]*y**2)
+        return lambda i, j, x, y : (f[i, j] + x*f_x[i, j]  + y*f_y[i, j]
+                       + 0.5*(f_xx[i, j]*x**2 + 2*f_xy[i, j]*x*y + f_yy[i, j]*y**2))
 
     def create_deformed_grid(self, u, v):
         #warum ????
@@ -63,6 +63,8 @@ class GridDeformator(object):
 
         dws = self._search_ws/2.
         offset_x, offset_y = np.mgrid[-dws:dws, -dws:dws]
+        offset_x+=0.5
+        offset_y+=0.5
 
         '''
         plt.imshow(u, extent=[0, 1024, 0, 1024])
