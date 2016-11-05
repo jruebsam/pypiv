@@ -2,7 +2,7 @@ import numpy as np
 
 from numpy.lib.stride_tricks import as_strided
 from scipy.ndimage import median_filter
-from scipy.interpolate import CloughTocher2DInterpolator as intp
+from scipy.interpolate import CloughTocher2DInterpolator as CT_intp
 
 from skimage.filters.rank import median
 from skimage.morphology import disk
@@ -20,7 +20,7 @@ def replace_outliers(piv):
 def replace_field(f, mask):
     lx, ly = f.shape
     x, y = np.mgrid[0:lx, 0:ly]
-    C = intp((x[~mask],y[~mask]),f[~mask], fill_value=0)
+    C = CT_intp((x[~mask],y[~mask]),f[~mask], fill_value=0)
     return C(x, y)
 
 def outlier_from_local_median(piv, treshold=2.0):
@@ -42,7 +42,6 @@ def outlier_from_local_median(piv, treshold=2.0):
     piv.u[mask] = np.nan
     piv.v[mask] = np.nan
 
-
 def get_normalized_residual(f, epsilon=0.1):
     '''
     Compute Residual for a Flow field
@@ -58,9 +57,10 @@ def get_normalized_residual(f, epsilon=0.1):
         uis[:, i] = np.copy(fn[k:k+lx, l:l+ly]).flatten()
 
     uis = np.sort(uis, 1)
-    um  = np.copy(uis[:, 4])[:, np.newaxis]
+    um  = np.copy(np.mean(uis[:, 3:5], axis=1))[:, np.newaxis]
 
     ris = np.abs(uis - um)
-    rm  = np.sort(ris, 1)[:, 4][:, np.newaxis]
+    rm  = np.sort(ris, 1)
+    rm = np.copy(np.mean(rm[:, 3:5], axis=1))[:, np.newaxis]
 
     return np.abs((f - um.reshape((lx, ly)))/(rm.reshape((lx, ly)) + epsilon))
