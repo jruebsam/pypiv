@@ -28,3 +28,10 @@ def compute_coordinate_transformations(piv, width=100, dt=1.):
     U, V = piv.v.T/dt, -piv.u.T/dt
     return X, Y, U, V
 
+def switch_coordinates(piv):
+	u = piv.u
+	piv.u = piv.v
+	piv.v = u
+
+def plots_coordinates(u,v):
+	return u,-v
