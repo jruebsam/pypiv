@@ -50,7 +50,7 @@ def main():
 
     fig3 = plt.figure()
     ax3 = fig3.add_subplot(111)
-    cax3 = ax3.imshow(u.T, origin='lower', extent=[np.min(x), np.max(x), np.min(y), np.max(y)])
+    cax3 = ax3.imshow(u.T, origin='lower', vmin=-0.3, vmax=0.3)# extent=[np.min(x), np.max(x), np.min(y), np.max(y)])
     fig3.colorbar(cax3)
     plt.show()
 
