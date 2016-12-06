@@ -2,6 +2,7 @@ import pyfftw
 import numpy as np
 
 from process import find_subpixel_peak
+from process import find_subpixel_peak_2D
 
 class FFTCorrelator(object):
     '''
@@ -46,6 +47,15 @@ class FFTCorrelator(object):
     def get_displacement(self, window_a, window_b):
         correlation = self._evaluate_windows(window_a, window_b)
         xi, yi = find_subpixel_peak(correlation, subpixel_method='gaussian')
+        #xi, yi = find_subpixel_peak_2D(correlation)
+        cx, cy = correlation.shape
+        corr_pad = (window_b.shape[0] - window_a.shape[0])/2.
+        return (cx/2. - xi - corr_pad, cy/2. - yi - corr_pad)
+
+    def get_displacement_2D(self, window_a, window_b):
+        correlation = self._evaluate_windows(window_a, window_b)
+        #xi, yi = find_subpixel_peak(correlation, subpixel_method='gaussian')
+        xi, yi = find_subpixel_peak_2D(correlation)
         cx, cy = correlation.shape
         corr_pad = (window_b.shape[0] - window_a.shape[0])/2.
         return (cx/2. - xi - corr_pad, cy/2. - yi - corr_pad)
