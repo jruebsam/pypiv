@@ -70,3 +70,19 @@ class AdaptivePIV(object):
             self.v[i, j] += displacement[1]
 
         return  self.u, self.v
+
+    def correlate_frames_2D(self):
+        self._scale_velocities()
+        g = GridDeformator(self.frame_b, self._interogation_ws ,
+                           self._search_ws, self._distance )
+
+        grid_a = self._newpiv.grid_a
+        grid_b = g.create_deformed_grid(self.u, self.v)
+
+        for i, j in np.ndindex(grid_a.shape[:2]):
+            displacement = (self._correlator
+                            .get_displacement_2D(grid_a[i, j], grid_b[i, j]))
+            self.u[i, j] += displacement[0]
+            self.v[i, j] += displacement[1]
+
+        return  self.u, self.v

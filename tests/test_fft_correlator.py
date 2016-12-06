@@ -73,8 +73,8 @@ def test_xy_displacement_subpixel(data):
     #window_b = np.roll(window_b, shift=1, axis=1)
     dx, dy =  fft_corr.get_displacement(window_a, window_b)
     delta = .5
-    assert abs(dx - delta)  < 0.01
     assert abs(dy - delta)  < 0.01
+    assert abs(dx - delta)  < 0.01
 
 def test_xy_displacement_subpixel_2D(data):
     fft_corr, window_a = data
@@ -84,5 +84,5 @@ def test_xy_displacement_subpixel_2D(data):
     #window_b = np.roll(window_b, shift=1, axis=1)
     dx, dy =  fft_corr.get_displacement_2D(window_a, window_b)
     delta = .5
-    assert abs(dx - delta)  < 0.01
     assert abs(dy - delta)  < 0.01
+    assert abs(dx - delta)  < 0.01

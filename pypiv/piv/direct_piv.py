@@ -56,3 +56,12 @@ class DirectPIV(object):
 
         return  self.u, self.v
 
+    def correlate_frames_2D(self):
+        lx, ly, _, _ = self.grid_a.shape
+        self.u, self.v = np.empty((lx, ly)), np.empty((lx, ly))
+        for i, j in np.ndindex(self.grid_a.shape[:2]):
+            self.u[i,j], self.v[i, j] = (self._correlator .get_displacement_2D(
+                                         self.grid_a[i, j], self.grid_b[i, j]))
+
+        return  self.u, self.v
+
