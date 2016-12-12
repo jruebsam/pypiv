@@ -81,7 +81,7 @@ class AdaptivePIV(object):
 
         for i, j in np.ndindex(grid_a.shape[:2]):
             displacement = (self._correlator
-                            .get_displacement_2D(grid_a[i, j], grid_b[i, j]))
+                            .get_displacement(grid_a[i, j], grid_b[i, j],subpixel_method='9point'))
             self.u[i, j] += displacement[0]
             self.v[i, j] += displacement[1]
 

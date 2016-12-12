@@ -61,7 +61,8 @@ class DirectPIV(object):
         self.u, self.v = np.empty((lx, ly)), np.empty((lx, ly))
         for i, j in np.ndindex(self.grid_a.shape[:2]):
             self.u[i,j], self.v[i, j] = (self._correlator .get_displacement_2D(
-                                         self.grid_a[i, j], self.grid_b[i, j]))
+                                         self.grid_a[i, j], self.grid_b[i, j],
+											subpixel_method='9point'))
 
         return  self.u, self.v
 
