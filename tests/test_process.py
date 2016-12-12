@@ -21,8 +21,3 @@ def test_2D_elliptical_gauss_9point(data):
     assert abs(yo-31.5) < 0.01
     assert abs(xo-31.5) < 0.01
 
-def test_2D_elliptical_gauss_scipy(data):
-    xo, yo = process.find_subpixel_peak_2D(data,subpixel_method='scipy')
-    assert abs(yo-31.5) < 0.01
-    assert abs(xo-31.5) < 0.01
-
