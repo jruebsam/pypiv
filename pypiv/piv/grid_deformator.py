@@ -5,10 +5,10 @@ from scipy.interpolate import RectBivariateSpline as RBS
 from scipy.ndimage import map_coordinates
 
 class GridDeformator(object):
-    def __init__(self, frame_b, window_size=32, search_size=32, distance=16):
-        self._interogation_ws = window_size
-        self._search_ws= search_size
-        self._distance = distance
+    def __init__(self, frame_b, grid_spec):
+        self._interogation_ws = grid_spec.window_size
+        self._search_ws= grid_spec.search_size
+        self._distance = grid_spec.distance
         self._set_frames(frame_b)
         self._frame_grid_creator()
         self._pos_grid_creator()

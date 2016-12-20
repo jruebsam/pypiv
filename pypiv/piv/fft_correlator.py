@@ -43,7 +43,7 @@ class FFTCorrelator(object):
         #return np.fft.fftshift(inv_fft.real, axes=(0, 1))
         return np.fft.fftshift(inv_fft)
 
-    def get_displacement(self, window_a, window_b,subpixel_method='gaussian'):
+    def get_displacement(self, window_a, window_b, subpixel_method='gaussian'):
         correlation = self._evaluate_windows(window_a, window_b)
         xi, yi = find_subpixel_peak(correlation, subpixel_method=subpixel_method)
         cx, cy = correlation.shape

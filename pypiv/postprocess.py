@@ -13,8 +13,8 @@ def compute_coordinate_transformations(piv, width=100, dt=1.):
     '''
 
     ly, lx = piv.frame_a.shape
-    window_size = piv._interogation_ws
-    distance = piv._distance
+    window_size = piv.grid_spec.window_size
+    distance = piv.grid_spec.distance
 
     nx = (lx - window_size)//distance+1
     ny = (ly - window_size)//distance+1
