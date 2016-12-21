@@ -1,46 +1,22 @@
 import numpy as np
-
 from numpy.lib.stride_tricks import as_strided
-from scipy.interpolate import RectBivariateSpline as RBS
 from scipy.ndimage import map_coordinates
 
 class GridDeformator(object):
-    def __init__(self, frame_b, grid_spec):
-        self._interogation_ws = grid_spec.window_size
-        self._search_ws= grid_spec.search_size
-        self._distance = grid_spec.distance
-        self._set_frames(frame_b)
-        self._frame_grid_creator()
+    def __init__(self, frame, shape, distance):
+        self._frame  = frame
+        self._shape  = shape
+        self._window_size = shape[-1]
+        self._distance = distance
         self._pos_grid_creator()
 
-    def _set_frames(self, frame_b):
-        self._pad = max([0, (self._search_ws - self._interogation_ws)/2])
-        self._padded_fb = np.pad(frame_b, (self._pad, self._pad), 'constant')
-        if self._pad == 0:
-            self.frame_b = self._padded_fb
-        else:
-            self.frame_b = self._padded_fb[self._pad:-self._pad, self._pad:-self._pad]
-
-    def _frame_grid_creator(self):
-        distance = self._distance
-        shape = self._get_field_shape(self.frame_b, self._interogation_ws, distance)
-        self._shape_b = shape + 2*(self._search_ws,)
-        sx, sy = self._padded_fb.strides
-        strides_b = (sx*distance, sy*distance, sx, sy)
-        self._bgrid = as_strided(self._padded_fb, strides=strides_b, shape=self._shape_b)
-
     def _pos_grid_creator(self):
-        distance = self._distance
-        lx, ly = self._padded_fb.shape
+        lx, ly = self._frame.shape
         self._pos_x, self._pos_y = np.mgrid[0:lx, 0:ly]
         sx, sy = self._pos_x.strides
-        strides_pos = (sx*distance, sy*distance, sx, sy)
-        self._grid_x = as_strided(self._pos_x, strides=strides_pos, shape=self._shape_b)
-        self._grid_y = as_strided(self._pos_y, strides=strides_pos, shape=self._shape_b)
-
-    def _get_field_shape(self, frame, window_size, distance):
-        lx, ly = frame.shape
-        return ((lx - window_size)//distance+1, (ly - window_size)//distance+1)
+        strides_pos = (sx*self._distance, sy*self._distance, sx, sy)
+        self.grid_x = as_strided(self._pos_x, strides=strides_pos, shape=self._shape)
+        self.grid_y = as_strided(self._pos_y, strides=strides_pos, shape=self._shape)
 
     def _set_displacements_fields(self, u, v):
         self._u_disp = self._get_displacement_function(u)
@@ -55,75 +31,21 @@ class GridDeformator(object):
                        + 0.5*(f_xx[i, j]*x**2 + 2*f_xy[i, j]*x*y + f_yy[i, j]*y**2))
 
     def create_deformed_grid(self, u, v):
-        #warum ????
         self._set_displacements_fields(u, v)
-        gx = self._grid_x
-        gy = self._grid_y
-        lx, ly, _, _ =  gx.shape
+        dws = self._window_size/2.
+        offset_x, offset_y = np.mgrid[-dws+0.5:dws+0.5, -dws+0.5:dws+0.5]
+        ptsax = np.zeros(self.grid_x.shape)
+        ptsay = np.zeros_like(ptsax)
 
-        dws = self._search_ws/2.
-        offset_x, offset_y = np.mgrid[-dws:dws, -dws:dws]
-        offset_x+=0.5
-        offset_y+=0.5
+        for i, j in np.ndindex(self._shape[:2]):
+            ptsax[i, j] = self.grid_x[i, j] + self._u_disp(i, j, offset_x, offset_y)
+            ptsay[i, j] = self.grid_y[i, j] + self._v_disp(i, j, offset_x, offset_y)
 
-        '''
-        plt.imshow(u, extent=[0, 1024, 0, 1024])
-        ptsax =[]
-        ptsay =[]
-        for i in range(lx):
-            for j in range(ly):
-                if (i%4 ==0 ) and (j%4==0):
-                    ptsax.append(gx[i, j])
-                    ptsay.append(gy[i, j])
-        ptsax = np.array(ptsax)
-        ptsay = np.array(ptsay)
-        plt.scatter(ptsax, ptsay , c ='red', lw=0.5, alpha=0.5, edgecolor='none')
-        p1, p2 = [], []
-        '''
-        ptsax = np.zeros(gx.shape)
-        ptsay = np.zeros(gx.shape)
-
-        for i in range(lx):
-            for j in range(ly):
-                ptsax[i, j] = gx[i, j] + self._u_disp(i, j, offset_x, offset_y)
-                ptsay[i, j] = gy[i, j] + self._v_disp(i, j, offset_x, offset_y)
-        '''
-                if (i%4 ==0 ) and (j%4==0):
-                    p1.append(ptsax[i, j])
-                    p2.append(ptsay[i, j])
-        p1 = np.array(p1).flatten()
-        p2 = np.array(p2).flatten()
-        plt.scatter(p1, p2, c ='green', lw=0.5, alpha=0.5, edgecolor='none')
-        plt.show()
-        '''
-        #xn, yn =  self._padded_fb.shape
-        #rbs = RBS(np.arange(xn), np.arange(yn),  self._padded_fb)
-
-        out = np.zeros(v.shape+2*(self._search_ws,))
-        for i in range(lx):
-            for j in range(ly):
-                #out[i, j]  =  rbs.ev(ptsax[i, j], ptsay[i, j])
-                p, q = ptsax[i, j].shape
-                test = map_coordinates(self._padded_fb,
-                        [ptsax[i, j].flatten(), ptsay[i, j].flatten()], order=1).reshape(p, q)
-
-                out[i,j] = test
-
+        out = np.zeros(v.shape+2*(self._window_size,))
+        for i, j in np.ndindex(self._shape[:2]):
+            p, q = ptsax[i, j].shape
+            sample = map_coordinates(self._frame,
+                    [ptsax[i, j].flatten(), ptsay[i, j].flatten()], order=1).reshape(p, q)
+            out[i,j] = sample
         return out
-
-    def test(self):
-        gx = self._grid_x
-        gy = self._grid_y
-        lx, ly, _, _ =  gx.shape
-
-        for i in range(lx):
-            for j in range(ly):
-                gx[i, j] += 1
-                gy[i, j] += 1
-
-        f, (ax1, ax2) = plt.subplots(1, 2)
-        ax1.imshow(self._pos_x)
-        ax2.imshow(self._pos_y)
-        plt.show()
-
 
