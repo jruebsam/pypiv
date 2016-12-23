@@ -30,7 +30,7 @@ def main():
 
     #PIV3
     piv = pypiv.AdaptivePIV(piv, window_size=32,
-                                  search_size=32, distance=8)
+                                  search_size=32, distance=8, ipmethod='cubic')
     piv.correlate_frames()
     pypiv.filters.outlier_from_local_median(piv, 2.0)
     pypiv.filters.replace_outliers(piv)
