@@ -2,6 +2,7 @@ import numpy as np
 from numpy.lib.stride_tricks import as_strided
 from scipy.ndimage import map_coordinates
 import sys
+from interpolator import cubic_interpolation
 
 class GridDeformator(object):
     def __init__(self, frame, shape, distance):
@@ -43,19 +44,17 @@ class GridDeformator(object):
             ptsay[i, j] = self.grid_y[i, j] + self._v_disp(i, j, offset_x, offset_y)
 
         out = np.zeros(v.shape+2*(self._window_size,))
+
+        padded_frame = np.pad(self._frame, (3, 3), mode='constant')
+
         for i, j in np.ndindex(self._shape[:2]):
-            p, q = ptsax[i, j].shape
             '''
+            p, q = ptsax[i, j].shape
             sample = map_coordinates(self._frame,
                     [ptsax[i, j].flatten(), ptsay[i, j].flatten()], order=1).reshape(p, q)
             out[i,j] = sample
             '''
-            print i, j
-            for  k in range(p):
-                for l in range(q):
-                    out[i, j, k, l] = self._test_cubic(ptsax[i, j, k, l], ptsay[i, j, k, l])
-            #if j>30:
-            #    sys.exit(1)
+            out[i,j] = cubic_interpolation(ptsax[i,j], ptsay[i,j], padded_frame)
         return out
 
     def _test_cubic(self, x, y):
