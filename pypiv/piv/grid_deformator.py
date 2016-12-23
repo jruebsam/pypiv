@@ -15,7 +15,6 @@ class GridDeformator(object):
         if method == 'cubic':
             self._ip = CubicInterpolator(self._window_size)
 
-
     def _pos_grid_creator(self):
         lx, ly = self._frame.shape
         self._pos_x, self._pos_y = np.mgrid[0:lx, 0:ly]
@@ -49,7 +48,8 @@ class GridDeformator(object):
 
         out = np.zeros(v.shape+2*(self._window_size,))
 
-        padded_frame = np.pad(self._frame, (3, 3), mode='constant')
+        if self._ipmethod == 'cubic':
+            padded_frame = np.pad(self._frame, (3, 3), mode='constant')
 
         for i, j in np.ndindex(self._shape[:2]):
             if self._ipmethod == 'bilinear':
@@ -58,7 +58,7 @@ class GridDeformator(object):
                         [ptsax[i, j].flatten(), ptsay[i, j].flatten()], order=1).reshape(p, q)
                 out[i,j] = sample
             if self._ipmethod == 'cubic':
-                out[i,j] = self._ip.cubic_interpolation(ptsax[i,j], ptsay[i,j], padded_frame)
+                out[i, j] = self._ip.cubic_interpolation(ptsax[i,j], ptsay[i,j], padded_frame)
         return out
 
 class CubicInterpolator(object):
@@ -73,5 +73,5 @@ class CubicInterpolator(object):
                               [ 0.2, -0.6,  1.2,  1.2, -0.6,  0.2]])
 
     def cubic_interpolation(self, px, py, frame):
-        return cubic_interpolation(px, py, frame, self._position,
-                                    self._output, self._M, self._x, self._y)
+        cubic_interpolation(px, py, frame, self._position, self._output, self._M, self._x, self._y)
+        return np.copy(self._output)

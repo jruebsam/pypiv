@@ -22,7 +22,7 @@ def main():
 
     #PIV2
     piv = pypiv.AdaptivePIV(piv, window_size=32,
-                                  search_size=32, distance=16)
+                                  search_size=32, distance=16, ipmethod='bilinear')
     piv.correlate_frames()
     pypiv.filters.outlier_from_local_median(piv, 2.0)
     pypiv.filters.replace_outliers(piv)
@@ -30,12 +30,13 @@ def main():
 
     #PIV3
     piv = pypiv.AdaptivePIV(piv, window_size=32,
-                                  search_size=32, distance=8, ipmethod='cubic')
+                                  search_size=32, distance=8, ipmethod='bilinear')
     piv.correlate_frames()
     pypiv.filters.outlier_from_local_median(piv, 2.0)
     pypiv.filters.replace_outliers(piv)
     pypiv.filters.median_filter(piv)
 
+    '''
     #OUTPUT
     x, y, u, v = pypiv.postprocess.compute_coordinate_transformations(piv)
 
@@ -53,6 +54,7 @@ def main():
     cax3 = ax3.imshow(u.T, origin='lower', vmin=-0.3, vmax=0.3)# extent=[np.min(x), np.max(x), np.min(y), np.max(y)])
     fig3.colorbar(cax3)
     plt.show()
+    '''
 
 
 if __name__=='__main__':
