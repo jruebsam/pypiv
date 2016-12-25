@@ -6,7 +6,7 @@ from direct_piv import DirectPIV
 from grid_spec import GridSpec
 
 class AdaptivePIV(DirectPIV):
-    def __init__(self, piv_object, window_size, search_size, distance, ipmethod='bilinear', deformation='forward'):
+    def __init__(self, piv_object, window_size, search_size, distance, deformation='forward', ipmethod='bilinear'):
         image_a, image_b = np.copy(piv_object.frame_a), np.copy(piv_object.frame_b)
 
         super(AdaptivePIV, self).__init__(image_a, image_b, window_size,
