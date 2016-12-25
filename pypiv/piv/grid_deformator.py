@@ -12,8 +12,6 @@ class GridDeformator(object):
         self._distance = distance
         self._pos_grid_creator()
         self._ipmethod = method
-        if method == 'cubic':
-            self._ip = CubicInterpolator(self._window_size)
 
     def _pos_grid_creator(self):
         lx, ly = self._frame.shape
@@ -46,32 +44,16 @@ class GridDeformator(object):
             ptsax[i, j] = self.grid_x[i, j] + self._u_disp(i, j, offset_x, offset_y)
             ptsay[i, j] = self.grid_y[i, j] + self._v_disp(i, j, offset_x, offset_y)
 
-        out = np.zeros(v.shape+2*(self._window_size,))
-
+        out = np.zeros(self._shape)
+        if self._ipmethod == 'bilinear':
+            for i, j in np.ndindex(self._shape[:2]):
+                    p, q = ptsax[i, j].shape
+                    sample = map_coordinates(self._frame,
+                            [ptsax[i, j].flatten(), ptsay[i, j].flatten()], order=1).reshape(p, q)
+                    out[i,j] = sample
         if self._ipmethod == 'cubic':
             padded_frame = np.pad(self._frame, (3, 3), mode='constant')
-
-        for i, j in np.ndindex(self._shape[:2]):
-            if self._ipmethod == 'bilinear':
-                p, q = ptsax[i, j].shape
-                sample = map_coordinates(self._frame,
-                        [ptsax[i, j].flatten(), ptsay[i, j].flatten()], order=1).reshape(p, q)
-                out[i,j] = sample
-            if self._ipmethod == 'cubic':
-                out[i, j] = self._ip.cubic_interpolation(ptsax[i,j], ptsay[i,j], padded_frame)
+            out = cubic_interpolation(ptsax.flatten(), ptsay.flatten(),\
+                                      padded_frame, len(self._frame)).reshape(self._shape)
         return out
 
-class CubicInterpolator(object):
-    def __init__(self, window_size):
-        self._x = np.zeros(6)
-        self._y = np.zeros(6)
-        self._output   = np.zeros((window_size, window_size))
-        self._position = np.array([-2.5, -1.5, -0.5, 0.5, 1.5, 2.5])
-        self._M  =  np.array([[-3.6,  2.8,  1. ,  1. ,  2.8, -3.6],
-                              [ 4.2, -5.4,  0. ,  0. , -5.4,  4.2],
-                              [-1.6,  3.2,  2.2,  2.2,  3.2, -1.6],
-                              [ 0.2, -0.6,  1.2,  1.2, -0.6,  0.2]])
-
-    def cubic_interpolation(self, px, py, frame):
-        cubic_interpolation(px, py, frame, self._position, self._output, self._M, self._x, self._y)
-        return np.copy(self._output)

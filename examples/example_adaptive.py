@@ -19,10 +19,9 @@ def main():
     pypiv.filters.replace_outliers(piv)
     pypiv.filters.median_filter(piv)
 
-
     #PIV2
     piv = pypiv.AdaptivePIV(piv, window_size=32,
-                                  search_size=32, distance=16, ipmethod='bilinear')
+                                  search_size=32, distance=16, ipmethod='cubic')
     piv.correlate_frames()
     pypiv.filters.outlier_from_local_median(piv, 2.0)
     pypiv.filters.replace_outliers(piv)
@@ -30,13 +29,12 @@ def main():
 
     #PIV3
     piv = pypiv.AdaptivePIV(piv, window_size=32,
-                                  search_size=32, distance=8, ipmethod='bilinear')
+                                  search_size=32, distance=8, ipmethod='cubic')#, deformation='central')
     piv.correlate_frames()
     pypiv.filters.outlier_from_local_median(piv, 2.0)
     pypiv.filters.replace_outliers(piv)
     pypiv.filters.median_filter(piv)
 
-    '''
     #OUTPUT
     x, y, u, v = pypiv.postprocess.compute_coordinate_transformations(piv)
 
@@ -46,15 +44,14 @@ def main():
 
     fig2 = plt.figure()
     ax2 = fig2.add_subplot(111)
-    cax2 = ax2.imshow(v.T, origin='lower', extent=[np.min(x), np.max(x), np.min(y), np.max(y)])
+    cax2 = ax2.imshow(v.T, origin='lower')
     fig2.colorbar(cax2)
 
     fig3 = plt.figure()
     ax3 = fig3.add_subplot(111)
-    cax3 = ax3.imshow(u.T, origin='lower', vmin=-0.3, vmax=0.3)# extent=[np.min(x), np.max(x), np.min(y), np.max(y)])
+    cax3 = ax3.imshow(u.T, origin='lower')
     fig3.colorbar(cax3)
     plt.show()
-    '''
 
 
 if __name__=='__main__':

@@ -6,7 +6,7 @@ from direct_piv import DirectPIV
 from grid_spec import GridSpec
 
 class AdaptivePIV(DirectPIV):
-    def __init__(self, piv_object, window_size, search_size, distance, ipmethod='bilinear'):
+    def __init__(self, piv_object, window_size, search_size, distance, ipmethod='bilinear', deformation='forward'):
         image_a, image_b = np.copy(piv_object.frame_a), np.copy(piv_object.frame_b)
 
         super(AdaptivePIV, self).__init__(image_a, image_b, window_size,
@@ -18,11 +18,19 @@ class AdaptivePIV(DirectPIV):
             vscaler = VelocityUpscaler(self.grid_spec, piv_object.grid_spec)
             self.u = vscaler.scale_field(piv_object.u)
             self.v = vscaler.scale_field(piv_object.v)
-        self._deform_grid(ipmethod)
+        self._deform_grid(deformation, ipmethod)
 
-    def _deform_grid(self, ipmethod):
+    def _deform_grid(self, deformation_method, ipmethod):
+        distance   = self.grid_spec.distance
         shape_b    = self.grid_spec.get_search_grid_shape()
-        strides_b  = self.grid_spec.get_search_grid_strides()
-        grid_def    = GridDeformator(self._padded_fb, shape_b, self.grid_spec.distance, ipmethod)
-        self.grid_b = grid_def.create_deformed_grid(self.u, self.v)
+        if deformation_method == 'central':
+            shape_a    = self.grid_spec.get_interogation_grid_shape()
 
+            grid_def_a  = GridDeformator(self.frame_a, shape_a, distance, ipmethod)
+            self.grid_a = grid_def_a.create_deformed_grid(-self.u/2, -self.v/2.)
+
+            grid_def_b  = GridDeformator(self._padded_fb, shape_b, distance, ipmethod)
+            self.grid_b = grid_def_b.create_deformed_grid(self.u/2., self.v/2.)
+        if deformation_method == 'forward':
+            grid_def_b  = GridDeformator(self._padded_fb, shape_b, distance, ipmethod)
+            self.grid_b = grid_def_b.create_deformed_grid(self.u, self.v)
