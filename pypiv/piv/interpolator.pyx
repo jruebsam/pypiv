@@ -18,11 +18,12 @@ def cubic_interpolation(
     cdef np.ndarray[np.double_t, ndim=1] x = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     cdef np.ndarray[np.double_t, ndim=1] y = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
 
-    cdef np.ndarray[np.double_t, ndim=1] position = np.array([-2.5, -1.5, -0.5, 0.5,  1.5,  2.5])
-    cdef np.ndarray[np.double_t, ndim=2] M   =     np.array([[-3.6,  2.8,  1.0, 1.0,  2.8, -3.6],
-                                                             [ 4.2, -5.4,  0.0, 0.0, -5.4,  4.2],
-                                                             [-1.6,  3.2,  2.2, 2.2,  3.2, -1.6],
-                                                             [ 0.2, -0.6,  1.2, 1.2, -0.6,  0.2]])
+    cdef np.ndarray[np.double_t, ndim=1] position = np.array([-2.5, -1.5,  -0.5, 0.5,  1.5,  2.5])
+
+    cdef np.ndarray[np.double_t, ndim=2] M   =     np.array([[-3.6,  2.8,   1.0, 1.0,  2.8, -3.6],
+                                                             [ 4.2, -5.4,   0.0, 0.0, -5.4,  4.2],
+                                                             [-1.6,  3.2,  -2.2, -2.2,  3.2, -1.6],
+                                                             [ 0.2, -0.6,   1.2, 1.2, -0.6,  0.2]])
     cdef np.ndarray[np.double_t, ndim=1] output = np.zeros_like(posx)
     cdef int i, k, l, ix, iy
     cdef float dx, dy, outsum
