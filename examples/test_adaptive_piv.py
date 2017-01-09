@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from glob import glob
 
 def main():
-    imgs = glob('images/finger*')
+    imgs = glob('images/real_ana_finger*')
     frames = [plt.imread(x) for x in imgs]
 
     frame_a = frames[0]
@@ -18,11 +18,13 @@ def main():
     u, v = piv.correlate_frames()
 
     adapt_piv = pypiv.AdaptivePIV(piv, window_size=32,
-                                  search_size=32, distance=16)
+                                  search_size=32, distance=16,
+                                  ipmethod='cubic')
     u, v = adapt_piv.correlate_frames()
 
     adapt_piv = pypiv.AdaptivePIV(piv, window_size=32,
-                                  search_size=32, distance=8)
+                                  search_size=32, distance=8,
+                                  ipmethod='cubic')
     u, v = adapt_piv.correlate_frames()
 
     plt.imshow(u)
