@@ -54,6 +54,6 @@ class GridDeformator(object):
         if self._ipmethod == 'cubic':
             padded_frame = np.pad(self._frame, (3, 3), mode='constant')
             out = cubic_interpolation(ptsax.flatten(), ptsay.flatten(),\
-                                      padded_frame, len(self._frame)).reshape(self._shape)
+                                      padded_frame, *self._frame.shape).reshape(self._shape)
         return out
 

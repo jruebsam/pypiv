@@ -13,7 +13,7 @@ from libc.math cimport fabs, pow
 def cubic_interpolation(
     np.ndarray[np.double_t, ndim=1] posx,
     np.ndarray[np.double_t, ndim=1] posy,
-    np.ndarray[np.double_t, ndim=2] frame, int ln):
+    np.ndarray[np.double_t, ndim=2] frame, int lx, int ly):
 
     cdef np.ndarray[np.double_t, ndim=1] x = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     cdef np.ndarray[np.double_t, ndim=1] y = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
@@ -29,7 +29,7 @@ def cubic_interpolation(
     cdef float dx, dy, outsum
 
     for i in range(posx.shape[0]):
-        if (posx[i] < 0) or (posx[i] > ln) or (posy[i] < 0) or (posy[i] > ln):
+        if (posx[i] < 0) or (posx[i] > lx) or (posy[i] < 0) or (posy[i] > ly):
             output[i] = 0
         else:
             ix, iy = <int>posx[i] + 3, <int>posy[i] + 3
