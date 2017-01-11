@@ -31,7 +31,7 @@ def cubic_interpolation(np.ndarray[np.double_t, ndim=1] posx,
             dx, dy = posx[i] % 1, posy[i] % 1
             outsum = 0
             for k in range(6):
-                cx, cy = fabs(dx - k - 2), fabs(dy - k - 2)
+                cx, cy = fabs(dx - (k - 2)), fabs(dy - (k - 2))
                 x[k] = M[0, k] + cx*M[1, k] + pow(cx, 2)*M[2, k] + pow(cx, 3)*M[3, k]
                 y[k] = M[0, k] + cy*M[1, k] + pow(cy, 2)*M[2, k] + pow(cy, 3)*M[3, k]
             for k in range(6):
