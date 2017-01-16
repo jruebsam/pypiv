@@ -6,20 +6,37 @@ cimport numpy as np
 cimport cython
 from libc.math cimport fabs, pow
 
+class CubicInterpolator(object):
+    def __init__(self, frame, window_size):
+        self._frame = np.pad(frame, (3, 3), mode='constant')
+        self._lx, self._ly = frame.shape
+        self._ws = window_size
+
+        self._x = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+        self._y = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+
+        self._M = np.array([[-3.6,  2.8,   1.0, 1.0,  2.8, -3.6],
+                            [ 4.2, -5.4,   0.0, 0.0, -5.4,  4.2],
+                            [-1.6,  3.2,  -2.2, -2.2,  3.2, -1.6],
+                            [ 0.2, -0.6,   1.2, 1.2, -0.6,  0.2]])
+
+        self._output = np.zeros((window_size, window_size))
+
+    def interpolate(self, posx, posy):
+        output = cubic_interpolation(posx, posy, self._x, self._y, self._M,
+                                     self._output.ravel(), self._frame, self._lx, self._ly)
+        return output.reshape(self._ws, self._ws)
+
 @cython.boundscheck(False)
 @cython.wraparound(False)
 def cubic_interpolation(np.ndarray[np.double_t, ndim=1] posx,
                         np.ndarray[np.double_t, ndim=1] posy,
+                        np.ndarray[np.double_t, ndim=1] x,
+                        np.ndarray[np.double_t, ndim=1] y,
+                        np.ndarray[np.double_t, ndim=2] M,
+                        np.ndarray[np.double_t, ndim=1] output,
                         np.ndarray[np.double_t, ndim=2] frame, int lx, int ly):
 
-    cdef np.ndarray[np.double_t, ndim=1] x = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
-    cdef np.ndarray[np.double_t, ndim=1] y = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
-
-    cdef np.ndarray[np.double_t, ndim=2] M   =     np.array([[-3.6,  2.8,   1.0, 1.0,  2.8, -3.6],
-                                                             [ 4.2, -5.4,   0.0, 0.0, -5.4,  4.2],
-                                                             [-1.6,  3.2,  -2.2, -2.2,  3.2, -1.6],
-                                                             [ 0.2, -0.6,   1.2, 1.2, -0.6,  0.2]])
-    cdef np.ndarray[np.double_t, ndim=1] output = np.zeros_like(posx)
     cdef int i, k, l, ix, iy
     cdef float dx, dy, cx, cy, outsum
 
