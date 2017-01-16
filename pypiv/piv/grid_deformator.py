@@ -8,20 +8,12 @@ class GridDeformator(object):
     def __init__(self, frame, shape, distance, method='bilinear'):
         self._frame  = frame
         self._shape  = shape
-        self._window_size = shape[-1]
         self._distance = distance
-        self._pos_grid_creator()
         self._ipmethod = method
+        if method == 'cubic':
+            self._cube_ip = CubicInterpolator(frame, shape[-1])
 
-    def _pos_grid_creator(self):
-        lx, ly = self._frame.shape
-        self._pos_x, self._pos_y = np.mgrid[0:lx, 0:ly]
-        sx, sy = self._pos_x.strides
-        strides_pos = (sx*self._distance, sy*self._distance, sx, sy)
-        self.grid_x = as_strided(self._pos_x, strides=strides_pos, shape=self._shape)
-        self.grid_y = as_strided(self._pos_y, strides=strides_pos, shape=self._shape)
-
-    def _set_displacements_fields(self, u, v):
+    def set_velocities(self, u, v):
         self._u_disp = self._get_displacement_function(u)
         self._v_disp = self._get_displacement_function(v)
 
@@ -33,27 +25,21 @@ class GridDeformator(object):
         return lambda i, j, x, y : (f[i, j] + x*f_x[i, j]  + y*f_y[i, j]
                        + 0.5*(f_xx[i, j]*x**2 + 2*f_xy[i, j]*x*y + f_yy[i, j]*y**2))
 
-    def create_deformed_grid(self, u, v):
-        self._set_displacements_fields(u, v)
-        dws = self._window_size/2.
-        offset_x, offset_y = np.mgrid[-dws+0.5:dws+0.5, -dws+0.5:dws+0.5]
-        ptsax = np.zeros(self.grid_x.shape)
-        ptsay = np.zeros_like(ptsax)
+    def get_frame(self, i, j):
+        dws = self._shape[-1]
+        offset_x, offset_y = np.mgrid[-dws/2+0.5:dws/2+0.5, -dws/2+0.5:dws/2+0.5]
 
-        for i, j in np.ndindex(self._shape[:2]):
-            ptsax[i, j] = self.grid_x[i, j] + self._u_disp(i, j, offset_x, offset_y)
-            ptsay[i, j] = self.grid_y[i, j] + self._v_disp(i, j, offset_x, offset_y)
+        gx, gy = np.mgrid[0:dws, 0:dws]
 
-        out = np.zeros(self._shape)
+        grid_x = gx + self._distance*i
+        grid_y = gy + self._distance*j
+
+        ptsax = (grid_x + self._u_disp(i, j, offset_x, offset_y)).ravel()
+        ptsay = (grid_y + self._v_disp(i, j, offset_x, offset_y)).ravel()
+        p, q = self._shape[-2:]
+
         if self._ipmethod == 'bilinear':
-            for i, j in np.ndindex(self._shape[:2]):
-                    p, q = ptsax[i, j].shape
-                    sample = map_coordinates(self._frame,
-                            [ptsax[i, j].ravel(), ptsay[i, j].ravel()], order=1).reshape(p, q)
-                    out[i,j] = sample
+            return map_coordinates(self._frame, [ptsax, ptsay], order=1).reshape(p, q)
         if self._ipmethod == 'cubic':
-            cube_ip = CubicInterpolator(self._frame, self._window_size)
-            for i, j in np.ndindex(self._shape[:2]):
-                out[i, j]  = cube_ip.interpolate(ptsax[i, j].ravel(), ptsay[i, j].ravel())
-        return out
+            return  self._cube_ip.interpolate(ptsax, ptsay).reshape(p, q)
 

@@ -18,6 +18,7 @@ class AdaptivePIV(DirectPIV):
             vscaler = VelocityUpscaler(self.grid_spec, piv_object.grid_spec)
             self.u = vscaler.scale_field(piv_object.u)
             self.v = vscaler.scale_field(piv_object.v)
+        self._deformation_method = deformation
         self._deform_grid(deformation, ipmethod)
 
     def _deform_grid(self, deformation_method, ipmethod):
@@ -26,11 +27,25 @@ class AdaptivePIV(DirectPIV):
         if deformation_method == 'central':
             shape_a    = self.grid_spec.get_interogation_grid_shape()
 
-            grid_def_a  = GridDeformator(self.frame_a, shape_a, distance, ipmethod)
-            self.grid_a = grid_def_a.create_deformed_grid(-self.u/2, -self.v/2.)
+            self.grid_def_a  = GridDeformator(self.frame_a, shape_a, distance, ipmethod)
+            self.grid_def_a.set_velocities(-self.u/2, -self.v/2.)
 
-            grid_def_b  = GridDeformator(self._padded_fb, shape_b, distance, ipmethod)
-            self.grid_b = grid_def_b.create_deformed_grid(self.u/2., self.v/2.)
+            self.grid_def_b  = GridDeformator(self._padded_fb, shape_b, distance, ipmethod)
+            self.grid_def_b.set_velocities(self.u/2., self.v/2.)
+
         if deformation_method == 'forward':
-            grid_def_b  = GridDeformator(self._padded_fb, shape_b, distance, ipmethod)
-            self.grid_b = grid_def_b.create_deformed_grid(self.u, self.v)
+            self.grid_def_b  = GridDeformator(self._padded_fb, shape_b, distance, ipmethod)
+            self.grid_def_b.set_velocities(self.u, self.v)
+
+    def _get_window_frames(self, i, j):
+        if self._deformation_method == 'central':
+            frame_a = self.grid_def_a.get_frame(i, j)
+            frame_b = self.grid_def_b.get_frame(i, j)
+        if self._deformation_method == 'forward':
+            frame_a = self.grid_a[i, j]
+            frame_b = self.grid_def_b.get_frame(i, j)
+        return frame_a, frame_b
+
+
+
+

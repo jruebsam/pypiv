@@ -42,10 +42,13 @@ class DirectPIV(object):
         self.grid_a = as_strided(self.frame_a, strides=strides_fa, shape=shape_fa)
         self.grid_b = as_strided(self._padded_fb, strides=strides_fb, shape=shape_fb)
 
+    def _get_window_frames(self, i, j):
+        return self.grid_a[i, j], self.grid_b[i, j]
+
     def correlate_frames(self, method='gaussian'):
         for i, j in np.ndindex(self.grid_spec.get_grid_shape()):
-            displacement = (self._correlator .get_displacement(self.grid_a[i, j],
-                                                               self.grid_b[i, j],
+            window_a, window_b = self._get_window_frames(i, j)
+            displacement = (self._correlator.get_displacement(window_a, window_b,
                                                                subpixel_method=method))
             self.u[i, j] += displacement[0]
             self.v[i, j] += displacement[1]
