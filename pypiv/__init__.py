@@ -5,3 +5,4 @@ from piv.fft_correlator import FFTCorrelator
 import filters
 import preprocess
 import postprocess
+import velofilter
