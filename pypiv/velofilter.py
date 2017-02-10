@@ -5,7 +5,6 @@ from math import exp
 def calc_factor(field,stepsize=0.01):
     result_pos = []
     result_neg = []
-    outlier = 1.
     alpha = 0.
     while alpha <= np.max(field)+stepsize:
         pos = alpha
@@ -16,7 +15,6 @@ def calc_factor(field,stepsize=0.01):
         outlier = np.count_nonzero(~np.isnan(filtered))/np.float(np.count_nonzero(~np.isnan(field)))
         result_pos.append([alpha,outlier])
         alpha += stepsize
-    outlier = 1.
     alpha = 0.
     while alpha <= np.abs(np.min(field))+stepsize:
         pos = 0.
@@ -30,26 +28,20 @@ def calc_factor(field,stepsize=0.01):
 
     return (np.array(result_pos),np.array(result_neg))
 
-def filter(u,v,tfactor=3.):
-    up = np.copy(u)
-    up[up<=0.] = 0.
-    un = np.copy(u)
-    un[un>0.] = 0.
-
-    vp = np.copy(v)
-    vp[vp<=0.] = 0.
-    vn = np.copy(v)
-    vn[vn>0.] = 0.
-
-    numberup = np.count_nonzero(up)/np.float(np.count_nonzero(u))
-    numberun = np.count_nonzero(un)/np.float(np.count_nonzero(u))
-    numbervp = np.count_nonzero(vp)/np.float(np.count_nonzero(v))
-    numbervn = np.count_nonzero(vn)/np.float(np.count_nonzero(v))
+def filter(piv,tfactor=3.,dalpha=.01):
+    #presampling
+    numberup = np.count_nonzero(piv.u<=0.)/np.float(np.count_nonzero(piv.u))
+    numberun = np.count_nonzero(piv.u>0.)/np.float(np.count_nonzero(piv.u))
+    numbervp = np.count_nonzero(piv.v<=0.)/np.float(np.count_nonzero(piv.v))
+    numbervn = np.count_nonzero(piv.v>0.)/np.float(np.count_nonzero(piv.v))
+    upos = numberup 
+    uneg = numberun
+    vpos = numbervp 
+    vneg = numbervn
 
     #get alpha dependency
-    dalpha = .01
-    up_alpha, un_alpha = calc_factor(u,dalpha)
-    vp_alpha, vn_alpha = calc_factor(v,dalpha)
+    up_alpha, un_alpha = calc_factor(piv.u,dalpha)
+    vp_alpha, vn_alpha = calc_factor(piv.v,dalpha)
 
     dup_alpha = np.gradient(up_alpha[:,1],dalpha)
     dun_alpha = np.gradient(un_alpha[:,1],dalpha)
@@ -63,45 +55,47 @@ def filter(u,v,tfactor=3.):
     boundvn = np.sum(dvn_alpha[0:5])/5./np.exp(tfactor)
 
     #get indizes and exponential
-    indexup = np.where(dup_alpha<boundup)
-    indexun = np.where(dun_alpha<boundun)
-    indexvp = np.where(dvp_alpha<boundvp)
-    indexvn = np.where(dvn_alpha<boundvn)
-    cut_up = np.int(np.sum(indexup[0][0:5])/5.)
-    cut_un = np.int(np.sum(indexun[0][0:5])/5.)
-    cut_vp = np.int(np.sum(indexvp[0][0:5])/5.)
-    cut_vn = np.int(np.sum(indexvn[0][0:5])/5.)
-    nup = np.polyfit(np.log( up_alpha[1:cut_up,0]),np.log(up_alpha[1:cut_up,1]),1)
-    nun = np.polyfit(np.log(-un_alpha[1:cut_un,0]),np.log(un_alpha[1:cut_un,1]),1)
-    nvp = np.polyfit(np.log( vp_alpha[1:cut_vp,0]),np.log(vp_alpha[1:cut_vp,1]),1)
-    nvn = np.polyfit(np.log(-vn_alpha[1:cut_vn,0]),np.log(vn_alpha[1:cut_vn,1]),1)
-    upos =  exp(-nup[1]/nup[0])
-    uneg = -exp(-nun[1]/nun[0])
-    vpos =  exp(-nvp[1]/nvp[0])
-    vneg = -exp(-nvn[1]/nvn[0])
+    if upos != 0.:
+        indexup = np.where(dup_alpha<boundup)
+        cut_up = np.int(np.sum(indexup[0][0:5])/5.)
+        nup = np.polyfit(np.log( up_alpha[1:cut_up,0]),np.log(up_alpha[1:cut_up,1]),1)
+        upos =  exp(-nup[1]/nup[0])
+    if uneg != 0.:
+        indexun = np.where(dun_alpha<boundun)
+        cut_un = np.int(np.sum(indexun[0][0:5])/5.)
+        nun = np.polyfit(np.log(-un_alpha[1:cut_un,0]),np.log(un_alpha[1:cut_un,1]),1)
+        uneg = -exp(-nun[1]/nun[0])
+    if vpos != 0.:
+        indexvp = np.where(dvp_alpha<boundvp)
+        cut_vp = np.int(np.sum(indexvp[0][0:5])/5.)
+        nvp = np.polyfit(np.log( vp_alpha[1:cut_vp,0]),np.log(vp_alpha[1:cut_vp,1]),1)
+        vpos =  exp(-nvp[1]/nvp[0])
+    if vneg != 0.:
+        indexvn = np.where(dvn_alpha<boundvn)
+        cut_vn = np.int(np.sum(indexvn[0][0:5])/5.)
+        nvn = np.polyfit(np.log(-vn_alpha[1:cut_vn,0]),np.log(vn_alpha[1:cut_vn,1]),1)
+        vneg = -exp(-nvn[1]/nvn[0])
 
     #filter + clamping
-    if upos > np.max(up):
-        upos = np.max(up)
-    if uneg < np.min(un):
-        uneg = np.min(un)
-    if vpos > np.max(vp):
-        vpos = np.max(vp)
-    if vneg < np.min(vn):
-        vneg = np.min(vn)
+    if upos > np.max(piv.u):
+        upos = np.max(piv.u)
+    if uneg < np.min(piv.u):
+        uneg = np.min(piv.u)
+    if vpos > np.max(piv.v):
+        vpos = np.max(piv.v)
+    if vneg < np.min(piv.v):
+        vneg = np.min(piv.v)
+
+    #equalizing the cutoff
     upos *= (0.5+numberup)
     uneg *= (0.5+numberun)
     vpos *= (0.5+numbervp)
     vneg *= (0.5+numbervn)
-    print "u-+= ",uneg,upos
-    print "v-+= ",vneg,vpos
-    uvf = np.copy(u)
-    uvf[uvf<uneg] = np.nan
-    uvf[uvf>upos] = np.nan
 
-    vvf = np.copy(v)
-    vvf[vvf<vneg] = np.nan
-    vvf[vvf>vpos] = np.nan
+    #makeing mask
+    piv.u[piv.u<uneg] = np.nan
+    piv.u[piv.u>upos] = np.nan
 
-    return uvf,vvf
+    piv.v[piv.v<vneg] = np.nan
+    piv.v[piv.v>vpos] = np.nan
 
