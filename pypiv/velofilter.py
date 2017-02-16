@@ -28,6 +28,34 @@ def calc_factor(field,stepsize=0.01):
 
     return (np.array(result_pos),np.array(result_neg))
 
+def calc_derivative(field,stepsize=0.01):
+    result_pos = []
+    result_neg = []
+    outlier = 1.
+    alpha = 0.
+    while alpha <= np.max(field)+stepsize:
+        pos = alpha+stepsize
+        neg = alpha
+        filtered = np.copy(field)
+        filtered[(filtered<=neg) | (filtered>pos)] = np.nan
+        #filtered[filtered>pos] = np.nan
+        outlier = np.count_nonzero(~np.isnan(filtered))/np.float(np.count_nonzero(~np.isnan(field)))
+        result_pos.append([alpha,outlier])
+        alpha += stepsize
+    outlier = 1.
+    alpha = 0.
+    while alpha <= np.abs(np.min(field))+stepsize:
+        pos = -1.*alpha
+        neg = -1.*(alpha+stepsize)
+        filtered = np.copy(field)
+        filtered[(filtered<=neg) | (filtered>pos)] = np.nan
+        #filtered[filtered>pos] = np.nan
+        outlier = np.count_nonzero(~np.isnan(filtered))/np.float(np.count_nonzero(~np.isnan(field)))
+        result_neg.append([-1.*alpha,outlier])
+        alpha += stepsize
+
+    return (np.array(result_pos),np.array(result_neg))
+
 def filter(piv,tfactor=3.,dalpha=.01):
     #presampling
     numberup = np.count_nonzero(piv.u<=0.)/np.float(np.count_nonzero(piv.u))
@@ -43,10 +71,14 @@ def filter(piv,tfactor=3.,dalpha=.01):
     up_alpha, un_alpha = calc_factor(piv.u,dalpha)
     vp_alpha, vn_alpha = calc_factor(piv.v,dalpha)
 
-    dup_alpha = np.gradient(up_alpha[:,1],dalpha)
-    dun_alpha = np.gradient(un_alpha[:,1],dalpha)
-    dvp_alpha = np.gradient(vp_alpha[:,1],dalpha)
-    dvn_alpha = np.gradient(vn_alpha[:,1],dalpha)
+    #calculate derivative directly from data
+    dup_alpha1, dun_alpha1 = calc_derivative(u[pair],dalpha)
+    dvp_alpha1, dvn_alpha1 = calc_derivative(v[pair],dalpha)
+
+    dup_alpha = dup_alpha1[:,1]
+    dun_alpha = dun_alpha1[:,1]
+    dvp_alpha = dvp_alpha1[:,1]
+    dvn_alpha = dvn_alpha1[:,1]
 
     #get boundaries
     boundup = np.sum(dup_alpha[0:5])/5./np.exp(tfactor)
@@ -93,9 +125,6 @@ def filter(piv,tfactor=3.,dalpha=.01):
     vneg *= (0.5+numbervn)
 
     #makeing mask
-    piv.u[piv.u<uneg] = np.nan
-    piv.u[piv.u>upos] = np.nan
-
-    piv.v[piv.v<vneg] = np.nan
-    piv.v[piv.v>vpos] = np.nan
+    piv.u[(piv.u<uneg) | (piv.u>upos)] = np.nan
+    piv.v[(piv.v<vneg) | (piv.v>vpos)] = np.nan
 
