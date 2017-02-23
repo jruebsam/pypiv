@@ -4,6 +4,9 @@ from fft_correlator import FFTCorrelator
 from grid_spec import GridSpec
 
 class DirectPIV(object):
+    """This class is the first Piv to be done.
+    It creates a piv object, loads the images and sets the grid.
+    """
     def __init__(self, image_a, image_b, window_size=32, search_size=32, distance=16):
         image_a, image_b = self._check_images(image_a, image_b)
         self.grid_spec = GridSpec(image_a.shape, image_a.strides,

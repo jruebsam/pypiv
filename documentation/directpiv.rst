@@ -1,3 +1,7 @@
 Class for direct Piv
 ====================
-.. automodule direct_piv
+
+Showing the docstring for the Class itself
+
+.. autoclass:: piv.direct_piv.DirectPIV
+

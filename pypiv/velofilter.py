@@ -3,9 +3,24 @@ from scipy.stats import linregress as li
 from math import exp
 
 def calc_factor(field,stepsize=0.01):
+    """
+    Function for calculation of the summed binning.
+    The returned result is an integral over the binning of the velocities.
+    It is done for the negative and positiv half speratly.
+    The parameters are:
+
+    * field: which is a 1D field with will be binned
+    * stepsize: which is the stepsize for the velocity
+
+    return values are:
+
+    * positiv: velocities and the binning result for positiv half
+    * negativ: velocities and the binning result for negativ half
+    """
     result_pos = []
     result_neg = []
     alpha = 0.
+    #: binnig of the positiv half
     while alpha <= np.max(field)+stepsize:
         pos = alpha
         neg = 0.
@@ -16,6 +31,7 @@ def calc_factor(field,stepsize=0.01):
         result_pos.append([alpha,outlier])
         alpha += stepsize
     alpha = 0.
+    #: binnig of the negativ half
     while alpha <= np.abs(np.min(field))+stepsize:
         pos = 0.
         neg = -1.*alpha
@@ -29,6 +45,22 @@ def calc_factor(field,stepsize=0.01):
     return (np.array(result_pos),np.array(result_neg))
 
 def calc_derivative(field,stepsize=0.01):
+    """
+    Function for calculation of the binning.
+    The returned result is the binning of the velocities.
+    It is callend derivative because it is mathematically the derivative of the function:
+    .. function:: velofilter.calc_factor
+    It is done for the negative and positiv half speratly.
+    The parameters are:
+
+    * field: which is a 1D field with will be binned
+    * stepsize: which is the stepsize for the velocity
+
+    return values are:
+
+    * positiv: velocities and the binning result for positiv half
+    * negativ: velocities and the binning result for negativ half
+    """
     result_pos = []
     result_neg = []
     outlier = 1.
@@ -57,7 +89,21 @@ def calc_derivative(field,stepsize=0.01):
     return (np.array(result_pos),np.array(result_neg))
 
 def filter(piv,tfactor=3.,dalpha=.01):
-    #presampling
+    """
+    Function for calculating the cutoff values
+    The parameters are:
+
+    * piv: PIV class object
+        this is supposed to be an object from a Direct or Adaptiv Class
+        it is needed to get the velocities
+    * tfactor: Factor for cutoff in the velocity binning
+        the default value is set to 3 wich works for manny cases
+    * dalpha: value for differential velocity
+        the default is set to .01 which work for many cases
+        if the veloceties vary over a larger ranger use a larger value
+    """
+
+    #: presampling
     numberup = np.count_nonzero(piv.u<=0.)/np.float(np.count_nonzero(piv.u))
     numberun = np.count_nonzero(piv.u>0.)/np.float(np.count_nonzero(piv.u))
     numbervp = np.count_nonzero(piv.v<=0.)/np.float(np.count_nonzero(piv.v))
@@ -67,11 +113,11 @@ def filter(piv,tfactor=3.,dalpha=.01):
     vpos = numbervp 
     vneg = numbervn
 
-    #get alpha dependency
+    #: get alpha dependency
     up_alpha, un_alpha = calc_factor(piv.u,dalpha)
     vp_alpha, vn_alpha = calc_factor(piv.v,dalpha)
 
-    #calculate derivative directly from data
+    #: calculate derivative directly from data
     dup_alpha1, dun_alpha1 = calc_derivative(u[pair],dalpha)
     dvp_alpha1, dvn_alpha1 = calc_derivative(v[pair],dalpha)
 
