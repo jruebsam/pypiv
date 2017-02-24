@@ -7,15 +7,13 @@ def calc_factor(field,stepsize=0.01):
     Function for calculation of the summed binning.
     The returned result is an integral over the binning of the velocities.
     It is done for the negative and positiv half speratly.
-    The parameters are:
 
-    * field: which is a 1D field with will be binned
-    * stepsize: which is the stepsize for the velocity
+    :param field: is a 1D field wich will be binned
+    :param stepsize: is the stepsize for the velocity
 
-    return values are:
-
-    * positiv: velocities and the binning result for positiv half
-    * negativ: velocities and the binning result for negativ half
+    :return (positiv,negativ): 
+        velocities and the binning result for positiv half and negative half are returned
+        as a tupel of numpy arrays
     """
     result_pos = []
     result_neg = []
@@ -49,17 +47,17 @@ def calc_derivative(field,stepsize=0.01):
     Function for calculation of the binning.
     The returned result is the binning of the velocities.
     It is callend derivative because it is mathematically the derivative of the function:
+
     .. function:: velofilter.calc_factor
+
     It is done for the negative and positiv half speratly.
-    The parameters are:
 
-    * field: which is a 1D field with will be binned
-    * stepsize: which is the stepsize for the velocity
+    :param field:  is a 1D field wich will be binned
+    :param stepsize:  is the stepsize for the velocity
 
-    return values are:
-
-    * positiv: velocities and the binning result for positiv half
-    * negativ: velocities and the binning result for negativ half
+    :return (positiv,negativ): 
+        velocities and the binning result for positiv half and negative half are returned
+        as a tupel
     """
     result_pos = []
     result_neg = []
@@ -91,14 +89,16 @@ def calc_derivative(field,stepsize=0.01):
 def filter(piv,tfactor=3.,dalpha=.01):
     """
     Function for calculating the cutoff values
-    The parameters are:
 
-    * piv: PIV class object
+    :param object piv: PIV class object
+
         this is supposed to be an object from a Direct or Adaptiv Class
         it is needed to get the velocities
-    * tfactor: Factor for cutoff in the velocity binning
+    :param double tfactor: Factor for cutoff in the velocity binning
+
         the default value is set to 3 wich works for manny cases
-    * dalpha: value for differential velocity
+    :param double dalpha: value for differential velocity
+
         the default is set to .01 which work for many cases
         if the veloceties vary over a larger ranger use a larger value
     """

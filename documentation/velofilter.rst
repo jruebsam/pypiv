@@ -1,5 +1,5 @@
-Documentation of the Velocity Filter
-====================================
+Velocity Filter
+===============
 
 In order to reduce the amount of outliers in the piv result a velocity filter is implemented.
 This filter is called from the main function:

@@ -29,16 +29,14 @@ In particle image velocimetrie two images are compared in order to generate a ve
 In these images interrogation windows are set an within these the mean displacement of the particles is calculated.
 This is done by cross correlating the two interrogation windows, for which the fast fourier transform (FFT) is use.
 
-
 To minimize the error, two methods are used:
 
 * residual outlier detection
    this method uses a residual in a small neighbourhood around a point to determine weather that point is valid or not
-* velocity filter
+* :doc:`Velocity Filter </velofilter>`
    this method calculates a maximum cutoff velocity and marks every velocity larger than this as not valid
 
 After both of these methods the filtered values are interpolated.
-
 
 After the first stage of the piv, an other can be set in order to reduce the error even further.
 This is called an adaptiv piv.
