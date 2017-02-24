@@ -8,6 +8,15 @@ class DirectPIV(object):
     It creates a piv object, loads the images and sets the grid.
     """
     def __init__(self, image_a, image_b, window_size=32, search_size=32, distance=16):
+        """
+        Initialization of the class
+
+        :param image_a: first image to be evaluated
+        :param image_b: second image to be evaluated
+        :param double window_size: size of the interogation window on first image
+        :param double search_size: size of the search window on second image
+        :param double distance: distance between beginnig if first interogation window and second
+        """
         image_a, image_b = self._check_images(image_a, image_b)
         self.grid_spec = GridSpec(image_a.shape, image_a.strides,
                                    window_size, search_size, distance)
@@ -20,6 +29,15 @@ class DirectPIV(object):
         self._grid_creator()
 
     def _check_images(self, img_a, img_b):
+        """
+        Function for checking weather the images have the correct type (float64/double).
+        The shape and strides are compared as well.
+
+        :param img_a: first image
+        :param img_b: second image
+        :raises ValueError: shape or strides don't match
+        :return: images in same order as imput
+        """
         img_a, img_b = img_a.astype('float64'), img_b.astype('float64')
         if img_a.shape != img_b.shape:
             raise ValueError('Shape of the Images is not matching!')

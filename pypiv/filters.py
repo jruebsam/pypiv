@@ -24,17 +24,15 @@ def replace_field(f, mask):
     return C(x, y)
 
 def outlier_from_local_median(piv, treshold=2.0):
-    '''
+    """
     Implementation of a local median filter according to
-    "J. Westerweel, F. Scarano, Universalo outlier detection for PIV data,\
-            Experiments in Fluids, 2005"
-    Input:
-        u: x-component of velocity field with shape NxN
-        v: x-component of velocity field with shape NxN
-        treshold: threshold for identfying outliers
-    Returns:
-        m: Boolean masking function where 1 corresponds to an outliers
-    '''
+    "J. Westerweel, F. Scarano, Universalo outlier detection for PIV data,
+    Experiments in Fluids, 2005"
+
+    :param object piv: Piv Class Object
+    :param double treshold: threshold for identfying outliers
+
+    """
     u_res = get_normalized_residual(piv.u)
     v_res = get_normalized_residual(piv.v)
     res_total = np.sqrt(u_res**2 + v_res**2)
@@ -43,9 +41,9 @@ def outlier_from_local_median(piv, treshold=2.0):
     piv.v[mask] = np.nan
 
 def get_normalized_residual(f, epsilon=0.1):
-    '''
+    """
     Compute Residual for a Flow field
-    '''
+    """
     lx, ly = f.shape
     fn = np.pad(f, (1, 1), 'edge')
 

@@ -12,6 +12,7 @@ Welcome to pypiv's documentation!
 
    directpiv
    velofilter
+   filters
 
 
 General Information
@@ -31,7 +32,7 @@ This is done by cross correlating the two interrogation windows, for which the f
 
 To minimize the error, two methods are used:
 
-* residual outlier detection
+* :doc:`residual outlier detection <filters>`
    this method uses a residual in a small neighbourhood around a point to determine weather that point is valid or not
 * :doc:`Velocity Filter </velofilter>`
    this method calculates a maximum cutoff velocity and marks every velocity larger than this as not valid
