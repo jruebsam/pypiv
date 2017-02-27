@@ -18,8 +18,15 @@
 #
 import os
 import sys
-#sys.path.insert(0, os.path.abspath('../pypiv/'))
-sys.path.append('/home/upgp/Geophysik/Piv/pypiv/pypiv/')
+import distutils.command.build
+from distutils.dist import Distribution
+
+bdir = distutils.command.build.build(Distribution())
+bdir.initialize_options()
+bdir.finalize_options()
+
+sys.path.append(os.path.abspath('../'+bdir.build_lib+'/pypiv/'))
+#sys.path.append(os.path.abspath('../pypiv/'))
 
 
 # -- General configuration ------------------------------------------------
@@ -52,7 +59,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'pypiv'
-copyright = u'2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann'
+copyright = u'2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann'
 author = u'Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann'
 
 # The version info for the project you're documenting, acts as replacement for

@@ -5,12 +5,12 @@ from math import exp
 def calc_factor(field,stepsize=0.01):
     """
     Function for calculation of the summed binning.
+
     The returned result is an integral over the binning of the velocities.
     It is done for the negative and positiv half speratly.
 
     :param field: is a 1D field wich will be binned
     :param stepsize: is the stepsize for the velocity
-
     :return (positiv,negativ): 
         velocities and the binning result for positiv half and negative half are returned
         as a tupel of numpy arrays
@@ -45,6 +45,7 @@ def calc_factor(field,stepsize=0.01):
 def calc_derivative(field,stepsize=0.01):
     """
     Function for calculation of the binning.
+
     The returned result is the binning of the velocities.
     It is callend derivative because it is mathematically the derivative of the function:
 
@@ -54,7 +55,6 @@ def calc_derivative(field,stepsize=0.01):
 
     :param field:  is a 1D field wich will be binned
     :param stepsize:  is the stepsize for the velocity
-
     :return (positiv,negativ): 
         velocities and the binning result for positiv half and negative half are returned
         as a tupel
@@ -88,7 +88,7 @@ def calc_derivative(field,stepsize=0.01):
 
 def filter(piv,tfactor=3.,dalpha=.01):
     """
-    Function for calculating the cutoff values
+    Function for calculating the cutoff values.
 
     :param object piv: PIV class object
 

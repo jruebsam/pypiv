@@ -1,4 +1,6 @@
 .cache/
 *.pyc
+*.c
+*.swp
 build/
 _build/

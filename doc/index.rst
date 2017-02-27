@@ -11,8 +11,11 @@ Welcome to pypiv's documentation!
    :caption: Contents:
 
    directpiv
+   adaptivpiv
    velofilter
    filters
+   interpolator
+   griddeformator
 
 
 General Information

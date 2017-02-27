@@ -4,18 +4,29 @@ from fft_correlator import FFTCorrelator
 from grid_spec import GridSpec
 
 class DirectPIV(object):
-    """This class is the first Piv to be done.
-    It creates a piv object, loads the images and sets the grid.
     """
+    Class for the initial Piv.
+
+    The images are error checked and padded if needed.
+    After initialization a GridSpec is set and a grid is created.
+    It creates an object of the GridSpec for the images.
+    By calling the function
+
+    .. function:: piv.direct_piv.DirectPIV.correlate_frames
+
+    the correlation is caluclated.
+    As a result of the process the velocities are set as atributes of the class.
+    """
+
     def __init__(self, image_a, image_b, window_size=32, search_size=32, distance=16):
         """
-        Initialization of the class
+        Initialization of the class.
 
         :param image_a: first image to be evaluated
         :param image_b: second image to be evaluated
-        :param double window_size: size of the interogation window on first image
-        :param double search_size: size of the search window on second image
-        :param double distance: distance between beginnig if first interogation window and second
+        :param int window_size: size of the interogation window on first image
+        :param int search_size: size of the search window on second image
+        :param int distance: distance between beginnig if first interogation window and second
         """
         image_a, image_b = self._check_images(image_a, image_b)
         self.grid_spec = GridSpec(image_a.shape, image_a.strides,
@@ -46,7 +57,13 @@ class DirectPIV(object):
         return img_a, img_b
 
     def _set_images(self, img_a, img_b):
-        '''Set the correlation images of the PIV algorithm'''
+        """
+        Set the correlation images of the PIV algorithm.
+
+        If the window_size and search_size differ, the second image needs to be paded with zeros.
+        :param img_a: first image
+        :param img_b: second image
+        """
         self.frame_a = img_a
         pad = self.grid_spec.pad
         self._padded_fb = np.pad(img_b, 2*(pad,), 'constant')
@@ -56,6 +73,7 @@ class DirectPIV(object):
             self.frame_b = self._padded_fb[pad:-pad, pad:-pad]
 
     def _grid_creator(self):
+        """Creates a grid according to the GridSpec."""
         shape_fa    = self.grid_spec.get_interogation_grid_shape()
         shape_fb    = self.grid_spec.get_search_grid_shape()
         strides_fa  = self.grid_spec.get_interogation_grid_strides()
@@ -64,9 +82,19 @@ class DirectPIV(object):
         self.grid_b = as_strided(self._padded_fb, strides=strides_fb, shape=shape_fb)
 
     def _get_window_frames(self, i, j):
+        """Return subimages of imageatribute a and b at position i,j.
+
+        :param int i: first index of grid coordinates
+        :param ing j: second index of grid coordinates
+        :returns: sub frame as interogation and search window for correlation
+        """
         return self.grid_a[i, j], self.grid_b[i, j]
 
     def correlate_frames(self, method='gaussian'):
+        """Correlation of all gridpoints, creating a velocityfield.
+
+        :param str method: Method of the peakfinding algorithm
+        """
         for i, j in np.ndindex(self.grid_spec.get_grid_shape()):
             window_a, window_b = self._get_window_frames(i, j)
             displacement = (self._correlator.get_displacement(window_a, window_b,
@@ -76,4 +104,5 @@ class DirectPIV(object):
         return  self.u, self.v
 
     def correlate_frames_2D(self):
+        """Correlation function for two dimensional peak finder algorithm."""
         self.correlate_frames(method='9point')

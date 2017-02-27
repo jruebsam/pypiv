@@ -7,7 +7,24 @@ cimport cython
 from libc.math cimport fabs, pow
 
 class CubicInterpolator(object):
+    """
+    Interpolator Class for the window deformation
+
+    This class initializes and performes the interpolation.
+    """
+
     def __init__(self, frame, window_size):
+        """
+        Initialization of the interpolator.
+
+        **__init__(frame, window_size)**
+
+        The cubic interpolation is performed in compiled c code, therefore the memory for right hand side and left hand side must be allocated and initialized for the matrix.
+        The output is allocated as well.
+
+        :param frame: image that is deformed
+        :param window_size: size of the interogation window over wich is interpolated
+        """
         self._frame = np.pad(frame, (3, 3), mode='constant')
         self._lx, self._ly = frame.shape
         self._ws = window_size
@@ -23,6 +40,15 @@ class CubicInterpolator(object):
         self._output = np.zeros((window_size, window_size))
 
     def interpolate(self, posx, posy):
+        """
+        Method to perform cubic interpolation of the deformed grid.
+
+        **interpolate(posx, posy)**
+
+        :param ndarray posx: moved x position of the deformed grid
+        :param ndarray posy: moved y position of the deformed grid
+        :returns: ndarray with interpolated sub image shaped to the original shape
+        """
         output = cubic_interpolation(posx, posy, self._x, self._y, self._M,
                                      self._output.ravel(), self._frame, self._lx, self._ly)
         return output.reshape(self._ws, self._ws)
@@ -37,6 +63,28 @@ def cubic_interpolation(np.ndarray[np.double_t, ndim=1] posx,
                         np.ndarray[np.double_t, ndim=1] output,
                         np.ndarray[np.double_t, ndim=2] frame, int lx, int ly):
 
+    """
+    Function to perform cubic interpolation of a given frame and new coordinates.
+
+    | **cubic_interpolation(np.ndarray[np.double_t, ndim=1] posx,**
+    |                  **np.ndarray[np.double_t, ndim=1] posy,**
+    |                  **np.ndarray[np.double_t, ndim=1] x,**
+    |                  **np.ndarray[np.double_t, ndim=1] y,**
+    |                  **np.ndarray[np.double_t, ndim=2] M,**
+    |                  **np.ndarray[np.double_t, ndim=1] output,**
+    |                  **np.ndarray[np.double_t, ndim=2] frame, int lx, int ly)**
+
+    :param double_array posx: x coordinates the frame is interpolated to
+    :param double_array posy: y coordinates the frame is interpolated to
+    :param double_array x: right hand side memory for interpolation in x direction
+    :param double_array y: right hand side memory for interpolation in y direction
+    :param double_2D_array M: left hand side as a matrix
+    :param double_array output: memory for resulting interpolated sub frame
+    :param double_2D_array frame: initial image which is interpolated
+    :param int lx: width of the frame array
+    :param int ly: length of the frame array
+    :returns: interpolated sub frame
+    """
     cdef int i, k, l, ix, iy
     cdef float dx, dy, cx, cy, outsum
 
