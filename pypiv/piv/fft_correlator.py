@@ -1,7 +1,7 @@
 import pyfftw
 import numpy as np
 
-from process import find_subpixel_peak
+from peak_detection import find_peak
 
 class FFTCorrelator(object):
     '''
@@ -45,7 +45,7 @@ class FFTCorrelator(object):
 
     def get_displacement(self, window_a, window_b, subpixel_method='gaussian'):
         correlation = self._evaluate_windows(window_a, window_b)
-        xi, yi = find_subpixel_peak(correlation, subpixel_method=subpixel_method)
+        xi, yi = find_peak(correlation, subpixel_method)
         cx, cy = correlation.shape
         corr_pad = (window_b.shape[0] - window_a.shape[0])/2.
         return (cx/2. - xi - corr_pad, cy/2. - yi - corr_pad)
