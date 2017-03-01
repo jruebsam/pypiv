@@ -48,7 +48,6 @@ def parabolic(window):
     return ip(window[:, 1]), ip(window[1])
 
 def gaussian2D(window):
-    #TODO bugfix ip error
     w = np.ones((3, 3))*(1./9)
     rhs = np.zeros(6)
     M = np.zeros((6,6))
@@ -69,10 +68,10 @@ def gaussian2D(window):
                                           [    i,     j,     i*j,     i*i,     j*j,   1]], dtype='float')
     solution = nl.solve(M, rhs)
 
-    dy = (    solution[2]*solution[1] - 2.0*solution[0]*solution[4])/ \
+    dx = (    solution[2]*solution[1] - 2.0*solution[0]*solution[4])/ \
          (4.0*solution[3]*solution[4] -     solution[2]*solution[2])
 
-    dx = (    solution[2]*solution[0] - 2.0*solution[1]*solution[3])/ \
+    dy = (    solution[2]*solution[0] - 2.0*solution[1]*solution[3])/ \
          (4.0*solution[3]*solution[4] -     solution[2]*solution[2])
 
     return dx, dy

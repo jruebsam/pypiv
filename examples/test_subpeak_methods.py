@@ -16,25 +16,28 @@ def particle(x0, y0, d):
     return C*out
 
 def main():
-    N = 10
-    for method in ['gaussian', '9point', 'parabolic']:
+    N = 20
+    for method, color in zip(['gaussian', '9point', 'parabolic'],['r.-','c*-','k+-']):
         err = []
         d = []
-        diameters = np.linspace(1, 15., 101.)
+        diameters = np.linspace(1, 15, 101)
+        print method
         for dia in diameters:
+            maxerr = 0.
             frame1 =  particle(64, 64, dia)
             for i in range(N):
                 shiftx = 10 + np.random.rand()
-                shifty = 10 + np.random.rand()
+                shifty = 10 +np.random.rand()
                 frame2 =  particle(64+shiftx, 64+shifty, dia)
 
                 corr = FFTCorrelator(128, 128)
                 xn, yn = corr.get_displacement(frame1, frame2, method)
                 error = np.sqrt((xn - shiftx)**2 + (yn - shifty)**2)
-                err.append(error)
-                d.append(dia)
+                maxerr = np.max([error,maxerr])
+            err.append(maxerr)
+            d.append(dia)
 
-        plt.scatter(d, err, label=method)
+        plt.semilogy(d, err, color, label=method)
     plt.legend()
     plt.show()
 
