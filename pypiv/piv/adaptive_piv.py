@@ -10,7 +10,7 @@ class AdaptivePIV(DirectPIV):
     Class for the adaptiv piv.
 
     After the initial piv is done an adaptiv piv can be performed to minimize the error or to make the grid finer.
-    This class inherits from the :doc:`initial class DirectPIV <directpiv>`.
+    This class inherits from the :doc:`initial class DirectPIV <direct_piv>`.
     Therefore the correlation function is inherited as well as the GridSpec.
     In adition to the inherited grid a new Grid is calculated by deforming the grid with respect to the prior calculated velocities.
     In the case that the new grid is supposed to be finer then the one before, the velocities need to be upscaled.

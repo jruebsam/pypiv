@@ -10,12 +10,15 @@ Welcome to pypiv's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   directpiv
-   adaptivpiv
+   direct_piv
+   adaptiv_piv
    velofilter
    filters
    interpolator
-   griddeformator
+   grid_deformator
+   fft_correlator
+   grid_spec
+   velocity_scaler
 
 
 General Information
@@ -37,7 +40,7 @@ To minimize the error, two methods are used:
 
 * :doc:`residual outlier detection <filters>`
    this method uses a residual in a small neighbourhood around a point to determine weather that point is valid or not
-* :doc:`Velocity Filter </velofilter>`
+* :doc:`Velocity Filter <velofilter>`
    this method calculates a maximum cutoff velocity and marks every velocity larger than this as not valid
 
 After both of these methods the filtered values are interpolated.
