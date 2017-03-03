@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from pypiv import FFTCorrelator
 from scipy.special import erf
 
-x, y = np.mgrid[0:128, 0:128]
+x, y = np.mgrid[0:32, 0:32]
 #def particle(x0, y0, d):
 #    return np.exp(-((x - x0)**2 + (y - y0)**2)/(0.42*d)**2)
 
@@ -16,7 +16,7 @@ def particle(x0, y0, d):
     return C*out
 
 def main():
-    N = 20
+    N = 100
     for method, color in zip(['gaussian', '9point', 'parabolic'],['r.-','c*-','k+-']):
         err = []
         d = []
@@ -24,13 +24,13 @@ def main():
         print method
         for dia in diameters:
             maxerr = 0.
-            frame1 =  particle(64, 64, dia)
+            frame1 =  particle(16, 16, dia)
             for i in range(N):
                 shiftx = 10 + np.random.rand()
                 shifty = 10 +np.random.rand()
-                frame2 =  particle(64+shiftx, 64+shifty, dia)
+                frame2 =  particle(16+shiftx, 16+shifty, dia)
 
-                corr = FFTCorrelator(128, 128)
+                corr = FFTCorrelator(32, 32)
                 xn, yn = corr.get_displacement(frame1, frame2, method)
                 error = np.sqrt((xn - shiftx)**2 + (yn - shifty)**2)
                 maxerr = np.max([error,maxerr])
