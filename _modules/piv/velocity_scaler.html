@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>piv.velocity_scaler &#8212; pypiv a1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pypiv a1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for piv.velocity_scaler</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="k">import</span> <span class="n">RectBivariateSpline</span> <span class="k">as</span> <span class="n">RBS</span>
+
+
+<div class="viewcode-block" id="VelocityUpscaler"><a class="viewcode-back" href="../../velocity_scaler.html#piv.velocity_scaler.VelocityUpscaler">[docs]</a><span class="k">class</span> <span class="nc">VelocityUpscaler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class for scaling the velocity field according to GridSpec</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_grid_spec</span><span class="p">,</span> <span class="n">old_grid_spec</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialization of the scaler.</span>
+
+<span class="sd">        The old and new grid specifications are loaded and a meshgrid according to the new grid is calculated.</span>
+
+<span class="sd">        :param GridSpec new_grid_spec: GridSpec of the new field</span>
+<span class="sd">        :param GridSpec old_grid_spec: GridSpec of the old field</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_spec</span> <span class="o">=</span> <span class="n">new_grid_spec</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">old_spec</span> <span class="o">=</span> <span class="n">old_grid_spec</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ws</span> <span class="o">=</span> <span class="n">old_grid_spec</span><span class="o">.</span><span class="n">window_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dist</span> <span class="o">=</span> <span class="n">old_grid_spec</span><span class="o">.</span><span class="n">distance</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tw</span> <span class="o">=</span> <span class="n">new_grid_spec</span><span class="o">.</span><span class="n">window_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_td</span> <span class="o">=</span> <span class="n">new_grid_spec</span><span class="o">.</span><span class="n">distance</span>
+
+        <span class="n">lx</span><span class="p">,</span> <span class="n">ly</span> <span class="o">=</span> <span class="n">old_grid_spec</span><span class="o">.</span><span class="n">get_grid_shape</span><span class="p">()</span>
+        <span class="n">distance</span> <span class="o">=</span> <span class="n">old_grid_spec</span><span class="o">.</span><span class="n">distance</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tx</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">lx</span><span class="o">*</span><span class="n">distance</span><span class="p">,</span> <span class="n">distance</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ty</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ly</span><span class="o">*</span><span class="n">distance</span><span class="p">,</span> <span class="n">distance</span><span class="p">)</span>
+
+        <span class="n">lx</span><span class="p">,</span> <span class="n">ly</span> <span class="o">=</span> <span class="n">new_grid_spec</span><span class="o">.</span><span class="n">get_grid_shape</span><span class="p">()</span>
+        <span class="n">target_distance</span> <span class="o">=</span> <span class="n">new_grid_spec</span><span class="o">.</span><span class="n">distance</span>
+
+        <span class="n">tx</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">lx</span><span class="o">*</span><span class="n">target_distance</span><span class="p">,</span> <span class="n">target_distance</span><span class="p">)</span>
+        <span class="n">ty</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ly</span><span class="o">*</span><span class="n">target_distance</span><span class="p">,</span> <span class="n">target_distance</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">ty</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s">&#39;ij&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="VelocityUpscaler.scale_field"><a class="viewcode-back" href="../../velocity_scaler.html#piv.velocity_scaler.VelocityUpscaler.scale_field">[docs]</a>    <span class="k">def</span> <span class="nf">scale_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Scaling of the field according to calculated meshgrid.</span>
+
+<span class="sd">        For the interpolation rectangualr bivariant Splines are used.</span>
+<span class="sd">        These are implemented from the scipy function `RectBivariateSpline &lt;https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.RectBivariateSpline.html&gt;`_.</span>
+
+<span class="sd">        :param f: field to be interpolated</span>
+<span class="sd">        :returns: field after interpolation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rbs</span> <span class="o">=</span> <span class="n">RBS</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ty</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">rbs</span><span class="o">.</span><span class="n">ev</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_out_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_y</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pypiv a1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

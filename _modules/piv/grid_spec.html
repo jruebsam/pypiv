@@ -1,0 +1,177 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>piv.grid_spec &#8212; pypiv a1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pypiv a1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for piv.grid_spec</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="GridSpec"><a class="viewcode-back" href="../../grid_spec.html#piv.grid_spec.GridSpec">[docs]</a><span class="k">class</span> <span class="nc">GridSpec</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class for grid specifications.</span>
+
+<span class="sd">    This class saves and caluclates the grid specifications.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_shape</span><span class="p">,</span> <span class="n">frame_strides</span><span class="p">,</span> <span class="n">window_size</span><span class="p">,</span> <span class="n">search_size</span><span class="p">,</span> <span class="n">distance</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialization of the shapes and strides.</span>
+
+<span class="sd">        Setting the values according to parameters.</span>
+<span class="sd">        If the window_size and search_size are not the same a padding for the smaler one is added.</span>
+
+<span class="sd">        :param frame_shape: shape of the initial image</span>
+<span class="sd">        :param frame_strides: strides of the initial image</span>
+<span class="sd">        :param window_size: size of the interogation window</span>
+<span class="sd">        :param search_size: size of the search window</span>
+<span class="sd">        :param distance: distance between interogation window beginnings</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame_shape</span>    <span class="o">=</span> <span class="n">frame_shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame_strides</span>  <span class="o">=</span> <span class="n">frame_strides</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">window_size</span> <span class="o">=</span> <span class="n">window_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">search_size</span> <span class="o">=</span> <span class="n">search_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">distance</span> <span class="o">=</span> <span class="n">distance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pad</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">search_size</span> <span class="o">-</span> <span class="n">window_size</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">])</span>
+
+<div class="viewcode-block" id="GridSpec.equal_to"><a class="viewcode-back" href="../../grid_spec.html#piv.grid_spec.GridSpec.equal_to">[docs]</a>    <span class="k">def</span> <span class="nf">equal_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_spec</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Comparrison operator for class.</span>
+
+<span class="sd">        Two GridSpecs are equal if the window_size, the search_size and distance are equal.</span>
+
+<span class="sd">        :param GridSpec grid_spec: grid spec to compare with</span>
+<span class="sd">        :returns: True or False</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cond1</span> <span class="o">=</span> <span class="n">grid_spec</span><span class="o">.</span><span class="n">window_size</span>  <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">window_size</span>
+        <span class="n">cond2</span> <span class="o">=</span> <span class="n">grid_spec</span><span class="o">.</span><span class="n">search_size</span>  <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_size</span>
+        <span class="n">cond3</span> <span class="o">=</span> <span class="n">grid_spec</span><span class="o">.</span><span class="n">distance</span>     <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">distance</span>
+        <span class="k">if</span> <span class="n">cond1</span> <span class="o">&amp;</span> <span class="n">cond2</span> <span class="o">&amp;</span> <span class="n">cond3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="k">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="k">False</span></div>
+
+<div class="viewcode-block" id="GridSpec.get_grid_shape"><a class="viewcode-back" href="../../grid_spec.html#piv.grid_spec.GridSpec.get_grid_shape">[docs]</a>    <span class="k">def</span> <span class="nf">get_grid_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Getter function for the shape of the grid.</span>
+
+<span class="sd">        The returned value is the shape of the grid calculated from the arangement of the interogation windows.</span>
+
+<span class="sd">        :returns: grid shape in x and y direction as tupel</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">lx</span><span class="p">,</span> <span class="n">ly</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_shape</span>
+        <span class="k">return</span> <span class="p">((</span><span class="n">lx</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">window_size</span><span class="p">)</span><span class="o">//</span><span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span>
+                <span class="p">(</span><span class="n">ly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">window_size</span><span class="p">)</span><span class="o">//</span><span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GridSpec.get_interogation_grid_shape"><a class="viewcode-back" href="../../grid_spec.html#piv.grid_spec.GridSpec.get_interogation_grid_shape">[docs]</a>    <span class="k">def</span> <span class="nf">get_interogation_grid_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Getter function for the shape of the interogation window.</span>
+
+<span class="sd">        :returns: shape of the interogation window</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_grid_shape</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">shape</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">window_size</span><span class="p">,)</span></div>
+
+<div class="viewcode-block" id="GridSpec.get_search_grid_shape"><a class="viewcode-back" href="../../grid_spec.html#piv.grid_spec.GridSpec.get_search_grid_shape">[docs]</a>    <span class="k">def</span> <span class="nf">get_search_grid_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Getter function for the shape of the search window.</span>
+
+<span class="sd">        :returns: shape of the search window</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_grid_shape</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">shape</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">search_size</span><span class="p">,)</span></div>
+
+<div class="viewcode-block" id="GridSpec.get_interogation_grid_strides"><a class="viewcode-back" href="../../grid_spec.html#piv.grid_spec.GridSpec.get_interogation_grid_strides">[docs]</a>    <span class="k">def</span> <span class="nf">get_interogation_grid_strides</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Getter function for the strides of the interogation window.</span>
+
+<span class="sd">        :returns: strides of the interogation window</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sx</span><span class="p">,</span> <span class="n">sy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_strides</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">sx</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> <span class="n">sy</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> <span class="n">sx</span><span class="p">,</span> <span class="n">sy</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GridSpec.get_search_grid_strides"><a class="viewcode-back" href="../../grid_spec.html#piv.grid_spec.GridSpec.get_search_grid_strides">[docs]</a>    <span class="k">def</span> <span class="nf">get_search_grid_strides</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Getter function for the strides of the search window.</span>
+
+<span class="sd">        :returns: strides of the search window</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sx</span><span class="p">,</span> <span class="n">sy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_strides</span>
+        <span class="n">sx</span> <span class="o">=</span> <span class="n">sx</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">pad</span><span class="o">*</span><span class="n">sy</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">sx</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> <span class="n">sy</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> <span class="n">sx</span><span class="p">,</span> <span class="n">sy</span><span class="p">)</span></div></div>
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pypiv a1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

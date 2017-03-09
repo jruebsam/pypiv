@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>piv.direct_piv &#8212; pypiv a1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pypiv a1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for piv.direct_piv</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy.lib.stride_tricks</span> <span class="k">import</span> <span class="n">as_strided</span>
+<span class="kn">from</span> <span class="nn">fft_correlator</span> <span class="k">import</span> <span class="n">FFTCorrelator</span>
+<span class="kn">from</span> <span class="nn">grid_spec</span> <span class="k">import</span> <span class="n">GridSpec</span>
+
+<div class="viewcode-block" id="DirectPIV"><a class="viewcode-back" href="../../direct_piv.html#piv.direct_piv.DirectPIV">[docs]</a><span class="k">class</span> <span class="nc">DirectPIV</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class for the initial Piv.</span>
+
+<span class="sd">    The images are error checked and padded if needed.</span>
+<span class="sd">    After initialization a GridSpec is set and a grid is created.</span>
+<span class="sd">    It creates an object of the GridSpec for the images.</span>
+<span class="sd">    By calling the function</span>
+
+<span class="sd">    .. function:: piv.direct_piv.DirectPIV.correlate_frames</span>
+
+<span class="sd">    the correlation is caluclated.</span>
+<span class="sd">    As a result of the process the velocities are set as atributes of the class.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_a</span><span class="p">,</span> <span class="n">image_b</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">search_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">distance</span><span class="o">=</span><span class="mi">16</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialization of the class.</span>
+
+<span class="sd">        :param image_a: first image to be evaluated</span>
+<span class="sd">        :param image_b: second image to be evaluated</span>
+<span class="sd">        :param int window_size: size of the interogation window on first image</span>
+<span class="sd">        :param int search_size: size of the search window on second image</span>
+<span class="sd">        :param int distance: distance between beginnig if first interogation window and second</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">image_a</span><span class="p">,</span> <span class="n">image_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_images</span><span class="p">(</span><span class="n">image_a</span><span class="p">,</span> <span class="n">image_b</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grid_spec</span> <span class="o">=</span> <span class="n">GridSpec</span><span class="p">(</span><span class="n">image_a</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">image_a</span><span class="o">.</span><span class="n">strides</span><span class="p">,</span>
+                                   <span class="n">window_size</span><span class="p">,</span> <span class="n">search_size</span><span class="p">,</span> <span class="n">distance</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_correlator</span> <span class="o">=</span> <span class="n">FFTCorrelator</span><span class="p">(</span><span class="n">window_size</span><span class="p">,</span> <span class="n">search_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_images</span><span class="p">(</span><span class="n">image_a</span><span class="p">,</span> <span class="n">image_b</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid_spec</span><span class="o">.</span><span class="n">get_grid_shape</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_grid_creator</span><span class="p">()</span>
+
+<div class="viewcode-block" id="DirectPIV._check_images"><a class="viewcode-back" href="../../direct_piv.html#piv.direct_piv.DirectPIV._check_images">[docs]</a>    <span class="k">def</span> <span class="nf">_check_images</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_a</span><span class="p">,</span> <span class="n">img_b</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Function for checking weather the images have the correct type (float64/double).</span>
+<span class="sd">        The shape and strides are compared as well.</span>
+
+<span class="sd">        :param img_a: first image</span>
+<span class="sd">        :param img_b: second image</span>
+<span class="sd">        :raises ValueError: shape or strides don&#39;t match</span>
+<span class="sd">        :return: images in same order as imput</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">img_a</span><span class="p">,</span> <span class="n">img_b</span> <span class="o">=</span> <span class="n">img_a</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;float64&#39;</span><span class="p">),</span> <span class="n">img_b</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;float64&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">img_a</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">img_b</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Shape of the Images is not matching!&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">img_a</span><span class="o">.</span><span class="n">strides</span> <span class="o">!=</span> <span class="n">img_b</span><span class="o">.</span><span class="n">strides</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Stride of the Images is not matching!&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">img_a</span><span class="p">,</span> <span class="n">img_b</span></div>
+
+<div class="viewcode-block" id="DirectPIV._set_images"><a class="viewcode-back" href="../../direct_piv.html#piv.direct_piv.DirectPIV._set_images">[docs]</a>    <span class="k">def</span> <span class="nf">_set_images</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_a</span><span class="p">,</span> <span class="n">img_b</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the correlation images of the PIV algorithm.</span>
+
+<span class="sd">        If the window_size and search_size differ, the second image needs to be paded with zeros.</span>
+<span class="sd">        :param img_a: first image</span>
+<span class="sd">        :param img_b: second image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame_a</span> <span class="o">=</span> <span class="n">img_a</span>
+        <span class="n">pad</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_spec</span><span class="o">.</span><span class="n">pad</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_padded_fb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">img_b</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">pad</span><span class="p">,),</span> <span class="s">&#39;constant&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_spec</span><span class="o">.</span><span class="n">pad</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frame_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_padded_fb</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frame_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_padded_fb</span><span class="p">[</span><span class="n">pad</span><span class="p">:</span><span class="o">-</span><span class="n">pad</span><span class="p">,</span> <span class="n">pad</span><span class="p">:</span><span class="o">-</span><span class="n">pad</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="DirectPIV._grid_creator"><a class="viewcode-back" href="../../direct_piv.html#piv.direct_piv.DirectPIV._grid_creator">[docs]</a>    <span class="k">def</span> <span class="nf">_grid_creator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creates a grid according to the GridSpec.&quot;&quot;&quot;</span>
+        <span class="n">shape_fa</span>    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_spec</span><span class="o">.</span><span class="n">get_interogation_grid_shape</span><span class="p">()</span>
+        <span class="n">shape_fb</span>    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_spec</span><span class="o">.</span><span class="n">get_search_grid_shape</span><span class="p">()</span>
+        <span class="n">strides_fa</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_spec</span><span class="o">.</span><span class="n">get_interogation_grid_strides</span><span class="p">()</span>
+        <span class="n">strides_fb</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_spec</span><span class="o">.</span><span class="n">get_search_grid_strides</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grid_a</span> <span class="o">=</span> <span class="n">as_strided</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_a</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="n">strides_fa</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape_fa</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grid_b</span> <span class="o">=</span> <span class="n">as_strided</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_padded_fb</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="n">strides_fb</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape_fb</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DirectPIV._get_window_frames"><a class="viewcode-back" href="../../direct_piv.html#piv.direct_piv.DirectPIV._get_window_frames">[docs]</a>    <span class="k">def</span> <span class="nf">_get_window_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return subimages of imageatribute a and b at position i,j.</span>
+
+<span class="sd">        :param int i: first index of grid coordinates</span>
+<span class="sd">        :param ing j: second index of grid coordinates</span>
+<span class="sd">        :returns: sub frame as interogation and search window for correlation</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_a</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_b</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="DirectPIV.correlate_frames"><a class="viewcode-back" href="../../direct_piv.html#piv.direct_piv.DirectPIV.correlate_frames">[docs]</a>    <span class="k">def</span> <span class="nf">correlate_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">&#39;gaussian&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Correlation of all gridpoints, creating a velocityfield.</span>
+
+<span class="sd">        :param str method: Method of the peakfinding algorithm</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">ndindex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grid_spec</span><span class="o">.</span><span class="n">get_grid_shape</span><span class="p">()):</span>
+            <span class="n">window_a</span><span class="p">,</span> <span class="n">window_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_window_frames</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+            <span class="n">displacement</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_correlator</span><span class="o">.</span><span class="n">get_displacement</span><span class="p">(</span><span class="n">window_a</span><span class="p">,</span> <span class="n">window_b</span><span class="p">,</span>
+                                                               <span class="n">subpixel_method</span><span class="o">=</span><span class="n">method</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">displacement</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">displacement</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span>  <span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span></div>
+
+<div class="viewcode-block" id="DirectPIV.correlate_frames_2D"><a class="viewcode-back" href="../../direct_piv.html#piv.direct_piv.DirectPIV.correlate_frames_2D">[docs]</a>    <span class="k">def</span> <span class="nf">correlate_frames_2D</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Correlation function for two dimensional peak finder algorithm.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">correlate_frames</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s">&#39;9point&#39;</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pypiv a1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

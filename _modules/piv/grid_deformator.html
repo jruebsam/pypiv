@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>piv.grid_deformator &#8212; pypiv a1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     'a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pypiv a1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for piv.grid_deformator</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy.lib.stride_tricks</span> <span class="k">import</span> <span class="n">as_strided</span>
+<span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="k">import</span> <span class="n">map_coordinates</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">interpolator</span> <span class="k">import</span> <span class="n">CubicInterpolator</span>
+
+<div class="viewcode-block" id="GridDeformator"><a class="viewcode-back" href="../../grid_deformator.html#piv.grid_deformator.GridDeformator">[docs]</a><span class="k">class</span> <span class="nc">GridDeformator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class of the grid deformator.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">&#39;bilinear&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialization of the grid deformation process.</span>
+
+<span class="sd">        The frame and grid shape are set as well as the distance between the interrogation windows and the method of deformation.</span>
+<span class="sd">        The avaliable methods are</span>
+
+<span class="sd">        * bilinear and </span>
+<span class="sd">        * central.</span>
+
+<span class="sd">        :param frame: image that is interpolated</span>
+<span class="sd">        :param shape: shape of the initial regular grid</span>
+<span class="sd">        :param distance: shift between the interogation windows</span>
+<span class="sd">        :param method: deformation method</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span>  <span class="o">=</span> <span class="n">frame</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span>  <span class="o">=</span> <span class="n">shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span> <span class="o">=</span> <span class="n">distance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ipmethod</span> <span class="o">=</span> <span class="n">method</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s">&#39;cubic&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_cube_ip</span> <span class="o">=</span> <span class="n">CubicInterpolator</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+<div class="viewcode-block" id="GridDeformator.set_velocities"><a class="viewcode-back" href="../../grid_deformator.html#piv.grid_deformator.GridDeformator.set_velocities">[docs]</a>    <span class="k">def</span> <span class="nf">set_velocities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setter function for the veloceties to calculate the displacement.</span>
+
+<span class="sd">        Calls the getter function for every velocity component.</span>
+
+<span class="sd">        :param u: x komponent of the velocity vector</span>
+<span class="sd">        :param v: y komponent of the velocity vector</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_u_disp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_displacement_function</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_v_disp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_displacement_function</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GridDeformator._get_displacement_function"><a class="viewcode-back" href="../../grid_deformator.html#piv.grid_deformator.GridDeformator._get_displacement_function">[docs]</a>    <span class="k">def</span> <span class="nf">_get_displacement_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Getter function for calculating the displacement.</span>
+
+<span class="sd">        :param f: field that is used for the displacement, mainly velocity komponents</span>
+<span class="sd">        :returns: function of the taylored field to first order</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span>
+        <span class="n">f_x</span><span class="p">,</span>  <span class="n">f_y</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">f</span>  <span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
+        <span class="n">f_xx</span><span class="p">,</span> <span class="n">f_xy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">f_x</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
+        <span class="n">f_yx</span><span class="p">,</span> <span class="n">f_yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">f_y</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="p">:</span> <span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="o">*</span><span class="n">f_x</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>  <span class="o">+</span> <span class="n">y</span><span class="o">*</span><span class="n">f_y</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+                       <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">f_xx</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">f_xy</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="n">f_yy</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span></div>
+
+        <span class="c">#For the bilinear method the build in scipy method `map_coordinates &lt;https://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.ndimage.interpolation.map_coordinates.html&gt;`_ is used with *order* set to 1.</span>
+<div class="viewcode-block" id="GridDeformator.get_frame"><a class="viewcode-back" href="../../grid_deformator.html#piv.grid_deformator.GridDeformator.get_frame">[docs]</a>    <span class="k">def</span> <span class="nf">get_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform interpolation to produce the deformed window for correlation.</span>
+
+<span class="sd">        This function takes the previosly set displacement and interpolates the image for these corrdinates.</span>
+<span class="sd">        If the cubic interpolation method is choosen, the cubic interpolation of this API is use.</span>
+<span class="sd">        For the bilinear method the build in scipy method `map_coordinates &lt;https://goo.gl/wucmUO&gt;`_ is used with *order* set to 1.</span>
+
+<span class="sd">        :param int i: first index in grid coordinates</span>
+<span class="sd">        :param int j: second index in grid coordinates</span>
+<span class="sd">        :returns: interpolated window for the grid coordinates i,j and the image set in initialization</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dws</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">offset_x</span><span class="p">,</span> <span class="n">offset_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="n">dws</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="mf">0.5</span><span class="p">:</span><span class="n">dws</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="n">dws</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="mf">0.5</span><span class="p">:</span><span class="n">dws</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="mf">0.5</span><span class="p">]</span>
+
+        <span class="n">gx</span><span class="p">,</span> <span class="n">gy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">dws</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">dws</span><span class="p">]</span>
+
+        <span class="n">grid_x</span> <span class="o">=</span> <span class="n">gx</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span><span class="o">*</span><span class="n">i</span>
+        <span class="n">grid_y</span> <span class="o">=</span> <span class="n">gy</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span><span class="o">*</span><span class="n">j</span>
+
+        <span class="n">ptsax</span> <span class="o">=</span> <span class="p">(</span><span class="n">grid_x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_u_disp</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">offset_x</span><span class="p">,</span> <span class="n">offset_y</span><span class="p">))</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+        <span class="n">ptsay</span> <span class="o">=</span> <span class="p">(</span><span class="n">grid_y</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_v_disp</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">offset_x</span><span class="p">,</span> <span class="n">offset_y</span><span class="p">))</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+        <span class="n">p</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ipmethod</span> <span class="o">==</span> <span class="s">&#39;bilinear&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">map_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frame</span><span class="p">,</span> <span class="p">[</span><span class="n">ptsax</span><span class="p">,</span> <span class="n">ptsay</span><span class="p">],</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ipmethod</span> <span class="o">==</span> <span class="s">&#39;cubic&#39;</span><span class="p">:</span>
+            <span class="k">return</span>  <span class="bp">self</span><span class="o">.</span><span class="n">_cube_ip</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">ptsax</span><span class="p">,</span> <span class="n">ptsay</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span></div></div>
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">pypiv a1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>

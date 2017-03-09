@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>velofilter &#8212; pypiv a1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pypiv a1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for velofilter</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">linregress</span> <span class="k">as</span> <span class="n">li</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">exp</span>
+
+<div class="viewcode-block" id="calc_factor"><a class="viewcode-back" href="../velofilter.html#velofilter.calc_factor">[docs]</a><span class="k">def</span> <span class="nf">calc_factor</span><span class="p">(</span><span class="n">field</span><span class="p">,</span><span class="n">stepsize</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function for calculation of the summed binning.</span>
+
+<span class="sd">    The returned result is an integral over the binning of the velocities.</span>
+<span class="sd">    It is done for the negative and positiv half speratly.</span>
+
+<span class="sd">    :param field: is a 1D field wich will be binned</span>
+<span class="sd">    :param stepsize: is the stepsize for the velocity</span>
+<span class="sd">    :return (positiv,negativ): </span>
+<span class="sd">        velocities and the binning result for positiv half and negative half are returned</span>
+<span class="sd">        as a tupel of numpy arrays</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result_pos</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">result_neg</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.</span>
+    <span class="c">#: binnig of the positiv half</span>
+    <span class="k">while</span> <span class="n">alpha</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">field</span><span class="p">)</span><span class="o">+</span><span class="n">stepsize</span><span class="p">:</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">alpha</span>
+        <span class="n">neg</span> <span class="o">=</span> <span class="mf">0.</span>
+        <span class="n">filtered</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+        <span class="n">filtered</span><span class="p">[</span><span class="n">filtered</span><span class="o">&lt;=</span><span class="n">neg</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">filtered</span><span class="p">[</span><span class="n">filtered</span><span class="o">&gt;</span><span class="n">pos</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">outlier</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">filtered</span><span class="p">))</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">field</span><span class="p">)))</span>
+        <span class="n">result_pos</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">alpha</span><span class="p">,</span><span class="n">outlier</span><span class="p">])</span>
+        <span class="n">alpha</span> <span class="o">+=</span> <span class="n">stepsize</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.</span>
+    <span class="c">#: binnig of the negativ half</span>
+    <span class="k">while</span> <span class="n">alpha</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">field</span><span class="p">))</span><span class="o">+</span><span class="n">stepsize</span><span class="p">:</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="mf">0.</span>
+        <span class="n">neg</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.</span><span class="o">*</span><span class="n">alpha</span>
+        <span class="n">filtered</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+        <span class="n">filtered</span><span class="p">[</span><span class="n">filtered</span><span class="o">&lt;=</span><span class="n">neg</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">filtered</span><span class="p">[</span><span class="n">filtered</span><span class="o">&gt;</span><span class="n">pos</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">outlier</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">filtered</span><span class="p">))</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">field</span><span class="p">)))</span>
+        <span class="n">result_neg</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="o">-</span><span class="mf">1.</span><span class="o">*</span><span class="n">alpha</span><span class="p">,</span><span class="n">outlier</span><span class="p">])</span>
+        <span class="n">alpha</span> <span class="o">+=</span> <span class="n">stepsize</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">result_pos</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">result_neg</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="calc_derivative"><a class="viewcode-back" href="../velofilter.html#velofilter.calc_derivative">[docs]</a><span class="k">def</span> <span class="nf">calc_derivative</span><span class="p">(</span><span class="n">field</span><span class="p">,</span><span class="n">stepsize</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function for calculation of the binning.</span>
+
+<span class="sd">    The returned result is the binning of the velocities.</span>
+<span class="sd">    It is callend derivative because it is mathematically the derivative of the function:</span>
+
+<span class="sd">    .. function:: velofilter.calc_factor</span>
+
+<span class="sd">    It is done for the negative and positiv half speratly.</span>
+
+<span class="sd">    :param field:  is a 1D field wich will be binned</span>
+<span class="sd">    :param stepsize:  is the stepsize for the velocity</span>
+<span class="sd">    :return (positiv,negativ): </span>
+<span class="sd">        velocities and the binning result for positiv half and negative half are returned</span>
+<span class="sd">        as a tupel</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result_pos</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">result_neg</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">outlier</span> <span class="o">=</span> <span class="mf">1.</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.</span>
+    <span class="k">while</span> <span class="n">alpha</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">field</span><span class="p">)</span><span class="o">+</span><span class="n">stepsize</span><span class="p">:</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">alpha</span><span class="o">+</span><span class="n">stepsize</span>
+        <span class="n">neg</span> <span class="o">=</span> <span class="n">alpha</span>
+        <span class="n">filtered</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+        <span class="n">filtered</span><span class="p">[(</span><span class="n">filtered</span><span class="o">&lt;=</span><span class="n">neg</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">filtered</span><span class="o">&gt;</span><span class="n">pos</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="c">#filtered[filtered&gt;pos] = np.nan</span>
+        <span class="n">outlier</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">filtered</span><span class="p">))</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">field</span><span class="p">)))</span>
+        <span class="n">result_pos</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">alpha</span><span class="p">,</span><span class="n">outlier</span><span class="p">])</span>
+        <span class="n">alpha</span> <span class="o">+=</span> <span class="n">stepsize</span>
+    <span class="n">outlier</span> <span class="o">=</span> <span class="mf">1.</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.</span>
+    <span class="k">while</span> <span class="n">alpha</span> <span class="o">&lt;=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">field</span><span class="p">))</span><span class="o">+</span><span class="n">stepsize</span><span class="p">:</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.</span><span class="o">*</span><span class="n">alpha</span>
+        <span class="n">neg</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.</span><span class="o">*</span><span class="p">(</span><span class="n">alpha</span><span class="o">+</span><span class="n">stepsize</span><span class="p">)</span>
+        <span class="n">filtered</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+        <span class="n">filtered</span><span class="p">[(</span><span class="n">filtered</span><span class="o">&lt;=</span><span class="n">neg</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">filtered</span><span class="o">&gt;</span><span class="n">pos</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="c">#filtered[filtered&gt;pos] = np.nan</span>
+        <span class="n">outlier</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">filtered</span><span class="p">))</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">field</span><span class="p">)))</span>
+        <span class="n">result_neg</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="o">-</span><span class="mf">1.</span><span class="o">*</span><span class="n">alpha</span><span class="p">,</span><span class="n">outlier</span><span class="p">])</span>
+        <span class="n">alpha</span> <span class="o">+=</span> <span class="n">stepsize</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">result_pos</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">result_neg</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="filter"><a class="viewcode-back" href="../velofilter.html#velofilter.filter">[docs]</a><span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="n">piv</span><span class="p">,</span><span class="n">tfactor</span><span class="o">=</span><span class="mf">3.</span><span class="p">,</span><span class="n">dalpha</span><span class="o">=.</span><span class="mi">01</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function for calculating the cutoff values.</span>
+
+<span class="sd">    :param object piv: PIV class object</span>
+
+<span class="sd">        this is supposed to be an object from a Direct or Adaptiv Class</span>
+<span class="sd">        it is needed to get the velocities</span>
+<span class="sd">    :param double tfactor: Factor for cutoff in the velocity binning</span>
+
+<span class="sd">        the default value is set to 3 wich works for manny cases</span>
+<span class="sd">    :param double dalpha: value for differential velocity</span>
+
+<span class="sd">        the default is set to .01 which work for many cases</span>
+<span class="sd">        if the veloceties vary over a larger ranger use a larger value</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c">#: presampling</span>
+    <span class="n">numberup</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">u</span><span class="o">&lt;=</span><span class="mf">0.</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">u</span><span class="p">))</span>
+    <span class="n">numberun</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">u</span><span class="o">&gt;</span><span class="mf">0.</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">u</span><span class="p">))</span>
+    <span class="n">numbervp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">v</span><span class="o">&lt;=</span><span class="mf">0.</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">v</span><span class="p">))</span>
+    <span class="n">numbervn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">v</span><span class="o">&gt;</span><span class="mf">0.</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">v</span><span class="p">))</span>
+    <span class="n">upos</span> <span class="o">=</span> <span class="n">numberup</span> 
+    <span class="n">uneg</span> <span class="o">=</span> <span class="n">numberun</span>
+    <span class="n">vpos</span> <span class="o">=</span> <span class="n">numbervp</span> 
+    <span class="n">vneg</span> <span class="o">=</span> <span class="n">numbervn</span>
+
+    <span class="c">#: get alpha dependency</span>
+    <span class="n">up_alpha</span><span class="p">,</span> <span class="n">un_alpha</span> <span class="o">=</span> <span class="n">calc_factor</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">u</span><span class="p">,</span><span class="n">dalpha</span><span class="p">)</span>
+    <span class="n">vp_alpha</span><span class="p">,</span> <span class="n">vn_alpha</span> <span class="o">=</span> <span class="n">calc_factor</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">v</span><span class="p">,</span><span class="n">dalpha</span><span class="p">)</span>
+
+    <span class="c">#: calculate derivative directly from data</span>
+    <span class="n">dup_alpha1</span><span class="p">,</span> <span class="n">dun_alpha1</span> <span class="o">=</span> <span class="n">calc_derivative</span><span class="p">(</span><span class="n">u</span><span class="p">[</span><span class="n">pair</span><span class="p">],</span><span class="n">dalpha</span><span class="p">)</span>
+    <span class="n">dvp_alpha1</span><span class="p">,</span> <span class="n">dvn_alpha1</span> <span class="o">=</span> <span class="n">calc_derivative</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">pair</span><span class="p">],</span><span class="n">dalpha</span><span class="p">)</span>
+
+    <span class="n">dup_alpha</span> <span class="o">=</span> <span class="n">dup_alpha1</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">dun_alpha</span> <span class="o">=</span> <span class="n">dun_alpha1</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">dvp_alpha</span> <span class="o">=</span> <span class="n">dvp_alpha1</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">dvn_alpha</span> <span class="o">=</span> <span class="n">dvn_alpha1</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c">#get boundaries</span>
+    <span class="n">boundup</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dup_alpha</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span><span class="o">/</span><span class="mf">5.</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">tfactor</span><span class="p">)</span>
+    <span class="n">boundun</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dun_alpha</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span><span class="o">/</span><span class="mf">5.</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">tfactor</span><span class="p">)</span>
+    <span class="n">boundvp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dvp_alpha</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span><span class="o">/</span><span class="mf">5.</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">tfactor</span><span class="p">)</span>
+    <span class="n">boundvn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dvn_alpha</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span><span class="o">/</span><span class="mf">5.</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">tfactor</span><span class="p">)</span>
+
+    <span class="c">#get indizes and exponential</span>
+    <span class="k">if</span> <span class="n">upos</span> <span class="o">!=</span> <span class="mf">0.</span><span class="p">:</span>
+        <span class="n">indexup</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">dup_alpha</span><span class="o">&lt;</span><span class="n">boundup</span><span class="p">)</span>
+        <span class="n">cut_up</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">indexup</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span><span class="o">/</span><span class="mf">5.</span><span class="p">)</span>
+        <span class="n">nup</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span> <span class="n">up_alpha</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">cut_up</span><span class="p">,</span><span class="mi">0</span><span class="p">]),</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">up_alpha</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">cut_up</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">upos</span> <span class="o">=</span>  <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">nup</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">nup</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">uneg</span> <span class="o">!=</span> <span class="mf">0.</span><span class="p">:</span>
+        <span class="n">indexun</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">dun_alpha</span><span class="o">&lt;</span><span class="n">boundun</span><span class="p">)</span>
+        <span class="n">cut_un</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">indexun</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span><span class="o">/</span><span class="mf">5.</span><span class="p">)</span>
+        <span class="n">nun</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="o">-</span><span class="n">un_alpha</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">cut_un</span><span class="p">,</span><span class="mi">0</span><span class="p">]),</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">un_alpha</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">cut_un</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">uneg</span> <span class="o">=</span> <span class="o">-</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">nun</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">nun</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">vpos</span> <span class="o">!=</span> <span class="mf">0.</span><span class="p">:</span>
+        <span class="n">indexvp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">dvp_alpha</span><span class="o">&lt;</span><span class="n">boundvp</span><span class="p">)</span>
+        <span class="n">cut_vp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">indexvp</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span><span class="o">/</span><span class="mf">5.</span><span class="p">)</span>
+        <span class="n">nvp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span> <span class="n">vp_alpha</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">cut_vp</span><span class="p">,</span><span class="mi">0</span><span class="p">]),</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">vp_alpha</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">cut_vp</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">vpos</span> <span class="o">=</span>  <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">nvp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">nvp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">vneg</span> <span class="o">!=</span> <span class="mf">0.</span><span class="p">:</span>
+        <span class="n">indexvn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">dvn_alpha</span><span class="o">&lt;</span><span class="n">boundvn</span><span class="p">)</span>
+        <span class="n">cut_vn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">indexvn</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span><span class="o">/</span><span class="mf">5.</span><span class="p">)</span>
+        <span class="n">nvn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="o">-</span><span class="n">vn_alpha</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">cut_vn</span><span class="p">,</span><span class="mi">0</span><span class="p">]),</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">vn_alpha</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="n">cut_vn</span><span class="p">,</span><span class="mi">1</span><span class="p">]),</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">vneg</span> <span class="o">=</span> <span class="o">-</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">nvn</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">nvn</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c">#filter + clamping</span>
+    <span class="k">if</span> <span class="n">upos</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">u</span><span class="p">):</span>
+        <span class="n">upos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">u</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">uneg</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">u</span><span class="p">):</span>
+        <span class="n">uneg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">u</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">vpos</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">v</span><span class="p">):</span>
+        <span class="n">vpos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">v</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">vneg</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">v</span><span class="p">):</span>
+        <span class="n">vneg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">v</span><span class="p">)</span>
+
+    <span class="c">#equalizing the cutoff</span>
+    <span class="n">upos</span> <span class="o">*=</span> <span class="p">(</span><span class="mf">0.5</span><span class="o">+</span><span class="n">numberup</span><span class="p">)</span>
+    <span class="n">uneg</span> <span class="o">*=</span> <span class="p">(</span><span class="mf">0.5</span><span class="o">+</span><span class="n">numberun</span><span class="p">)</span>
+    <span class="n">vpos</span> <span class="o">*=</span> <span class="p">(</span><span class="mf">0.5</span><span class="o">+</span><span class="n">numbervp</span><span class="p">)</span>
+    <span class="n">vneg</span> <span class="o">*=</span> <span class="p">(</span><span class="mf">0.5</span><span class="o">+</span><span class="n">numbervn</span><span class="p">)</span>
+
+    <span class="c">#makeing mask</span>
+    <span class="n">piv</span><span class="o">.</span><span class="n">u</span><span class="p">[(</span><span class="n">piv</span><span class="o">.</span><span class="n">u</span><span class="o">&lt;</span><span class="n">uneg</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">u</span><span class="o">&gt;</span><span class="n">upos</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">piv</span><span class="o">.</span><span class="n">v</span><span class="p">[(</span><span class="n">piv</span><span class="o">.</span><span class="n">v</span><span class="o">&lt;</span><span class="n">vneg</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">v</span><span class="o">&gt;</span><span class="n">vpos</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span></div>
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pypiv a1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+    </div>
+  </body>
+</html>
