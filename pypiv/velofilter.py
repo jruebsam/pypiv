@@ -118,8 +118,8 @@ def filter(piv,tfactor=3.,dalpha=.01):
     vp_alpha, vn_alpha = calc_factor(piv.v,dalpha)
 
     #: calculate derivative directly from data
-    dup_alpha1, dun_alpha1 = calc_derivative(u[pair],dalpha)
-    dvp_alpha1, dvn_alpha1 = calc_derivative(v[pair],dalpha)
+    dup_alpha1, dun_alpha1 = calc_derivative(piv.u,dalpha)
+    dvp_alpha1, dvn_alpha1 = calc_derivative(piv.v,dalpha)
 
     dup_alpha = dup_alpha1[:,1]
     dun_alpha = dun_alpha1[:,1]
