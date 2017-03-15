@@ -1,0 +1,227 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Class for grid specifications &#8212; pypiv a1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Class for the FFT correlator" href="fft_correlator.html" />
+    <link rel="prev" title="Class for direct Piv" href="direct_piv.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="fft_correlator.html" title="Class for the FFT correlator"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="direct_piv.html" title="Class for direct Piv"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pypiv a1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="direct_piv.html"
+                        title="previous chapter">Class for direct Piv</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="fft_correlator.html"
+                        title="next chapter">Class for the FFT correlator</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/piv/grid_spec.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="class-for-grid-specifications">
+<h1>Class for grid specifications<a class="headerlink" href="#class-for-grid-specifications" title="Permalink to this headline">¶</a></h1>
+<p>In order to save the specifications of the grid a class in created.</p>
+<dl class="class">
+<dt id="piv.grid_spec.GridSpec">
+<em class="property">class </em><code class="descclassname">piv.grid_spec.</code><code class="descname">GridSpec</code><span class="sig-paren">(</span><em>frame_shape</em>, <em>frame_strides</em>, <em>window_size</em>, <em>search_size</em>, <em>distance</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/piv/grid_spec.html#GridSpec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#piv.grid_spec.GridSpec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class for grid specifications.</p>
+<p>This class saves and calculates the grid specifications.</p>
+<p>Initialization of the shapes and strides.</p>
+<p>Setting the values according to parameters.
+If the window_size and search_size are not the same a padding for the smaller one is added.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>frame_shape</strong> &#8211; shape of the initial image</li>
+<li><strong>frame_strides</strong> &#8211; strides of the initial image</li>
+<li><strong>window_size</strong> &#8211; size of the interrogation window</li>
+<li><strong>search_size</strong> &#8211; size of the search window</li>
+<li><strong>distance</strong> &#8211; distance between interrogation window beginnings</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>For comparing two GridSpec objects a operator is given.</p>
+<dl class="method">
+<dt id="piv.grid_spec.GridSpec.equal_to">
+<code class="descclassname">GridSpec.</code><code class="descname">equal_to</code><span class="sig-paren">(</span><em>grid_spec</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/piv/grid_spec.html#GridSpec.equal_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#piv.grid_spec.GridSpec.equal_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Comparison operator for class.</p>
+<p>Two GridSpecs are equal if the window_size, the search_size and distance are equal.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>grid_spec</strong> (<a class="reference internal" href="#piv.grid_spec.GridSpec" title="piv.grid_spec.GridSpec"><em>GridSpec</em></a>) &#8211; grid spec to compare with</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True or False</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>To get the information out of the class, getter functions are given.</p>
+<dl class="method">
+<dt id="piv.grid_spec.GridSpec.get_grid_shape">
+<code class="descclassname">GridSpec.</code><code class="descname">get_grid_shape</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/piv/grid_spec.html#GridSpec.get_grid_shape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#piv.grid_spec.GridSpec.get_grid_shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter function for the shape of the grid.</p>
+<p>The returned value is the shape of the grid calculated from the arrangement of the interrogation windows.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">grid shape in x and y direction as tuple</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="piv.grid_spec.GridSpec.get_interogation_grid_shape">
+<code class="descclassname">GridSpec.</code><code class="descname">get_interogation_grid_shape</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/piv/grid_spec.html#GridSpec.get_interogation_grid_shape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#piv.grid_spec.GridSpec.get_interogation_grid_shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter function for the shape of the interrogation window.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">shape of the interrogation window</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="piv.grid_spec.GridSpec.get_search_grid_shape">
+<code class="descclassname">GridSpec.</code><code class="descname">get_search_grid_shape</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/piv/grid_spec.html#GridSpec.get_search_grid_shape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#piv.grid_spec.GridSpec.get_search_grid_shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter function for the shape of the search window.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">shape of the search window</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="piv.grid_spec.GridSpec.get_interogation_grid_strides">
+<code class="descclassname">GridSpec.</code><code class="descname">get_interogation_grid_strides</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/piv/grid_spec.html#GridSpec.get_interogation_grid_strides"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#piv.grid_spec.GridSpec.get_interogation_grid_strides" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter function for the strides of the interrogation window.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">strides of the interrogation window</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="piv.grid_spec.GridSpec.get_search_grid_strides">
+<code class="descclassname">GridSpec.</code><code class="descname">get_search_grid_strides</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/piv/grid_spec.html#GridSpec.get_search_grid_strides"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#piv.grid_spec.GridSpec.get_search_grid_strides" title="Permalink to this definition">¶</a></dt>
+<dd><p>Getter function for the strides of the search window.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">strides of the search window</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="fft_correlator.html" title="Class for the FFT correlator"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="direct_piv.html" title="Class for direct Piv"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pypiv a1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>

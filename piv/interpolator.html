@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Cubic interpolator &#8212; pypiv a1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     'a1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Grid deformator class" href="grid_deformator.html" />
+    <link rel="prev" title="Class for scaling the velocity field" href="velocity_scaler.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="grid_deformator.html" title="Grid deformator class"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="velocity_scaler.html" title="Class for scaling the velocity field"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pypiv a1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="velocity_scaler.html"
+                        title="previous chapter">Class for scaling the velocity field</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="grid_deformator.html"
+                        title="next chapter">Grid deformator class</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/piv/interpolator.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="cubic-interpolator">
+<h1>Cubic interpolator<a class="headerlink" href="#cubic-interpolator" title="Permalink to this headline">¶</a></h1>
+<p>The cubic interpolator is written as its own class.</p>
+<dl class="class">
+<dt id="piv.interpolator.CubicInterpolator">
+<em class="property">class </em><code class="descclassname">piv.interpolator.</code><code class="descname">CubicInterpolator</code><a class="headerlink" href="#piv.interpolator.CubicInterpolator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interpolator Class for the window deformation</p>
+<p>This class initializes and performs the interpolation.</p>
+<p>Initialization of the interpolator.</p>
+<p><strong>__init__(frame, window_size)</strong></p>
+<p>The cubic interpolation is performed in compiled c code, therefore the memory for right hand side and left hand side must be allocated and initialized for the matrix.
+The output is allocated as well.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>frame</strong> &#8211; image that is deformed</li>
+<li><strong>window_size</strong> &#8211; size of the interrogation window over which is interpolated</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>It performs the interpolation by calling the interpolate function.</p>
+<dl class="method">
+<dt id="piv.interpolator.CubicInterpolator.interpolate">
+<code class="descclassname">CubicInterpolator.</code><code class="descname">interpolate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#piv.interpolator.CubicInterpolator.interpolate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method to perform cubic interpolation of the deformed grid.</p>
+<p><strong>interpolate(posx, posy)</strong></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>posx</strong> (<em>ndarray</em>) &#8211; moved x position of the deformed grid</li>
+<li><strong>posy</strong> (<em>ndarray</em>) &#8211; moved y position of the deformed grid</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">ndarray with interpolated sub image shaped to the original shape</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>The interpolation function itself is not a method of that class, but a part of the interpolator module.
+The entire module is compiled with Cython in order to decrease the computation time.</p>
+<dl class="function">
+<dt id="piv.interpolator.cubic_interpolation">
+<code class="descclassname">piv.interpolator.</code><code class="descname">cubic_interpolation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#piv.interpolator.cubic_interpolation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function to perform cubic interpolation of a given frame and new coordinates.</p>
+<div class="line-block">
+<div class="line"><strong>cubic_interpolation(np.ndarray[np.double_t, ndim=1] posx,</strong></div>
+<div class="line-block">
+<div class="line"><strong>np.ndarray[np.double_t, ndim=1] posy,</strong></div>
+<div class="line"><strong>np.ndarray[np.double_t, ndim=1] x,</strong></div>
+<div class="line"><strong>np.ndarray[np.double_t, ndim=1] y,</strong></div>
+<div class="line"><strong>np.ndarray[np.double_t, ndim=2] M,</strong></div>
+<div class="line"><strong>np.ndarray[np.double_t, ndim=1] output,</strong></div>
+<div class="line"><strong>np.ndarray[np.double_t, ndim=2] frame, int lx, int ly)</strong></div>
+</div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>posx</strong> (<em>double_array</em>) &#8211; x coordinates the frame is interpolated to</li>
+<li><strong>posy</strong> (<em>double_array</em>) &#8211; y coordinates the frame is interpolated to</li>
+<li><strong>x</strong> (<em>double_array</em>) &#8211; right hand side memory for interpolation in x direction</li>
+<li><strong>y</strong> (<em>double_array</em>) &#8211; right hand side memory for interpolation in y direction</li>
+<li><strong>M</strong> (<em>double_2D_array</em>) &#8211; left hand side as a matrix</li>
+<li><strong>output</strong> (<em>double_array</em>) &#8211; memory for resulting interpolated sub frame</li>
+<li><strong>frame</strong> (<em>double_2D_array</em>) &#8211; initial image which is interpolated</li>
+<li><strong>lx</strong> (<em>int</em>) &#8211; width of the frame array</li>
+<li><strong>ly</strong> (<em>int</em>) &#8211; length of the frame array</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">interpolated sub frame</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="grid_deformator.html" title="Grid deformator class"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="velocity_scaler.html" title="Class for scaling the velocity field"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">pypiv a1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+    </div>
+  </body>
+</html>
