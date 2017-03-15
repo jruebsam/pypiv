@@ -17,14 +17,19 @@ def particle(x0, y0, d):
 
 def main():
     N = 100
-    for method, color in zip(['gaussian', '9point', 'parabolic'],['r.-','c*-','k+-']):
+    f, (ax1,ax2) = plt.subplots(1,2)
+    ax1.set_yscale("log", nonposy='clip')
+    ax2.set_yscale("log", nonposy='clip')
+    for method, color in zip(['9point', 'gaussian', 'parabolic', 'centroid'],['k*-','ro-','c+-', 'g.-']):
         err = []
+        err_mean = []
+        err_std = []
         d = []
         diameters = np.linspace(1, 15, 101)
         print method
         for dia in diameters:
-            maxerr = 0.
             frame1 =  particle(16, 16, dia)
+            error_n = []
             for i in range(N):
                 shiftx = 10 + np.random.rand()
                 shifty = 10 +np.random.rand()
@@ -33,12 +38,25 @@ def main():
                 corr = FFTCorrelator(32, 32)
                 xn, yn = corr.get_displacement(frame1, frame2, method)
                 error = np.sqrt((xn - shiftx)**2 + (yn - shifty)**2)
-                maxerr = np.max([error,maxerr])
-            err.append(maxerr)
+                error_n.append(error)
+            err.append(np.max(error_n))
+            err_mean.append(np.mean(error_n))
+            err_std.append(np.std(error_n))
             d.append(dia)
 
-        plt.semilogy(d, err, color, label=method)
-    plt.legend()
+        ax1.semilogy(d, err, color, label=method)
+        ax2.errorbar(d, err_mean, yerr=err_std, fmt=color, label=method)
+    ax1.set_xlabel("diameter [pixel]")
+    ax1.set_ylabel("shift error [pixel]")
+    ax1.set_title("maximum error")
+    ax2.set_xlabel("diameter [pixel]")
+    ax2.set_ylabel("shift error [pixel]")
+    ax2.set_title("mean error")
+    ax1.grid(True, which="both")
+    ax2.grid(True, which="both")
+    ax1.legend()
+    ax2.legend()
+    f.tight_layout()
     plt.show()
 
 
