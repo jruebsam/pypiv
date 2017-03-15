@@ -9,25 +9,29 @@ from skimage.morphology import disk
 from scipy.ndimage import median_filter as mf
 
 def median_filter(piv, size=2):
-     piv.u = mf(piv.u, footprint=disk(size))
-     piv.v = mf(piv.v, footprint=disk(size))
+    """Computes a median filter on u and v"""
+    piv.u = mf(piv.u, footprint=disk(size))
+    piv.v = mf(piv.v, footprint=disk(size))
 
 def replace_outliers(piv):
+    """Replaces the detected outliers according to the mask"""
     mask = np.isnan(piv.u) + np.isnan(piv.v)
     piv.u = replace_field(piv.u, mask)
     piv.v = replace_field(piv.v, mask)
 
 def replace_field(f, mask):
+    """Interpolates positions in field according to mask with a 2D cubic interpolator"""
     lx, ly = f.shape
     x, y = np.mgrid[0:lx, 0:ly]
     C = CT_intp((x[~mask],y[~mask]),f[~mask], fill_value=0)
     return C(x, y)
 
 def outlier_from_local_median(piv, treshold=2.0):
-    """
-    Implementation of a local median filter according to
-    "J. Westerweel, F. Scarano, Universalo outlier detection for PIV data,
-    Experiments in Fluids, 2005"
+    """Outlier detection algorithm for mask creation.
+
+    The calculated residual is compared to a threshold which produces a mask.
+    The mask consists of nan values at the outlier positions.
+    This mask can be interpolated to remove the outliers.
 
     :param object piv: Piv Class Object
     :param double threshold: threshold for identifying outliers
@@ -43,6 +47,15 @@ def outlier_from_local_median(piv, treshold=2.0):
 def get_normalized_residual(f, epsilon=0.1):
     """
     Compute Residual for a Flow field
+
+    Implementation of a local median filter according to
+    "J. Westerweel, F. Scarano, Universalo outlier detection for PIV data,
+    Experiments in Fluids, 2005"
+
+
+    :param f: field
+    :param double epsilon: small tolerance value
+    :returns: calculated residual for field
     """
     lx, ly = f.shape
     fn = np.pad(f, (1, 1), 'edge')
