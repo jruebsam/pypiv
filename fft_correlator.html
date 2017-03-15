@@ -121,7 +121,34 @@ For the displacement calculation the function</p>
 <dl class="function">
 <dt id="piv.peak_detection.FFTCorrelator.find_peak">
 <code class="descname">find_peak</code><span class="sig-paren">(</span><em>corr</em>, <em>method='gaussian'</em><span class="sig-paren">)</span><a class="headerlink" href="#piv.peak_detection.FFTCorrelator.find_peak" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Peak detection algorithm switch</p>
+<p>After loading the correlation window an maximum finder is invoked.
+The correlation window is cut down to the necessary 9 points around the maximum.
+Afterwards the maximum is checked not to be close to the boarder of the correlation frame.
+This cropped window is used in along with the chosen method to interpolate the sub pixel shift.
+Each interpolation method returns a tuple with the sub pixel shift in x and y direction.
+The maximums position and the sub pixel shift are added and returned.
+If an error occurred during the sub pixel interpolation the shift is set to nan.
+Also if the interpolation method is unknown an exception in thrown.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>corr</strong> &#8211; correlation window</li>
+<li><strong>method</strong> &#8211; peak finder algorithm (gaussian, centroid, parabolic, 9point)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first">Sub pixel interpolation method not found</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">shift in interrogation window</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <p>is called with the subpixel_method passed on as parameter.
 If a padding was needed, it is removed from the calculated displacement.</p>

@@ -69,26 +69,30 @@
 <span class="kn">from</span> <span class="nn">skimage.morphology</span> <span class="k">import</span> <span class="n">disk</span>
 <span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="k">import</span> <span class="n">median_filter</span> <span class="k">as</span> <span class="n">mf</span>
 
-<span class="k">def</span> <span class="nf">median_filter</span><span class="p">(</span><span class="n">piv</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
-     <span class="n">piv</span><span class="o">.</span><span class="n">u</span> <span class="o">=</span> <span class="n">mf</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="n">footprint</span><span class="o">=</span><span class="n">disk</span><span class="p">(</span><span class="n">size</span><span class="p">))</span>
-     <span class="n">piv</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">mf</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">footprint</span><span class="o">=</span><span class="n">disk</span><span class="p">(</span><span class="n">size</span><span class="p">))</span>
+<div class="viewcode-block" id="median_filter"><a class="viewcode-back" href="../filters.html#filters.median_filter">[docs]</a><span class="k">def</span> <span class="nf">median_filter</span><span class="p">(</span><span class="n">piv</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Computes a median filter on u and v&quot;&quot;&quot;</span>
+    <span class="n">piv</span><span class="o">.</span><span class="n">u</span> <span class="o">=</span> <span class="n">mf</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="n">footprint</span><span class="o">=</span><span class="n">disk</span><span class="p">(</span><span class="n">size</span><span class="p">))</span>
+    <span class="n">piv</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">mf</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">footprint</span><span class="o">=</span><span class="n">disk</span><span class="p">(</span><span class="n">size</span><span class="p">))</span></div>
 
-<span class="k">def</span> <span class="nf">replace_outliers</span><span class="p">(</span><span class="n">piv</span><span class="p">):</span>
+<div class="viewcode-block" id="replace_outliers"><a class="viewcode-back" href="../filters.html#filters.replace_outliers">[docs]</a><span class="k">def</span> <span class="nf">replace_outliers</span><span class="p">(</span><span class="n">piv</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Replaces the detected outliers according to the mask&quot;&quot;&quot;</span>
     <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">u</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">v</span><span class="p">)</span>
     <span class="n">piv</span><span class="o">.</span><span class="n">u</span> <span class="o">=</span> <span class="n">replace_field</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
-    <span class="n">piv</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">replace_field</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+    <span class="n">piv</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">replace_field</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span></div>
 
-<span class="k">def</span> <span class="nf">replace_field</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">mask</span><span class="p">):</span>
+<div class="viewcode-block" id="replace_field"><a class="viewcode-back" href="../filters.html#filters.replace_field">[docs]</a><span class="k">def</span> <span class="nf">replace_field</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">mask</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Interpolates positions in field according to mask with a 2D cubic interpolator&quot;&quot;&quot;</span>
     <span class="n">lx</span><span class="p">,</span> <span class="n">ly</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">lx</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">ly</span><span class="p">]</span>
     <span class="n">C</span> <span class="o">=</span> <span class="n">CT_intp</span><span class="p">((</span><span class="n">x</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">],</span><span class="n">y</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">]),</span><span class="n">f</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">],</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">C</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">C</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="outlier_from_local_median"><a class="viewcode-back" href="../filters.html#filters.outlier_from_local_median">[docs]</a><span class="k">def</span> <span class="nf">outlier_from_local_median</span><span class="p">(</span><span class="n">piv</span><span class="p">,</span> <span class="n">treshold</span><span class="o">=</span><span class="mf">2.0</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Implementation of a local median filter according to</span>
-<span class="sd">    &quot;J. Westerweel, F. Scarano, Universalo outlier detection for PIV data,</span>
-<span class="sd">    Experiments in Fluids, 2005&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Outlier detection algorithm for mask creation.</span>
+
+<span class="sd">    The calculated residual is compared to a threshold which produces a mask.</span>
+<span class="sd">    The mask consists of nan values at the outlier positions.</span>
+<span class="sd">    This mask can be interpolated to remove the outliers.</span>
 
 <span class="sd">    :param object piv: Piv Class Object</span>
 <span class="sd">    :param double threshold: threshold for identifying outliers</span>
@@ -101,9 +105,18 @@
     <span class="n">piv</span><span class="o">.</span><span class="n">u</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
     <span class="n">piv</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span></div>
 
-<span class="k">def</span> <span class="nf">get_normalized_residual</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+<div class="viewcode-block" id="get_normalized_residual"><a class="viewcode-back" href="../filters.html#filters.get_normalized_residual">[docs]</a><span class="k">def</span> <span class="nf">get_normalized_residual</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute Residual for a Flow field</span>
+
+<span class="sd">    Implementation of a local median filter according to</span>
+<span class="sd">    &quot;J. Westerweel, F. Scarano, Universalo outlier detection for PIV data,</span>
+<span class="sd">    Experiments in Fluids, 2005&quot;</span>
+
+
+<span class="sd">    :param f: field</span>
+<span class="sd">    :param double epsilon: small tolerance value</span>
+<span class="sd">    :returns: calculated residual for field</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">lx</span><span class="p">,</span> <span class="n">ly</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">shape</span>
     <span class="n">fn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;edge&#39;</span><span class="p">)</span>
@@ -122,7 +135,7 @@
     <span class="n">rm</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">ris</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">rm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">rm</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
 
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">((</span><span class="n">f</span> <span class="o">-</span> <span class="n">um</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">lx</span><span class="p">,</span> <span class="n">ly</span><span class="p">)))</span><span class="o">/</span><span class="p">(</span><span class="n">rm</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">lx</span><span class="p">,</span> <span class="n">ly</span><span class="p">))</span> <span class="o">+</span> <span class="n">epsilon</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">((</span><span class="n">f</span> <span class="o">-</span> <span class="n">um</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">lx</span><span class="p">,</span> <span class="n">ly</span><span class="p">)))</span><span class="o">/</span><span class="p">(</span><span class="n">rm</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="n">lx</span><span class="p">,</span> <span class="n">ly</span><span class="p">))</span> <span class="o">+</span> <span class="n">epsilon</span><span class="p">))</span></div>
 </pre></div>
 
           </div>

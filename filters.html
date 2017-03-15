@@ -82,13 +82,15 @@
 <h1>Filters for outlier detection<a class="headerlink" href="#filters-for-outlier-detection" title="Permalink to this headline">¶</a></h1>
 <p>In order to remove outliers from the resulting vector field, filters are used.
 The filter mainly used here differs from the <a class="reference internal" href="velofilter.html"><span class="doc">Velocity Filter</span></a>.</p>
-<p>The filter is called by the function</p>
+<p>The filter initializes a mask of nan values in the velocity field.
+It filters by calculating a local residual and comparing it with a threshold.</p>
 <dl class="function">
 <dt id="filters.outlier_from_local_median">
 <code class="descclassname">filters.</code><code class="descname">outlier_from_local_median</code><span class="sig-paren">(</span><em>piv</em>, <em>treshold=2.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/filters.html#outlier_from_local_median"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#filters.outlier_from_local_median" title="Permalink to this definition">¶</a></dt>
-<dd><p>Implementation of a local median filter according to
-&#8220;J. Westerweel, F. Scarano, Universalo outlier detection for PIV data,
-Experiments in Fluids, 2005&#8221;</p>
+<dd><p>Outlier detection algorithm for mask creation.</p>
+<p>The calculated residual is compared to a threshold which produces a mask.
+The mask consists of nan values at the outlier positions.
+This mask can be interpolated to remove the outliers.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -101,6 +103,50 @@ Experiments in Fluids, 2005&#8221;</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="function">
+<dt id="filters.get_normalized_residual">
+<code class="descclassname">filters.</code><code class="descname">get_normalized_residual</code><span class="sig-paren">(</span><em>f</em>, <em>epsilon=0.1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/filters.html#get_normalized_residual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#filters.get_normalized_residual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute Residual for a Flow field</p>
+<p>Implementation of a local median filter according to
+&#8220;J. Westerweel, F. Scarano, Universalo outlier detection for PIV data,
+Experiments in Fluids, 2005&#8221;</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>f</strong> &#8211; field</li>
+<li><strong>epsilon</strong> (<em>double</em>) &#8211; small tolerance value</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">calculated residual for field</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<p>The outliers are afterwards interpolated.</p>
+<dl class="function">
+<dt id="filters.replace_outliers">
+<code class="descclassname">filters.</code><code class="descname">replace_outliers</code><span class="sig-paren">(</span><em>piv</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/filters.html#replace_outliers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#filters.replace_outliers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces the detected outliers according to the mask</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="filters.replace_field">
+<code class="descclassname">filters.</code><code class="descname">replace_field</code><span class="sig-paren">(</span><em>f</em>, <em>mask</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/filters.html#replace_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#filters.replace_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interpolates positions in field according to mask with a 2D cubic interpolator</p>
+</dd></dl>
+
+<p>After the replacement of the outliers a median filter is applied to remove sharp edges.</p>
+<dl class="function">
+<dt id="filters.median_filter">
+<code class="descclassname">filters.</code><code class="descname">median_filter</code><span class="sig-paren">(</span><em>piv</em>, <em>size=2</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/filters.html#median_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#filters.median_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes a median filter on u and v</p>
 </dd></dl>
 
 </div>
