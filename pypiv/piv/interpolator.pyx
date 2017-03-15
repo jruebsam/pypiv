@@ -10,7 +10,7 @@ class CubicInterpolator(object):
     """
     Interpolator Class for the window deformation
 
-    This class initializes and performes the interpolation.
+    This class initializes and performs the interpolation.
     """
 
     def __init__(self, frame, window_size):
@@ -23,7 +23,7 @@ class CubicInterpolator(object):
         The output is allocated as well.
 
         :param frame: image that is deformed
-        :param window_size: size of the interogation window over wich is interpolated
+        :param window_size: size of the interrogation window over which is interpolated
         """
         self._frame = np.pad(frame, (3, 3), mode='constant')
         self._lx, self._ly = frame.shape
@@ -104,6 +104,4 @@ def cubic_interpolation(np.ndarray[np.double_t, ndim=1] posx,
                     outsum += frame[ix+k-2, iy+l-2]*x[k]*y[l]
             output[i] = outsum
     return output
-
-
 

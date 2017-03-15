@@ -7,12 +7,12 @@ from grid_spec import GridSpec
 
 class AdaptivePIV(DirectPIV):
     """
-    Class for the adaptiv piv.
+    Class for the adaptive piv.
 
-    After the initial piv is done an adaptiv piv can be performed to minimize the error or to make the grid finer.
+    After the initial piv is done an adaptive piv can be performed to minimize the error or to make the grid finer.
     This class inherits from the :doc:`initial class DirectPIV <direct_piv>`.
     Therefore the correlation function is inherited as well as the GridSpec.
-    In adition to the inherited grid a new Grid is calculated by deforming the grid with respect to the prior calculated velocities.
+    In addition to the inherited grid a new Grid is calculated by deforming the grid with respect to the prior calculated velocities.
     In the case that the new grid is supposed to be finer then the one before, the velocities need to be upscaled.
     """
 
@@ -20,15 +20,15 @@ class AdaptivePIV(DirectPIV):
         """
         Initialization as an extension of the super class.
 
-        The initialization of the super class is caled to generate all neccesary GridSpecs and grids.
-        Aditional information are the deformation method and the interpolation method.
+        The initialization of the super class is called to generate all necessary GridSpecs and grids.
+        Additional information are the deformation method and the interpolation method.
         
         .. ref on methods ons implemented
 
         :param DirectPIV piv_object: object of the initial piv
-        :param int window_size: size of the interogation window
+        :param int window_size: size of the interrogation window
         :param int search_size: size of the search window
-        :param int distance: distance between beginning of the first interogationindow and second
+        :param int distance: distance between beginning of the first interrogation window and second
         :param str deformation: deformation method
         :param str ipmethod: interpolation method
         """
@@ -50,18 +50,19 @@ class AdaptivePIV(DirectPIV):
         """
         Deforms the regular grid according to velocity and interpolates image.
 
-        In order to capture more particles flowing in the same direction as indecated by the previosly calculated velocityfield, the grid is deformed and the image corresponding to that grid spot interpolated from the original image.
+        In order to capture more particles flowing in the same direction as indicated by the previously calculated velocity field, 
+        the grid is deformed and the image corresponding to that grid spot interpolated from the original image.
         This gives a new grid with interpolated particle spots.
-        Here two methods are avalable:
+        Here two methods are available:
 
         * central:
             Leeds to a half deformation in both directions, forward and backwards.
-            This as well leeds to two times the computation of the deformation.
+            This as well leads to two times the computation of the deformation.
         * forward:
             Leeds to a full deformation in forward direction
 
         :param str deformation_method: deformation method, mentioned above
-        :param str ipmethod: interpolation method passed allong to the interpolator
+        :param str ipmethod: interpolation method passed along to the interpolator
         """
         distance   = self.grid_spec.distance
         shape_b    = self.grid_spec.get_search_grid_shape()
@@ -80,7 +81,7 @@ class AdaptivePIV(DirectPIV):
 
     def _get_window_frames(self, i, j):
         """
-        Function overide in order to include the two different deformation methods.
+        Function override in order to include the two different deformation methods.
 
         Functionality is the same as
 
@@ -95,7 +96,5 @@ class AdaptivePIV(DirectPIV):
             frame_a = self.grid_a[i, j]
             frame_b = self.grid_def_b.get_frame(i, j)
         return frame_a, frame_b
-
-
 
 

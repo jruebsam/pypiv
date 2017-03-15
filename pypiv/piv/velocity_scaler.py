@@ -44,7 +44,7 @@ class VelocityUpscaler(object):
         """
         Scaling of the field according to calculated meshgrid.
 
-        For the interpolation rectangualr bivariant Splines are used.
+        For the interpolation rectangular bivariate Splines are used.
         These are implemented from the scipy function `RectBivariateSpline <https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.RectBivariateSpline.html>`_.
 
         :param f: field to be interpolated
@@ -52,3 +52,4 @@ class VelocityUpscaler(object):
         """
         rbs = RBS(self._tx, self._ty, f)
         return rbs.ev(self._out_x, self._out_y)
+

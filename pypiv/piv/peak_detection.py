@@ -16,7 +16,7 @@ def find_peak(corr, method='gaussian'):
     elif method == '9point':
         subpixel_interpolation = gaussian2D
     else:
-        raise Exception('Subpixel interpolation method not found!')
+        raise Exception('Sub pixel interpolation method not found!')
     try:
         dx, dy = subpixel_interpolation(window)
     except:

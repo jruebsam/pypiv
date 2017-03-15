@@ -30,7 +30,7 @@ def outlier_from_local_median(piv, treshold=2.0):
     Experiments in Fluids, 2005"
 
     :param object piv: Piv Class Object
-    :param double treshold: threshold for identfying outliers
+    :param double threshold: threshold for identifying outliers
 
     """
     u_res = get_normalized_residual(piv.u)

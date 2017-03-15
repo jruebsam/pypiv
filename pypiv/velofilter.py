@@ -7,18 +7,18 @@ def calc_factor(field,stepsize=0.01):
     Function for calculation of the summed binning.
 
     The returned result is an integral over the binning of the velocities.
-    It is done for the negative and positiv half speratly.
+    It is done for the negative and positive half separately.
 
-    :param field: is a 1D field wich will be binned
-    :param stepsize: is the stepsize for the velocity
-    :return (positiv,negativ): 
-        velocities and the binning result for positiv half and negative half are returned
-        as a tupel of numpy arrays
+    :param field: is a 1D field which will be binned
+    :param stepsize: is the step size for the velocity
+    :return (positive,negative): 
+        velocities and the binning result for positive half and negative half are returned
+        as a tuple of numpy arrays
     """
     result_pos = []
     result_neg = []
     alpha = 0.
-    #: binnig of the positiv half
+    #: binning of the positive half
     while alpha <= np.max(field)+stepsize:
         pos = alpha
         neg = 0.
@@ -29,7 +29,7 @@ def calc_factor(field,stepsize=0.01):
         result_pos.append([alpha,outlier])
         alpha += stepsize
     alpha = 0.
-    #: binnig of the negativ half
+    #: binning of the negative half
     while alpha <= np.abs(np.min(field))+stepsize:
         pos = 0.
         neg = -1.*alpha
@@ -47,17 +47,17 @@ def calc_derivative(field,stepsize=0.01):
     Function for calculation of the binning.
 
     The returned result is the binning of the velocities.
-    It is callend derivative because it is mathematically the derivative of the function:
+    It is called derivative because it is mathematically the derivative of the function:
 
     .. function:: velofilter.calc_factor
 
-    It is done for the negative and positiv half speratly.
+    It is done for the negative and positive half separately.
 
-    :param field:  is a 1D field wich will be binned
-    :param stepsize:  is the stepsize for the velocity
-    :return (positiv,negativ): 
-        velocities and the binning result for positiv half and negative half are returned
-        as a tupel
+    :param field:  is a 1D field which will be binned
+    :param stepsize:  is the step size for the velocity
+    :return (positive,negative): 
+        velocities and the binning result for positive half and negative half are returned
+        as a tuple
     """
     result_pos = []
     result_neg = []
@@ -92,18 +92,18 @@ def filter(piv,tfactor=3.,dalpha=.01):
 
     :param object piv: PIV class object
 
-        this is supposed to be an object from a Direct or Adaptiv Class
+        This is supposed to be an object from a Direct or adaptive Class
         it is needed to get the velocities
     :param double tfactor: Factor for cutoff in the velocity binning
 
-        the default value is set to 3 wich works for manny cases
+        The default value is set to 3 which works for many cases
     :param double dalpha: value for differential velocity
 
-        the default is set to .01 which work for many cases
-        if the veloceties vary over a larger ranger use a larger value
+        The default is set to .01 which work for many cases
+        if the velocities vary over a larger ranger use a larger value
     """
 
-    #: presampling
+    #: pre sampling
     numberup = np.count_nonzero(piv.u<=0.)/np.float(np.count_nonzero(piv.u))
     numberun = np.count_nonzero(piv.u>0.)/np.float(np.count_nonzero(piv.u))
     numbervp = np.count_nonzero(piv.v<=0.)/np.float(np.count_nonzero(piv.v))
@@ -132,7 +132,7 @@ def filter(piv,tfactor=3.,dalpha=.01):
     boundvp = np.sum(dvp_alpha[0:5])/5./np.exp(tfactor)
     boundvn = np.sum(dvn_alpha[0:5])/5./np.exp(tfactor)
 
-    #get indizes and exponential
+    #get indices and exponential
     if upos != 0.:
         indexup = np.where(dup_alpha<boundup)
         cut_up = np.int(np.sum(indexup[0][0:5])/5.)
@@ -170,7 +170,7 @@ def filter(piv,tfactor=3.,dalpha=.01):
     vpos *= (0.5+numbervp)
     vneg *= (0.5+numbervn)
 
-    #makeing mask
+    #making the mask
     piv.u[(piv.u<uneg) | (piv.u>upos)] = np.nan
     piv.v[(piv.v<vneg) | (piv.v>vpos)] = np.nan
 

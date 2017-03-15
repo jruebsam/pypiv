@@ -14,14 +14,14 @@ class GridDeformator(object):
         Initialization of the grid deformation process.
 
         The frame and grid shape are set as well as the distance between the interrogation windows and the method of deformation.
-        The avaliable methods are
+        The available methods are
 
         * bilinear and 
         * central.
 
         :param frame: image that is interpolated
         :param shape: shape of the initial regular grid
-        :param distance: shift between the interogation windows
+        :param distance: shift between the interrogation windows
         :param method: deformation method
         """
         self._frame  = frame
@@ -33,12 +33,12 @@ class GridDeformator(object):
 
     def set_velocities(self, u, v):
         """
-        Setter function for the veloceties to calculate the displacement.
+        Setter function for the velocities to calculate the displacement.
 
         Calls the getter function for every velocity component.
 
-        :param u: x komponent of the velocity vector
-        :param v: y komponent of the velocity vector
+        :param u: x component of the velocity vector
+        :param v: y component of the velocity vector
         """
         self._u_disp = self._get_displacement_function(u)
         self._v_disp = self._get_displacement_function(v)
@@ -47,8 +47,8 @@ class GridDeformator(object):
         """
         Getter function for calculating the displacement.
 
-        :param f: field that is used for the displacement, mainly velocity komponents
-        :returns: function of the taylored field to first order
+        :param f: field that is used for the displacement, mainly velocity components
+        :returns: function of the Taylor expanded field to first order
         """
         dx = self._distance
         f_x,  f_y  = np.gradient(f  , dx)
@@ -57,13 +57,13 @@ class GridDeformator(object):
         return lambda i, j, x, y : (f[i, j] + x*f_x[i, j]  + y*f_y[i, j]
                        + 0.5*(f_xx[i, j]*x**2 + 2*f_xy[i, j]*x*y + f_yy[i, j]*y**2))
 
-        #For the bilinear method the build in scipy method `map_coordinates <https://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.ndimage.interpolation.map_coordinates.html>`_ is used with *order* set to 1.
+    #For the bilinear method the build in scipy method `map_coordinates <https://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.ndimage.interpolation.map_coordinates.html>`_ is used with *order* set to 1.
     def get_frame(self, i, j):
         """
         Perform interpolation to produce the deformed window for correlation.
 
-        This function takes the previosly set displacement and interpolates the image for these corrdinates.
-        If the cubic interpolation method is choosen, the cubic interpolation of this API is use.
+        This function takes the previously set displacement and interpolates the image for these coordinates.
+        If the cubic interpolation method is chosen, the cubic interpolation of this API is use.
         For the bilinear method the build in scipy method `map_coordinates <https://goo.gl/wucmUO>`_ is used with *order* set to 1.
 
         :param int i: first index in grid coordinates

@@ -32,7 +32,7 @@ If an explicitly two dimensional peak finder is needed, a function which handles
 
 .. automethod:: piv.direct_piv.DirectPIV.correlate_frames_2D
 
-These methods call an other method in order to extract the subimage needed for a step.
+These methods call an other method in order to extract the sub image needed for a step.
 
 .. automethod:: piv.direct_piv.DirectPIV._get_window_frames
 
