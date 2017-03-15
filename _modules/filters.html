@@ -59,7 +59,7 @@
           <div class="body" role="main">
             
   <h1>Source code for filters</h1><div class="highlight"><pre>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">numpy.lib.stride_tricks</span> <span class="k">import</span> <span class="n">as_strided</span>
 <span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="k">import</span> <span class="n">median_filter</span>
@@ -91,7 +91,7 @@
 <span class="sd">    Experiments in Fluids, 2005&quot;</span>
 
 <span class="sd">    :param object piv: Piv Class Object</span>
-<span class="sd">    :param double treshold: threshold for identfying outliers</span>
+<span class="sd">    :param double threshold: threshold for identifying outliers</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">u_res</span> <span class="o">=</span> <span class="n">get_normalized_residual</span><span class="p">(</span><span class="n">piv</span><span class="o">.</span><span class="n">u</span><span class="p">)</span>
@@ -106,7 +106,7 @@
 <span class="sd">    Compute Residual for a Flow field</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">lx</span><span class="p">,</span> <span class="n">ly</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">shape</span>
-    <span class="n">fn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s">&#39;edge&#39;</span><span class="p">)</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;edge&#39;</span><span class="p">)</span>
 
     <span class="n">uis</span>     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">lx</span><span class="o">*</span><span class="n">ly</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
     <span class="n">um</span><span class="p">,</span> <span class="n">rm</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">lx</span><span class="o">*</span><span class="n">ly</span><span class="p">)),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">lx</span><span class="o">*</span><span class="n">ly</span><span class="p">))</span>
@@ -142,7 +142,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

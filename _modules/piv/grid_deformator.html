@@ -59,7 +59,7 @@
           <div class="body" role="main">
             
   <h1>Source code for piv.grid_deformator</h1><div class="highlight"><pre>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">numpy.lib.stride_tricks</span> <span class="k">import</span> <span class="n">as_strided</span>
 <span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="k">import</span> <span class="n">map_coordinates</span>
 <span class="kn">import</span> <span class="nn">sys</span>
@@ -70,36 +70,36 @@
 <span class="sd">    Class of the grid deformator.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">&#39;bilinear&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialization of the grid deformation process.</span>
 
 <span class="sd">        The frame and grid shape are set as well as the distance between the interrogation windows and the method of deformation.</span>
-<span class="sd">        The avaliable methods are</span>
+<span class="sd">        The available methods are</span>
 
 <span class="sd">        * bilinear and </span>
 <span class="sd">        * central.</span>
 
 <span class="sd">        :param frame: image that is interpolated</span>
 <span class="sd">        :param shape: shape of the initial regular grid</span>
-<span class="sd">        :param distance: shift between the interogation windows</span>
+<span class="sd">        :param distance: shift between the interrogation windows</span>
 <span class="sd">        :param method: deformation method</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_frame</span>  <span class="o">=</span> <span class="n">frame</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span>  <span class="o">=</span> <span class="n">shape</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span> <span class="o">=</span> <span class="n">distance</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ipmethod</span> <span class="o">=</span> <span class="n">method</span>
-        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s">&#39;cubic&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;cubic&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_cube_ip</span> <span class="o">=</span> <span class="n">CubicInterpolator</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
 <div class="viewcode-block" id="GridDeformator.set_velocities"><a class="viewcode-back" href="../../grid_deformator.html#piv.grid_deformator.GridDeformator.set_velocities">[docs]</a>    <span class="k">def</span> <span class="nf">set_velocities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Setter function for the veloceties to calculate the displacement.</span>
+<span class="sd">        Setter function for the velocities to calculate the displacement.</span>
 
 <span class="sd">        Calls the getter function for every velocity component.</span>
 
-<span class="sd">        :param u: x komponent of the velocity vector</span>
-<span class="sd">        :param v: y komponent of the velocity vector</span>
+<span class="sd">        :param u: x component of the velocity vector</span>
+<span class="sd">        :param v: y component of the velocity vector</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_u_disp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_displacement_function</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_v_disp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_displacement_function</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div>
@@ -108,8 +108,8 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Getter function for calculating the displacement.</span>
 
-<span class="sd">        :param f: field that is used for the displacement, mainly velocity komponents</span>
-<span class="sd">        :returns: function of the taylored field to first order</span>
+<span class="sd">        :param f: field that is used for the displacement, mainly velocity components</span>
+<span class="sd">        :returns: function of the Taylor expanded field to first order</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">dx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_distance</span>
         <span class="n">f_x</span><span class="p">,</span>  <span class="n">f_y</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">gradient</span><span class="p">(</span><span class="n">f</span>  <span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
@@ -118,13 +118,13 @@
         <span class="k">return</span> <span class="k">lambda</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="p">:</span> <span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">x</span><span class="o">*</span><span class="n">f_x</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>  <span class="o">+</span> <span class="n">y</span><span class="o">*</span><span class="n">f_y</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
                        <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">f_xx</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">f_xy</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="n">f_yy</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span></div>
 
-        <span class="c">#For the bilinear method the build in scipy method `map_coordinates &lt;https://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.ndimage.interpolation.map_coordinates.html&gt;`_ is used with *order* set to 1.</span>
+    <span class="c1">#For the bilinear method the build in scipy method `map_coordinates &lt;https://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.ndimage.interpolation.map_coordinates.html&gt;`_ is used with *order* set to 1.</span>
 <div class="viewcode-block" id="GridDeformator.get_frame"><a class="viewcode-back" href="../../grid_deformator.html#piv.grid_deformator.GridDeformator.get_frame">[docs]</a>    <span class="k">def</span> <span class="nf">get_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Perform interpolation to produce the deformed window for correlation.</span>
 
-<span class="sd">        This function takes the previosly set displacement and interpolates the image for these corrdinates.</span>
-<span class="sd">        If the cubic interpolation method is choosen, the cubic interpolation of this API is use.</span>
+<span class="sd">        This function takes the previously set displacement and interpolates the image for these coordinates.</span>
+<span class="sd">        If the cubic interpolation method is chosen, the cubic interpolation of this API is use.</span>
 <span class="sd">        For the bilinear method the build in scipy method `map_coordinates &lt;https://goo.gl/wucmUO&gt;`_ is used with *order* set to 1.</span>
 
 <span class="sd">        :param int i: first index in grid coordinates</span>
@@ -143,9 +143,9 @@
         <span class="n">ptsay</span> <span class="o">=</span> <span class="p">(</span><span class="n">grid_y</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_v_disp</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">offset_x</span><span class="p">,</span> <span class="n">offset_y</span><span class="p">))</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
         <span class="n">p</span><span class="p">,</span> <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:]</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ipmethod</span> <span class="o">==</span> <span class="s">&#39;bilinear&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ipmethod</span> <span class="o">==</span> <span class="s1">&#39;bilinear&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">map_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_frame</span><span class="p">,</span> <span class="p">[</span><span class="n">ptsax</span><span class="p">,</span> <span class="n">ptsay</span><span class="p">],</span> <span class="n">order</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ipmethod</span> <span class="o">==</span> <span class="s">&#39;cubic&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ipmethod</span> <span class="o">==</span> <span class="s1">&#39;cubic&#39;</span><span class="p">:</span>
             <span class="k">return</span>  <span class="bp">self</span><span class="o">.</span><span class="n">_cube_ip</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">ptsax</span><span class="p">,</span> <span class="n">ptsay</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span></div></div>
 
 </pre></div>
@@ -167,7 +167,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

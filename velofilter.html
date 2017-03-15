@@ -92,15 +92,15 @@ This filter is called from the main function:</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>piv</strong> (<em>object</em>) &#8211; <p>PIV class object</p>
-<p>this is supposed to be an object from a Direct or Adaptiv Class
+<p>This is supposed to be an object from a Direct or adaptive Class
 it is needed to get the velocities</p>
 </li>
 <li><strong>tfactor</strong> (<em>double</em>) &#8211; <p>Factor for cutoff in the velocity binning</p>
-<p>the default value is set to 3 wich works for manny cases</p>
+<p>The default value is set to 3 which works for many cases</p>
 </li>
 <li><strong>dalpha</strong> (<em>double</em>) &#8211; <p>value for differential velocity</p>
-<p>the default is set to .01 which work for many cases
-if the veloceties vary over a larger ranger use a larger value</p>
+<p>The default is set to .01 which work for many cases
+if the velocities vary over a larger ranger use a larger value</p>
 </li>
 </ul>
 </td>
@@ -116,26 +116,26 @@ The binning is done by the function</p>
 <code class="descclassname">velofilter.</code><code class="descname">calc_derivative</code><span class="sig-paren">(</span><em>field</em>, <em>stepsize=0.01</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/velofilter.html#calc_derivative"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#velofilter.calc_derivative" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function for calculation of the binning.</p>
 <p>The returned result is the binning of the velocities.
-It is callend derivative because it is mathematically the derivative of the function:</p>
+It is called derivative because it is mathematically the derivative of the function:</p>
 <dl class="function">
 <dt id="velofilter.calc_factor">
 <code class="descclassname">velofilter.</code><code class="descname">calc_factor</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#velofilter.calc_factor" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<p>It is done for the negative and positiv half speratly.</p>
+<p>It is done for the negative and positive half separately.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>field</strong> &#8211; is a 1D field wich will be binned</li>
-<li><strong>stepsize</strong> &#8211; is the stepsize for the velocity</li>
+<li><strong>field</strong> &#8211; is a 1D field which will be binned</li>
+<li><strong>stepsize</strong> &#8211; is the step size for the velocity</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Return (positiv,negativ):</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">velocities and the binning result for positiv half and negative half are returned
-as a tupel</p>
+<tr class="field-even field"><th class="field-name" colspan="2">Return (positive,negative):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><p class="first last">velocities and the binning result for positive half and negative half are returned
+as a tuple</p>
 </td>
 </tr>
 </tbody>
@@ -148,20 +148,20 @@ as a tupel</p>
 <code class="descclassname">velofilter.</code><code class="descname">calc_factor</code><span class="sig-paren">(</span><em>field</em>, <em>stepsize=0.01</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/velofilter.html#calc_factor"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Function for calculation of the summed binning.</p>
 <p>The returned result is an integral over the binning of the velocities.
-It is done for the negative and positiv half speratly.</p>
+It is done for the negative and positive half separately.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>field</strong> &#8211; is a 1D field wich will be binned</li>
-<li><strong>stepsize</strong> &#8211; is the stepsize for the velocity</li>
+<li><strong>field</strong> &#8211; is a 1D field which will be binned</li>
+<li><strong>stepsize</strong> &#8211; is the step size for the velocity</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name" colspan="2">Return (positiv,negativ):</th></tr>
-<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">velocities and the binning result for positiv half and negative half are returned
-as a tupel of numpy arrays</p>
+<tr class="field-even field"><th class="field-name" colspan="2">Return (positive,negative):</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><p class="first last">velocities and the binning result for positive half and negative half are returned
+as a tuple of numpy arrays</p>
 </td>
 </tr>
 </tbody>
@@ -193,7 +193,7 @@ as a tupel of numpy arrays</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

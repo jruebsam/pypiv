@@ -59,11 +59,11 @@
           <div class="body" role="main">
             
   <h1>Source code for piv.grid_spec</h1><div class="highlight"><pre>
-<div class="viewcode-block" id="GridSpec"><a class="viewcode-back" href="../../grid_spec.html#piv.grid_spec.GridSpec">[docs]</a><span class="k">class</span> <span class="nc">GridSpec</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="GridSpec"><a class="viewcode-back" href="../../grid_spec.html#piv.grid_spec.GridSpec">[docs]</a><span></span><span class="k">class</span> <span class="nc">GridSpec</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class for grid specifications.</span>
 
-<span class="sd">    This class saves and caluclates the grid specifications.</span>
+<span class="sd">    This class saves and calculates the grid specifications.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame_shape</span><span class="p">,</span> <span class="n">frame_strides</span><span class="p">,</span> <span class="n">window_size</span><span class="p">,</span> <span class="n">search_size</span><span class="p">,</span> <span class="n">distance</span><span class="p">):</span>
@@ -71,13 +71,13 @@
 <span class="sd">        Initialization of the shapes and strides.</span>
 
 <span class="sd">        Setting the values according to parameters.</span>
-<span class="sd">        If the window_size and search_size are not the same a padding for the smaler one is added.</span>
+<span class="sd">        If the window_size and search_size are not the same a padding for the smaller one is added.</span>
 
 <span class="sd">        :param frame_shape: shape of the initial image</span>
 <span class="sd">        :param frame_strides: strides of the initial image</span>
-<span class="sd">        :param window_size: size of the interogation window</span>
+<span class="sd">        :param window_size: size of the interrogation window</span>
 <span class="sd">        :param search_size: size of the search window</span>
-<span class="sd">        :param distance: distance between interogation window beginnings</span>
+<span class="sd">        :param distance: distance between interrogation window beginnings</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frame_shape</span>    <span class="o">=</span> <span class="n">frame_shape</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frame_strides</span>  <span class="o">=</span> <span class="n">frame_strides</span>
@@ -88,7 +88,7 @@
 
 <div class="viewcode-block" id="GridSpec.equal_to"><a class="viewcode-back" href="../../grid_spec.html#piv.grid_spec.GridSpec.equal_to">[docs]</a>    <span class="k">def</span> <span class="nf">equal_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_spec</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Comparrison operator for class.</span>
+<span class="sd">        Comparison operator for class.</span>
 
 <span class="sd">        Two GridSpecs are equal if the window_size, the search_size and distance are equal.</span>
 
@@ -99,17 +99,17 @@
         <span class="n">cond2</span> <span class="o">=</span> <span class="n">grid_spec</span><span class="o">.</span><span class="n">search_size</span>  <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_size</span>
         <span class="n">cond3</span> <span class="o">=</span> <span class="n">grid_spec</span><span class="o">.</span><span class="n">distance</span>     <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">distance</span>
         <span class="k">if</span> <span class="n">cond1</span> <span class="o">&amp;</span> <span class="n">cond2</span> <span class="o">&amp;</span> <span class="n">cond3</span><span class="p">:</span>
-            <span class="k">return</span> <span class="k">True</span>
+            <span class="k">return</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="k">False</span></div>
+            <span class="k">return</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="GridSpec.get_grid_shape"><a class="viewcode-back" href="../../grid_spec.html#piv.grid_spec.GridSpec.get_grid_shape">[docs]</a>    <span class="k">def</span> <span class="nf">get_grid_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Getter function for the shape of the grid.</span>
 
-<span class="sd">        The returned value is the shape of the grid calculated from the arangement of the interogation windows.</span>
+<span class="sd">        The returned value is the shape of the grid calculated from the arrangement of the interrogation windows.</span>
 
-<span class="sd">        :returns: grid shape in x and y direction as tupel</span>
+<span class="sd">        :returns: grid shape in x and y direction as tuple</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">lx</span><span class="p">,</span> <span class="n">ly</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_shape</span>
         <span class="k">return</span> <span class="p">((</span><span class="n">lx</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">window_size</span><span class="p">)</span><span class="o">//</span><span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span>
@@ -117,9 +117,9 @@
 
 <div class="viewcode-block" id="GridSpec.get_interogation_grid_shape"><a class="viewcode-back" href="../../grid_spec.html#piv.grid_spec.GridSpec.get_interogation_grid_shape">[docs]</a>    <span class="k">def</span> <span class="nf">get_interogation_grid_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Getter function for the shape of the interogation window.</span>
+<span class="sd">        Getter function for the shape of the interrogation window.</span>
 
-<span class="sd">        :returns: shape of the interogation window</span>
+<span class="sd">        :returns: shape of the interrogation window</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_grid_shape</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">shape</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">window_size</span><span class="p">,)</span></div>
@@ -135,9 +135,9 @@
 
 <div class="viewcode-block" id="GridSpec.get_interogation_grid_strides"><a class="viewcode-back" href="../../grid_spec.html#piv.grid_spec.GridSpec.get_interogation_grid_strides">[docs]</a>    <span class="k">def</span> <span class="nf">get_interogation_grid_strides</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Getter function for the strides of the interogation window.</span>
+<span class="sd">        Getter function for the strides of the interrogation window.</span>
 
-<span class="sd">        :returns: strides of the interogation window</span>
+<span class="sd">        :returns: strides of the interrogation window</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">sx</span><span class="p">,</span> <span class="n">sy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_strides</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">sx</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> <span class="n">sy</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> <span class="n">sx</span><span class="p">,</span> <span class="n">sy</span><span class="p">)</span></div>
@@ -171,7 +171,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

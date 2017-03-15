@@ -59,7 +59,7 @@
           <div class="body" role="main">
             
   <h1>Source code for piv.velocity_scaler</h1><div class="highlight"><pre>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="k">import</span> <span class="n">RectBivariateSpline</span> <span class="k">as</span> <span class="n">RBS</span>
@@ -99,13 +99,13 @@
 
         <span class="n">tx</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">lx</span><span class="o">*</span><span class="n">target_distance</span><span class="p">,</span> <span class="n">target_distance</span><span class="p">)</span>
         <span class="n">ty</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ly</span><span class="o">*</span><span class="n">target_distance</span><span class="p">,</span> <span class="n">target_distance</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_out_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">ty</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s">&#39;ij&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_out_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">ty</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="VelocityUpscaler.scale_field"><a class="viewcode-back" href="../../velocity_scaler.html#piv.velocity_scaler.VelocityUpscaler.scale_field">[docs]</a>    <span class="k">def</span> <span class="nf">scale_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Scaling of the field according to calculated meshgrid.</span>
 
-<span class="sd">        For the interpolation rectangualr bivariant Splines are used.</span>
+<span class="sd">        For the interpolation rectangular bivariate Splines are used.</span>
 <span class="sd">        These are implemented from the scipy function `RectBivariateSpline &lt;https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.RectBivariateSpline.html&gt;`_.</span>
 
 <span class="sd">        :param f: field to be interpolated</span>
@@ -113,6 +113,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">rbs</span> <span class="o">=</span> <span class="n">RBS</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tx</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ty</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">rbs</span><span class="o">.</span><span class="n">ev</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_out_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_y</span><span class="p">)</span></div></div>
+
 </pre></div>
 
           </div>
@@ -132,7 +133,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

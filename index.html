@@ -98,17 +98,17 @@
 </div>
 <div class="section" id="general-information">
 <h1>General Information<a class="headerlink" href="#general-information" title="Permalink to this headline">¶</a></h1>
-<p>This library calculates the particle image velocimetrie (piv) of a pair of images.
+<p>This library calculates the particle image velocimetry (piv) of a pair of images.
 It consist of a Fourier based method to increase the performance.
 In order to increase the accuracy, a window deformation Method is included as well.
-The subpixel shift finder is implemented in two versions, each with it&#8217;s downsides.
+The sub pixel shift finder is implemented in two versions, each with it&#8217;s downsides.
 A detailed explanation of every module can be found by navigating through the contents.</p>
 </div>
 <div class="section" id="short-description-of-piv-and-its-application">
 <h1>Short description of PIV and its application<a class="headerlink" href="#short-description-of-piv-and-its-application" title="Permalink to this headline">¶</a></h1>
-<p>In particle image velocimetrie two images are compared in order to generate a vector field.
+<p>In particle image velocimetry two images are compared in order to generate a vector field.
 In these images interrogation windows are set an within these the mean displacement of the particles is calculated.
-This is done by cross correlating the two interrogation windows, for which the fast fourier transform (FFT) is use.</p>
+This is done by cross correlating the two interrogation windows, for which the fast Fourier transform (FFT) is use.</p>
 <p>To minimize the error, two methods are used:</p>
 <ul>
 <li><dl class="first docutils">
@@ -126,7 +126,7 @@ This is done by cross correlating the two interrogation windows, for which the f
 </ul>
 <p>After both of these methods the filtered values are interpolated.</p>
 <p>After the first stage of the piv, an other can be set in order to reduce the error even further.
-This is called an adaptiv piv.
+This is called an adaptive piv.
 With in these method the formerly chosen grid is deformed to capture particles in the flow with the previously calculated velocity.
 These stages can be added up so that the grid can be refined or the error iteratively lowered.</p>
 </div>
@@ -159,7 +159,7 @@ These stages can be added up so that the grid can be refined or the error iterat
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

@@ -84,24 +84,24 @@
 <dl class="class">
 <dt id="piv.adaptive_piv.AdaptivePIV">
 <em class="property">class </em><code class="descclassname">piv.adaptive_piv.</code><code class="descname">AdaptivePIV</code><span class="sig-paren">(</span><em>piv_object</em>, <em>window_size</em>, <em>search_size</em>, <em>distance</em>, <em>deformation='forward'</em>, <em>ipmethod='bilinear'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/piv/adaptive_piv.html#AdaptivePIV"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#piv.adaptive_piv.AdaptivePIV" title="Permalink to this definition">¶</a></dt>
-<dd><p>Class for the adaptiv piv.</p>
-<p>After the initial piv is done an adaptiv piv can be performed to minimize the error or to make the grid finer.
+<dd><p>Class for the adaptive piv.</p>
+<p>After the initial piv is done an adaptive piv can be performed to minimize the error or to make the grid finer.
 This class inherits from the <a class="reference internal" href="direct_piv.html"><span class="doc">initial class DirectPIV</span></a>.
 Therefore the correlation function is inherited as well as the GridSpec.
-In adition to the inherited grid a new Grid is calculated by deforming the grid with respect to the prior calculated velocities.
+In addition to the inherited grid a new Grid is calculated by deforming the grid with respect to the prior calculated velocities.
 In the case that the new grid is supposed to be finer then the one before, the velocities need to be upscaled.</p>
 <p>Initialization as an extension of the super class.</p>
-<p>The initialization of the super class is caled to generate all neccesary GridSpecs and grids.
-Aditional information are the deformation method and the interpolation method.</p>
+<p>The initialization of the super class is called to generate all necessary GridSpecs and grids.
+Additional information are the deformation method and the interpolation method.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>piv_object</strong> (<a class="reference internal" href="direct_piv.html#piv.direct_piv.DirectPIV" title="piv.direct_piv.DirectPIV"><em>DirectPIV</em></a>) &#8211; object of the initial piv</li>
-<li><strong>window_size</strong> (<em>int</em>) &#8211; size of the interogation window</li>
+<li><strong>window_size</strong> (<em>int</em>) &#8211; size of the interrogation window</li>
 <li><strong>search_size</strong> (<em>int</em>) &#8211; size of the search window</li>
-<li><strong>distance</strong> (<em>int</em>) &#8211; distance between beginning of the first interogationindow and second</li>
+<li><strong>distance</strong> (<em>int</em>) &#8211; distance between beginning of the first interrogation window and second</li>
 <li><strong>deformation</strong> (<em>str</em>) &#8211; deformation method</li>
 <li><strong>ipmethod</strong> (<em>str</em>) &#8211; interpolation method</li>
 </ul>
@@ -116,14 +116,15 @@ Aditional information are the deformation method and the interpolation method.</
 <dt id="piv.adaptive_piv.AdaptivePIV._deform_grid">
 <code class="descclassname">AdaptivePIV.</code><code class="descname">_deform_grid</code><span class="sig-paren">(</span><em>deformation_method</em>, <em>ipmethod</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/piv/adaptive_piv.html#AdaptivePIV._deform_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#piv.adaptive_piv.AdaptivePIV._deform_grid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Deforms the regular grid according to velocity and interpolates image.</p>
-<p>In order to capture more particles flowing in the same direction as indecated by the previosly calculated velocityfield, the grid is deformed and the image corresponding to that grid spot interpolated from the original image.
+<p>In order to capture more particles flowing in the same direction as indicated by the previously calculated velocity field, 
+the grid is deformed and the image corresponding to that grid spot interpolated from the original image.
 This gives a new grid with interpolated particle spots.
-Here two methods are avalable:</p>
+Here two methods are available:</p>
 <ul>
 <li><dl class="first docutils">
 <dt>central:</dt>
 <dd><p class="first last">Leeds to a half deformation in both directions, forward and backwards.
-This as well leeds to two times the computation of the deformation.</p>
+This as well leads to two times the computation of the deformation.</p>
 </dd>
 </dl>
 </li>
@@ -140,7 +141,7 @@ This as well leeds to two times the computation of the deformation.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>deformation_method</strong> (<em>str</em>) &#8211; deformation method, mentioned above</li>
-<li><strong>ipmethod</strong> (<em>str</em>) &#8211; interpolation method passed allong to the interpolator</li>
+<li><strong>ipmethod</strong> (<em>str</em>) &#8211; interpolation method passed along to the interpolator</li>
 </ul>
 </td>
 </tr>
@@ -152,23 +153,23 @@ This as well leeds to two times the computation of the deformation.</p>
 <dl class="method">
 <dt id="piv.adaptive_piv.AdaptivePIV._get_window_frames">
 <code class="descclassname">AdaptivePIV.</code><code class="descname">_get_window_frames</code><span class="sig-paren">(</span><em>i</em>, <em>j</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/piv/adaptive_piv.html#AdaptivePIV._get_window_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#piv.adaptive_piv.AdaptivePIV._get_window_frames" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function overide in order to include the two different deformation methods.</p>
+<dd><p>Function override in order to include the two different deformation methods.</p>
 <p>Functionality is the same as</p>
 <dl class="method">
 <dt id="piv.direct_piv.AdaptivePIV.DirectPIV._get_window_frames">
 <code class="descclassname">DirectPIV.</code><code class="descname">_get_window_frames</code><span class="sig-paren">(</span><em>i</em>, <em>j</em><span class="sig-paren">)</span><a class="headerlink" href="#piv.direct_piv.AdaptivePIV.DirectPIV._get_window_frames" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return subimages of imageatribute a and b at position i,j.</p>
+<dd><p>Return sub images of image attribute a and b at position i,j.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>i</strong> (<em>int</em>) &#8211; first index of grid coordinates</li>
-<li><strong>j</strong> (<em>ing</em>) &#8211; second index of grid coordinates</li>
+<li><strong>j</strong> (<em>int</em>) &#8211; second index of grid coordinates</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">sub frame as interogation and search window for correlation</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">sub frame as interrogation and search window for correlation</p>
 </td>
 </tr>
 </tbody>
@@ -203,7 +204,7 @@ This as well leeds to two times the computation of the deformation.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

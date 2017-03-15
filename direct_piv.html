@@ -94,8 +94,8 @@ By calling the function</p>
 <code class="descclassname">piv.direct_piv.DirectPIV.</code><code class="descname">correlate_frames</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#DirectPIV.piv.direct_piv.DirectPIV.correlate_frames" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<p>the correlation is caluclated.
-As a result of the process the velocities are set as atributes of the class.</p>
+<p>the correlation is calculated.
+As a result of the process the velocities are set as attributes of the class.</p>
 <p>Initialization of the class.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -104,9 +104,9 @@ As a result of the process the velocities are set as atributes of the class.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>image_a</strong> &#8211; first image to be evaluated</li>
 <li><strong>image_b</strong> &#8211; second image to be evaluated</li>
-<li><strong>window_size</strong> (<em>int</em>) &#8211; size of the interogation window on first image</li>
+<li><strong>window_size</strong> (<em>int</em>) &#8211; size of the interrogation window on first image</li>
 <li><strong>search_size</strong> (<em>int</em>) &#8211; size of the search window on second image</li>
-<li><strong>distance</strong> (<em>int</em>) &#8211; distance between beginnig if first interogation window and second</li>
+<li><strong>distance</strong> (<em>int</em>) &#8211; distance between beginning if first interrogation window and second</li>
 </ul>
 </td>
 </tr>
@@ -133,7 +133,7 @@ The shape and strides are compared as well.</p>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>ValueError</strong> &#8211; shape or strides don&#8217;t match</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">images in same order as imput</p>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">images in same order as input</p>
 </td>
 </tr>
 </tbody>
@@ -144,7 +144,7 @@ The shape and strides are compared as well.</p>
 <dt id="piv.direct_piv.DirectPIV._set_images">
 <code class="descclassname">DirectPIV.</code><code class="descname">_set_images</code><span class="sig-paren">(</span><em>img_a</em>, <em>img_b</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/piv/direct_piv.html#DirectPIV._set_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#piv.direct_piv.DirectPIV._set_images" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the correlation images of the PIV algorithm.</p>
-<p>If the window_size and search_size differ, the second image needs to be paded with zeros.
+<p>If the window_size and search_size differ, the second image needs to be padded with zeros.
 :param img_a: first image
 :param img_b: second image</p>
 </dd></dl>
@@ -162,12 +162,12 @@ Therefore a function creates the grid according to the GridSpec.</p>
 <dl class="method">
 <dt id="piv.direct_piv.DirectPIV.correlate_frames">
 <code class="descclassname">DirectPIV.</code><code class="descname">correlate_frames</code><span class="sig-paren">(</span><em>method='gaussian'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/piv/direct_piv.html#DirectPIV.correlate_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#piv.direct_piv.DirectPIV.correlate_frames" title="Permalink to this definition">¶</a></dt>
-<dd><p>Correlation of all gridpoints, creating a velocityfield.</p>
+<dd><p>Correlation of all grid points, creating a velocity field.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>method</strong> (<em>str</em>) &#8211; Method of the peakfinding algorithm</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>method</strong> (<em>str</em>) &#8211; Method of the peak finding algorithm</td>
 </tr>
 </tbody>
 </table>
@@ -182,22 +182,22 @@ Read more about this in the documentation of the process module.</p>
 <dd><p>Correlation function for two dimensional peak finder algorithm.</p>
 </dd></dl>
 
-<p>These methods call an other method in order to extract the subimage needed for a step.</p>
+<p>These methods call an other method in order to extract the sub image needed for a step.</p>
 <dl class="method">
 <dt id="piv.direct_piv.DirectPIV._get_window_frames">
 <code class="descclassname">DirectPIV.</code><code class="descname">_get_window_frames</code><span class="sig-paren">(</span><em>i</em>, <em>j</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/piv/direct_piv.html#DirectPIV._get_window_frames"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#piv.direct_piv.DirectPIV._get_window_frames" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return subimages of imageatribute a and b at position i,j.</p>
+<dd><p>Return sub images of image attribute a and b at position i,j.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>i</strong> (<em>int</em>) &#8211; first index of grid coordinates</li>
-<li><strong>j</strong> (<em>ing</em>) &#8211; second index of grid coordinates</li>
+<li><strong>j</strong> (<em>int</em>) &#8211; second index of grid coordinates</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">sub frame as interogation and search window for correlation</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">sub frame as interrogation and search window for correlation</p>
 </td>
 </tr>
 </tbody>
@@ -229,7 +229,7 @@ Read more about this in the documentation of the process module.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

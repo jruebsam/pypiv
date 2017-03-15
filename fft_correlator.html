@@ -86,7 +86,7 @@
 <em class="property">class </em><code class="descclassname">piv.fft_correlator.</code><code class="descname">FFTCorrelator</code><span class="sig-paren">(</span><em>window_a_size</em>, <em>window_b_size</em>, <em>scale_fft='default'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/piv/fft_correlator.html#FFTCorrelator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#piv.fft_correlator.FFTCorrelator" title="Permalink to this definition">¶</a></dt>
 <dd><p>An FFT Correlation Class for a PIV Evaluation of two frames
 It uses the <a class="reference external" href="https://hgomersall.github.io/pyFFTW/">pyfftw</a> library for performant FFT.
-This class is also resonsible for calculating the Shift after the correlation.</p>
+This class is also responsible for calculating the Shift after the correlation.</p>
 <p>Initialize fftw objects for FFTs with the pyfftw library</p>
 <p>The necessary functions are loaded and memory allocated.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -94,9 +94,9 @@ This class is also resonsible for calculating the Shift after the correlation.</
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>window_a_size</strong> &#8211; size of the interogation window</li>
+<li><strong>window_a_size</strong> &#8211; size of the interrogation window</li>
 <li><strong>window_b_size</strong> &#8211; size of the search window</li>
-<li><strong>scale_fft</strong> (<em>str</em>) &#8211; if set to upscale, the pading will be upscaled</li>
+<li><strong>scale_fft</strong> (<em>str</em>) &#8211; if set to upscale, the padding will be upscaled</li>
 </ul>
 </td>
 </tr>
@@ -124,19 +124,19 @@ For the displacement calculation the function</p>
 <dd></dd></dl>
 
 <p>is called with the subpixel_method passed on as parameter.
-If a padding was needed, it is removed from the calulated displacement.</p>
+If a padding was needed, it is removed from the calculated displacement.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>window_a</strong> &#8211; interogation window</li>
+<li><strong>window_a</strong> &#8211; interrogation window</li>
 <li><strong>window_b</strong> &#8211; search window</li>
 <li><strong>subpixel_method</strong> (<em>str</em>) &#8211; method for peak finder</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">shift in x and y direction as tupel</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">shift in x and y direction as tuple</p>
 </td>
 </tr>
 </tbody>
@@ -147,14 +147,14 @@ If a padding was needed, it is removed from the calulated displacement.</p>
 <dt id="piv.fft_correlator.FFTCorrelator._evaluate_windows">
 <code class="descclassname">FFTCorrelator.</code><code class="descname">_evaluate_windows</code><span class="sig-paren">(</span><em>window_a</em>, <em>window_b</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/piv/fft_correlator.html#FFTCorrelator._evaluate_windows"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#piv.fft_correlator.FFTCorrelator._evaluate_windows" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the FFT of both windows, correlate and transform back.</p>
-<p>In order to decrease the error a mean substraction is performed.
+<p>In order to decrease the error a mean subtraction is performed.
 To compensate for the indexing during the FFT a FFT Shift is performed.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>window_a</strong> &#8211; interogation window</li>
+<li><strong>window_a</strong> &#8211; interrogation window</li>
 <li><strong>window_b</strong> &#8211; search window</li>
 </ul>
 </td>
@@ -191,7 +191,7 @@ To compensate for the indexing during the FFT a FFT Shift is performed.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>

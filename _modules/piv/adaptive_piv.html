@@ -59,7 +59,7 @@
           <div class="body" role="main">
             
   <h1>Source code for piv.adaptive_piv</h1><div class="highlight"><pre>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">velocity_scaler</span> <span class="k">import</span> <span class="n">VelocityUpscaler</span>
 <span class="kn">from</span> <span class="nn">grid_deformator</span> <span class="k">import</span> <span class="n">GridDeformator</span>
@@ -68,28 +68,28 @@
 
 <div class="viewcode-block" id="AdaptivePIV"><a class="viewcode-back" href="../../adaptiv_piv.html#piv.adaptive_piv.AdaptivePIV">[docs]</a><span class="k">class</span> <span class="nc">AdaptivePIV</span><span class="p">(</span><span class="n">DirectPIV</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class for the adaptiv piv.</span>
+<span class="sd">    Class for the adaptive piv.</span>
 
-<span class="sd">    After the initial piv is done an adaptiv piv can be performed to minimize the error or to make the grid finer.</span>
+<span class="sd">    After the initial piv is done an adaptive piv can be performed to minimize the error or to make the grid finer.</span>
 <span class="sd">    This class inherits from the :doc:`initial class DirectPIV &lt;direct_piv&gt;`.</span>
 <span class="sd">    Therefore the correlation function is inherited as well as the GridSpec.</span>
-<span class="sd">    In adition to the inherited grid a new Grid is calculated by deforming the grid with respect to the prior calculated velocities.</span>
+<span class="sd">    In addition to the inherited grid a new Grid is calculated by deforming the grid with respect to the prior calculated velocities.</span>
 <span class="sd">    In the case that the new grid is supposed to be finer then the one before, the velocities need to be upscaled.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">piv_object</span><span class="p">,</span> <span class="n">window_size</span><span class="p">,</span> <span class="n">search_size</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">deformation</span><span class="o">=</span><span class="s">&#39;forward&#39;</span><span class="p">,</span> <span class="n">ipmethod</span><span class="o">=</span><span class="s">&#39;bilinear&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">piv_object</span><span class="p">,</span> <span class="n">window_size</span><span class="p">,</span> <span class="n">search_size</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">deformation</span><span class="o">=</span><span class="s1">&#39;forward&#39;</span><span class="p">,</span> <span class="n">ipmethod</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initialization as an extension of the super class.</span>
 
-<span class="sd">        The initialization of the super class is caled to generate all neccesary GridSpecs and grids.</span>
-<span class="sd">        Aditional information are the deformation method and the interpolation method.</span>
+<span class="sd">        The initialization of the super class is called to generate all necessary GridSpecs and grids.</span>
+<span class="sd">        Additional information are the deformation method and the interpolation method.</span>
 <span class="sd">        </span>
 <span class="sd">        .. ref on methods ons implemented</span>
 
 <span class="sd">        :param DirectPIV piv_object: object of the initial piv</span>
-<span class="sd">        :param int window_size: size of the interogation window</span>
+<span class="sd">        :param int window_size: size of the interrogation window</span>
 <span class="sd">        :param int search_size: size of the search window</span>
-<span class="sd">        :param int distance: distance between beginning of the first interogationindow and second</span>
+<span class="sd">        :param int distance: distance between beginning of the first interrogation window and second</span>
 <span class="sd">        :param str deformation: deformation method</span>
 <span class="sd">        :param str ipmethod: interpolation method</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -111,22 +111,23 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Deforms the regular grid according to velocity and interpolates image.</span>
 
-<span class="sd">        In order to capture more particles flowing in the same direction as indecated by the previosly calculated velocityfield, the grid is deformed and the image corresponding to that grid spot interpolated from the original image.</span>
+<span class="sd">        In order to capture more particles flowing in the same direction as indicated by the previously calculated velocity field, </span>
+<span class="sd">        the grid is deformed and the image corresponding to that grid spot interpolated from the original image.</span>
 <span class="sd">        This gives a new grid with interpolated particle spots.</span>
-<span class="sd">        Here two methods are avalable:</span>
+<span class="sd">        Here two methods are available:</span>
 
 <span class="sd">        * central:</span>
 <span class="sd">            Leeds to a half deformation in both directions, forward and backwards.</span>
-<span class="sd">            This as well leeds to two times the computation of the deformation.</span>
+<span class="sd">            This as well leads to two times the computation of the deformation.</span>
 <span class="sd">        * forward:</span>
 <span class="sd">            Leeds to a full deformation in forward direction</span>
 
 <span class="sd">        :param str deformation_method: deformation method, mentioned above</span>
-<span class="sd">        :param str ipmethod: interpolation method passed allong to the interpolator</span>
+<span class="sd">        :param str ipmethod: interpolation method passed along to the interpolator</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">distance</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_spec</span><span class="o">.</span><span class="n">distance</span>
         <span class="n">shape_b</span>    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_spec</span><span class="o">.</span><span class="n">get_search_grid_shape</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">deformation_method</span> <span class="o">==</span> <span class="s">&#39;central&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">deformation_method</span> <span class="o">==</span> <span class="s1">&#39;central&#39;</span><span class="p">:</span>
             <span class="n">shape_a</span>    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_spec</span><span class="o">.</span><span class="n">get_interogation_grid_shape</span><span class="p">()</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">grid_def_a</span>  <span class="o">=</span> <span class="n">GridDeformator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_a</span><span class="p">,</span> <span class="n">shape_a</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">ipmethod</span><span class="p">)</span>
@@ -135,13 +136,13 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">grid_def_b</span>  <span class="o">=</span> <span class="n">GridDeformator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_padded_fb</span><span class="p">,</span> <span class="n">shape_b</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">ipmethod</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">grid_def_b</span><span class="o">.</span><span class="n">set_velocities</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="o">/</span><span class="mf">2.</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">deformation_method</span> <span class="o">==</span> <span class="s">&#39;forward&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">deformation_method</span> <span class="o">==</span> <span class="s1">&#39;forward&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">grid_def_b</span>  <span class="o">=</span> <span class="n">GridDeformator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_padded_fb</span><span class="p">,</span> <span class="n">shape_b</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">ipmethod</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">grid_def_b</span><span class="o">.</span><span class="n">set_velocities</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="AdaptivePIV._get_window_frames"><a class="viewcode-back" href="../../adaptiv_piv.html#piv.adaptive_piv.AdaptivePIV._get_window_frames">[docs]</a>    <span class="k">def</span> <span class="nf">_get_window_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Function overide in order to include the two different deformation methods.</span>
+<span class="sd">        Function override in order to include the two different deformation methods.</span>
 
 <span class="sd">        Functionality is the same as</span>
 
@@ -149,15 +150,13 @@
 
 <span class="sd">        but in this function, before the window in handed over the deformation is performed for that grid point.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deformation_method</span> <span class="o">==</span> <span class="s">&#39;central&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deformation_method</span> <span class="o">==</span> <span class="s1">&#39;central&#39;</span><span class="p">:</span>
             <span class="n">frame_a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_def_a</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
             <span class="n">frame_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_def_b</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deformation_method</span> <span class="o">==</span> <span class="s">&#39;forward&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deformation_method</span> <span class="o">==</span> <span class="s1">&#39;forward&#39;</span><span class="p">:</span>
             <span class="n">frame_a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_a</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
             <span class="n">frame_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_def_b</span><span class="o">.</span><span class="n">get_frame</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">frame_a</span><span class="p">,</span> <span class="n">frame_b</span></div></div>
-
-
 
 
 </pre></div>
@@ -179,7 +178,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.3.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
     </div>
   </body>
 </html>
