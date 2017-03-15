@@ -19,6 +19,7 @@ Welcome to pypiv's documentation!
    fft_correlator
    grid_spec
    velocity_scaler
+   peak_detection
 
 
 General Information
