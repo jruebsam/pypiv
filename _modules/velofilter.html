@@ -63,7 +63,7 @@
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">linregress</span> <span class="k">as</span> <span class="n">li</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">exp</span>
 
-<div class="viewcode-block" id="calc_factor"><a class="viewcode-back" href="../velofilter.html#velofilter.calc_factor">[docs]</a><span class="k">def</span> <span class="nf">calc_factor</span><span class="p">(</span><span class="n">field</span><span class="p">,</span><span class="n">stepsize</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+<div class="viewcode-block" id="calc_factor"><a class="viewcode-back" href="../piv/velofilter.html#velofilter.calc_factor">[docs]</a><span class="k">def</span> <span class="nf">calc_factor</span><span class="p">(</span><span class="n">field</span><span class="p">,</span><span class="n">stepsize</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function for calculation of the summed binning.</span>
 
@@ -103,7 +103,7 @@
 
     <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">result_pos</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">result_neg</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="calc_derivative"><a class="viewcode-back" href="../velofilter.html#velofilter.calc_derivative">[docs]</a><span class="k">def</span> <span class="nf">calc_derivative</span><span class="p">(</span><span class="n">field</span><span class="p">,</span><span class="n">stepsize</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+<div class="viewcode-block" id="calc_derivative"><a class="viewcode-back" href="../piv/velofilter.html#velofilter.calc_derivative">[docs]</a><span class="k">def</span> <span class="nf">calc_derivative</span><span class="p">(</span><span class="n">field</span><span class="p">,</span><span class="n">stepsize</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function for calculation of the binning.</span>
 
@@ -147,7 +147,7 @@
 
     <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">result_pos</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">result_neg</span><span class="p">))</span></div>
 
-<div class="viewcode-block" id="filter"><a class="viewcode-back" href="../velofilter.html#velofilter.filter">[docs]</a><span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="n">piv</span><span class="p">,</span><span class="n">tfactor</span><span class="o">=</span><span class="mf">3.</span><span class="p">,</span><span class="n">dalpha</span><span class="o">=.</span><span class="mi">01</span><span class="p">):</span>
+<div class="viewcode-block" id="filter"><a class="viewcode-back" href="../piv/velofilter.html#velofilter.filter">[docs]</a><span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="n">piv</span><span class="p">,</span><span class="n">tfactor</span><span class="o">=</span><span class="mf">3.</span><span class="p">,</span><span class="n">dalpha</span><span class="o">=.</span><span class="mi">01</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function for calculating the cutoff values.</span>
 

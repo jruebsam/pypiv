@@ -65,7 +65,7 @@
 <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="k">import</span> <span class="n">RectBivariateSpline</span> <span class="k">as</span> <span class="n">RBS</span>
 
 
-<div class="viewcode-block" id="VelocityUpscaler"><a class="viewcode-back" href="../../velocity_scaler.html#piv.velocity_scaler.VelocityUpscaler">[docs]</a><span class="k">class</span> <span class="nc">VelocityUpscaler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="VelocityUpscaler"><a class="viewcode-back" href="../../piv/velocity_scaler.html#piv.velocity_scaler.VelocityUpscaler">[docs]</a><span class="k">class</span> <span class="nc">VelocityUpscaler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class for scaling the velocity field according to GridSpec</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -101,7 +101,7 @@
         <span class="n">ty</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ly</span><span class="o">*</span><span class="n">target_distance</span><span class="p">,</span> <span class="n">target_distance</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_out_x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_out_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">ty</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s1">&#39;ij&#39;</span><span class="p">)</span>
 
-<div class="viewcode-block" id="VelocityUpscaler.scale_field"><a class="viewcode-back" href="../../velocity_scaler.html#piv.velocity_scaler.VelocityUpscaler.scale_field">[docs]</a>    <span class="k">def</span> <span class="nf">scale_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+<div class="viewcode-block" id="VelocityUpscaler.scale_field"><a class="viewcode-back" href="../../piv/velocity_scaler.html#piv.velocity_scaler.VelocityUpscaler.scale_field">[docs]</a>    <span class="k">def</span> <span class="nf">scale_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Scaling of the field according to calculated meshgrid.</span>
 

@@ -64,7 +64,7 @@
 
 <span class="kn">from</span> <span class="nn">peak_detection</span> <span class="k">import</span> <span class="n">find_peak</span>
 
-<div class="viewcode-block" id="FFTCorrelator"><a class="viewcode-back" href="../../fft_correlator.html#piv.fft_correlator.FFTCorrelator">[docs]</a><span class="k">class</span> <span class="nc">FFTCorrelator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="FFTCorrelator"><a class="viewcode-back" href="../../piv/fft_correlator.html#piv.fft_correlator.FFTCorrelator">[docs]</a><span class="k">class</span> <span class="nc">FFTCorrelator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An FFT Correlation Class for a PIV Evaluation of two frames</span>
 <span class="sd">    It uses the `pyfftw &lt;https://hgomersall.github.io/pyFFTW/&gt;`_ library for performant FFT.</span>
@@ -96,7 +96,7 @@
         <span class="n">ifft_memory</span>    <span class="o">=</span> <span class="n">pyfftw</span><span class="o">.</span><span class="n">empty_aligned</span><span class="p">(</span><span class="n">ifft_shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;complex128&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ift_fft</span>  <span class="o">=</span> <span class="n">pyfftw</span><span class="o">.</span><span class="n">builders</span><span class="o">.</span><span class="n">irfft2</span><span class="p">(</span><span class="n">ifft_memory</span><span class="p">,</span> <span class="n">pad</span><span class="p">)</span>
 
-<div class="viewcode-block" id="FFTCorrelator._set_padding"><a class="viewcode-back" href="../../fft_correlator.html#piv.fft_correlator.FFTCorrelator._set_padding">[docs]</a>    <span class="k">def</span> <span class="nf">_set_padding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">windows_size</span><span class="p">,</span> <span class="n">scale_fft</span><span class="p">):</span>
+<div class="viewcode-block" id="FFTCorrelator._set_padding"><a class="viewcode-back" href="../../piv/fft_correlator.html#piv.fft_correlator.FFTCorrelator._set_padding">[docs]</a>    <span class="k">def</span> <span class="nf">_set_padding</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">windows_size</span><span class="p">,</span> <span class="n">scale_fft</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set zero padding size for FFTs&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">scale_fft</span> <span class="o">==</span> <span class="s1">&#39;default&#39;</span><span class="p">:</span>
             <span class="n">pad</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">windows_size</span>
@@ -104,7 +104,7 @@
             <span class="n">pad</span> <span class="o">=</span>  <span class="mi">2</span><span class="o">**</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">windows_size</span><span class="p">))</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">pad</span><span class="p">,</span> <span class="n">pad</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="FFTCorrelator._evaluate_windows"><a class="viewcode-back" href="../../fft_correlator.html#piv.fft_correlator.FFTCorrelator._evaluate_windows">[docs]</a>    <span class="k">def</span> <span class="nf">_evaluate_windows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window_a</span><span class="p">,</span> <span class="n">window_b</span><span class="p">):</span>
+<div class="viewcode-block" id="FFTCorrelator._evaluate_windows"><a class="viewcode-back" href="../../piv/fft_correlator.html#piv.fft_correlator.FFTCorrelator._evaluate_windows">[docs]</a>    <span class="k">def</span> <span class="nf">_evaluate_windows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window_a</span><span class="p">,</span> <span class="n">window_b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate the FFT of both windows, correlate and transform back.</span>
 
@@ -122,7 +122,7 @@
         <span class="n">inv_fft</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ift_fft</span><span class="p">(</span><span class="n">fft_corr</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fftshift</span><span class="p">(</span><span class="n">inv_fft</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="FFTCorrelator.get_displacement"><a class="viewcode-back" href="../../fft_correlator.html#piv.fft_correlator.FFTCorrelator.get_displacement">[docs]</a>    <span class="k">def</span> <span class="nf">get_displacement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window_a</span><span class="p">,</span> <span class="n">window_b</span><span class="p">,</span> <span class="n">subpixel_method</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="FFTCorrelator.get_displacement"><a class="viewcode-back" href="../../piv/fft_correlator.html#piv.fft_correlator.FFTCorrelator.get_displacement">[docs]</a>    <span class="k">def</span> <span class="nf">get_displacement</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window_a</span><span class="p">,</span> <span class="n">window_b</span><span class="p">,</span> <span class="n">subpixel_method</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Compute the displacement out of correlation.</span>
 

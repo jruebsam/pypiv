@@ -65,7 +65,7 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">interpolator</span> <span class="k">import</span> <span class="n">CubicInterpolator</span>
 
-<div class="viewcode-block" id="GridDeformator"><a class="viewcode-back" href="../../grid_deformator.html#piv.grid_deformator.GridDeformator">[docs]</a><span class="k">class</span> <span class="nc">GridDeformator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="GridDeformator"><a class="viewcode-back" href="../../piv/grid_deformator.html#piv.grid_deformator.GridDeformator">[docs]</a><span class="k">class</span> <span class="nc">GridDeformator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class of the grid deformator.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -92,7 +92,7 @@
         <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;cubic&#39;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_cube_ip</span> <span class="o">=</span> <span class="n">CubicInterpolator</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
-<div class="viewcode-block" id="GridDeformator.set_velocities"><a class="viewcode-back" href="../../grid_deformator.html#piv.grid_deformator.GridDeformator.set_velocities">[docs]</a>    <span class="k">def</span> <span class="nf">set_velocities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<div class="viewcode-block" id="GridDeformator.set_velocities"><a class="viewcode-back" href="../../piv/grid_deformator.html#piv.grid_deformator.GridDeformator.set_velocities">[docs]</a>    <span class="k">def</span> <span class="nf">set_velocities</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Setter function for the velocities to calculate the displacement.</span>
 
@@ -104,7 +104,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_u_disp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_displacement_function</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_v_disp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_displacement_function</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GridDeformator._get_displacement_function"><a class="viewcode-back" href="../../grid_deformator.html#piv.grid_deformator.GridDeformator._get_displacement_function">[docs]</a>    <span class="k">def</span> <span class="nf">_get_displacement_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+<div class="viewcode-block" id="GridDeformator._get_displacement_function"><a class="viewcode-back" href="../../piv/grid_deformator.html#piv.grid_deformator.GridDeformator._get_displacement_function">[docs]</a>    <span class="k">def</span> <span class="nf">_get_displacement_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Getter function for calculating the displacement.</span>
 
@@ -119,7 +119,7 @@
                        <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">f_xx</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">f_xy</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="o">*</span><span class="n">y</span> <span class="o">+</span> <span class="n">f_yy</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span></div>
 
     <span class="c1">#For the bilinear method the build in scipy method `map_coordinates &lt;https://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.ndimage.interpolation.map_coordinates.html&gt;`_ is used with *order* set to 1.</span>
-<div class="viewcode-block" id="GridDeformator.get_frame"><a class="viewcode-back" href="../../grid_deformator.html#piv.grid_deformator.GridDeformator.get_frame">[docs]</a>    <span class="k">def</span> <span class="nf">get_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+<div class="viewcode-block" id="GridDeformator.get_frame"><a class="viewcode-back" href="../../piv/grid_deformator.html#piv.grid_deformator.GridDeformator.get_frame">[docs]</a>    <span class="k">def</span> <span class="nf">get_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Perform interpolation to produce the deformed window for correlation.</span>
 

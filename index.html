@@ -26,7 +26,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Class for direct Piv" href="direct_piv.html" /> 
+    <link rel="next" title="Class for direct Piv" href="piv/direct_piv.html" /> 
   </head>
   <body role="document">
     <div class="related" role="navigation" aria-label="related navigation">
@@ -36,7 +36,7 @@
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="direct_piv.html" title="Class for direct Piv"
+          <a href="piv/direct_piv.html" title="Class for direct Piv"
              accesskey="N">next</a> |</li>
         <li class="nav-item nav-item-0"><a href="#">pypiv a1 documentation</a> &#187;</li> 
       </ul>
@@ -48,11 +48,14 @@
 <li><a class="reference internal" href="#">Welcome to pypiv&#8217;s documentation!</a></li>
 <li><a class="reference internal" href="#general-information">General Information</a></li>
 <li><a class="reference internal" href="#short-description-of-piv-and-its-application">Short description of PIV and its application</a></li>
+<li><a class="reference internal" href="#examples">Examples</a></li>
+<li><a class="reference internal" href="#test">Test</a></li>
+<li><a class="reference internal" href="#api-documentation">API Documentation</a></li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 
   <h4>Next topic</h4>
-  <p class="topless"><a href="direct_piv.html"
+  <p class="topless"><a href="piv/direct_piv.html"
                         title="next chapter">Class for direct Piv</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -81,21 +84,9 @@
             
   <div class="section" id="welcome-to-pypiv-s-documentation">
 <h1>Welcome to pypiv&#8217;s documentation!<a class="headerlink" href="#welcome-to-pypiv-s-documentation" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="direct_piv.html">Class for direct Piv</a></li>
-<li class="toctree-l1"><a class="reference internal" href="adaptiv_piv.html">Class for adaptiv Piv</a></li>
-<li class="toctree-l1"><a class="reference internal" href="velofilter.html">Velocity Filter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="filters.html">Filters for outlier detection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="interpolator.html">Cubic interpolator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="grid_deformator.html">Grid deformator class</a></li>
-<li class="toctree-l1"><a class="reference internal" href="fft_correlator.html">Class for the FFT correlator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="grid_spec.html">Class for grid specifications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="velocity_scaler.html">Class for scaling the velocity field</a></li>
-<li class="toctree-l1"><a class="reference internal" href="peak_detection.html">Peak detection algorithms</a></li>
-</ul>
-</div>
+<p>The pypiv API is developed by the pypiv Developmentteam in 2016 and 2017 under the BSD3 clause.
+Initially designed to perform particle image velocimetry for double diffusive convection, the API is also capable of many more tasks.
+The Usage, described below is optimized for fluid flow and the API is not yet tested for more applications.</p>
 </div>
 <div class="section" id="general-information">
 <h1>General Information<a class="headerlink" href="#general-information" title="Permalink to this headline">¶</a></h1>
@@ -113,13 +104,13 @@ This is done by cross correlating the two interrogation windows, for which the f
 <p>To minimize the error, two methods are used:</p>
 <ul>
 <li><dl class="first docutils">
-<dt><a class="reference internal" href="filters.html"><span class="doc">residual outlier detection</span></a></dt>
+<dt><a class="reference internal" href="piv/filters.html"><span class="doc">residual outlier detection</span></a></dt>
 <dd><p class="first last">this method uses a residual in a small neighbourhood around a point to determine weather that point is valid or not</p>
 </dd>
 </dl>
 </li>
 <li><dl class="first docutils">
-<dt><a class="reference internal" href="velofilter.html"><span class="doc">Velocity Filter</span></a></dt>
+<dt><a class="reference internal" href="piv/velofilter.html"><span class="doc">Velocity Filter</span></a></dt>
 <dd><p class="first last">this method calculates a maximum cutoff velocity and marks every velocity larger than this as not valid</p>
 </dd>
 </dl>
@@ -130,6 +121,63 @@ This is done by cross correlating the two interrogation windows, for which the f
 This is called an adaptive piv.
 With in these method the formerly chosen grid is deformed to capture particles in the flow with the previously calculated velocity.
 These stages can be added up so that the grid can be refined or the error iteratively lowered.</p>
+</div>
+<div class="section" id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
+<p>In order to test the library quickly and show its potential an example folder is added.
+It contains test images of a double diffusive convection flow which are of analytically nature.
+These show results of a single direct piv and multiple adaptive piv.</p>
+<p>Early on the library had issues with 180 degree rotation.
+To show this issue, a mirror test has been added.
+It computes two times the same setup.
+One with the original image and a second with the image mirrored.
+This issue is still unsolved.</p>
+<p>An other test is added for the sub pixel peak detection.
+The accuracy of a piv process is still relying on weak peak fitting algorithms.
+These perform two times a one dimensional fit on the correlation peak.
+The reason for these is that they are much faster, then the competition.
+Problematic is that the show the pixel locking effect, which means the have a very small error for very small sub pixel shifts.
+This calculated by the example &#8220;test_subpeak_methods&#8221;.
+With this the maximum error is calculated for various sizes of the correlation peak.
+In order to compensate this error a real two dimensional gaussian interpolation method is added.
+It can reduce the maximum error by some orders of magnitude.</p>
+<img alt="_images/max_error_subpeak_windowsize_32.png" src="_images/max_error_subpeak_windowsize_32.png" />
+<p>The image shows the result of that example after 1000 randomly chosen shifts for each diameter for the different methods.
+The error axis is plotted logarithmically.
+The correlation window size is in this case comparable to the interrogation window size used for the piv (32x32).
+As one can see that the two times one dimensional methods have a almost constant maximum error of about 0.5 pixel.
+The newly implemented method for the real two dimensional gaussian interpolation has a minimum some orders of magnitude below the other methods but it is also much worse for diameters smaller and about a pixel.
+But this comes with the price of a longer calculation time, which can also be observed with that example.</p>
+<img alt="_images/mean_error_subpeak_windowsize_32.png" src="_images/mean_error_subpeak_windowsize_32.png" />
+<p>The two times one dimensional interpolation methods do show a large maximum error.
+But considering the mean error of 1000 trials as shown in the image above the error is tolerable.
+The error bars are calculated by the standard deviation of the trials.
+This can also be calculated by the example mentioned above.</p>
+</div>
+<div class="section" id="test">
+<h1>Test<a class="headerlink" href="#test" title="Permalink to this headline">¶</a></h1>
+<p>In order to assure the usability of the API unittest have been added.
+These test every component of the API separately.
+For these the pytest API has to be installed.
+The test are located in the test folder of the root directory.</p>
+</div>
+<div class="section" id="api-documentation">
+<h1>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="piv/direct_piv.html">Class for direct Piv</a></li>
+<li class="toctree-l1"><a class="reference internal" href="piv/grid_spec.html">Class for grid specifications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="piv/fft_correlator.html">Class for the FFT correlator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="piv/peak_detection.html">Peak detection algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="piv/adaptiv_piv.html">Class for adaptiv Piv</a></li>
+<li class="toctree-l1"><a class="reference internal" href="piv/velocity_scaler.html">Class for scaling the velocity field</a></li>
+<li class="toctree-l1"><a class="reference internal" href="piv/interpolator.html">Cubic interpolator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="piv/grid_deformator.html">Grid deformator class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="piv/velofilter.html">Velocity Filter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="piv/filters.html">Filters for outlier detection</a></li>
+</ul>
+</div>
 </div>
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
@@ -153,7 +201,7 @@ These stages can be added up so that the grid can be refined or the error iterat
           <a href="genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="direct_piv.html" title="Class for direct Piv"
+          <a href="piv/direct_piv.html" title="Class for direct Piv"
              >next</a> |</li>
         <li class="nav-item nav-item-0"><a href="#">pypiv a1 documentation</a> &#187;</li> 
       </ul>

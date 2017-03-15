@@ -66,7 +66,7 @@
 <span class="kn">from</span> <span class="nn">direct_piv</span> <span class="k">import</span> <span class="n">DirectPIV</span>
 <span class="kn">from</span> <span class="nn">grid_spec</span> <span class="k">import</span> <span class="n">GridSpec</span>
 
-<div class="viewcode-block" id="AdaptivePIV"><a class="viewcode-back" href="../../adaptiv_piv.html#piv.adaptive_piv.AdaptivePIV">[docs]</a><span class="k">class</span> <span class="nc">AdaptivePIV</span><span class="p">(</span><span class="n">DirectPIV</span><span class="p">):</span>
+<div class="viewcode-block" id="AdaptivePIV"><a class="viewcode-back" href="../../piv/adaptiv_piv.html#piv.adaptive_piv.AdaptivePIV">[docs]</a><span class="k">class</span> <span class="nc">AdaptivePIV</span><span class="p">(</span><span class="n">DirectPIV</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class for the adaptive piv.</span>
 
@@ -107,7 +107,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_deformation_method</span> <span class="o">=</span> <span class="n">deformation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_deform_grid</span><span class="p">(</span><span class="n">deformation</span><span class="p">,</span> <span class="n">ipmethod</span><span class="p">)</span>
 
-<div class="viewcode-block" id="AdaptivePIV._deform_grid"><a class="viewcode-back" href="../../adaptiv_piv.html#piv.adaptive_piv.AdaptivePIV._deform_grid">[docs]</a>    <span class="k">def</span> <span class="nf">_deform_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deformation_method</span><span class="p">,</span> <span class="n">ipmethod</span><span class="p">):</span>
+<div class="viewcode-block" id="AdaptivePIV._deform_grid"><a class="viewcode-back" href="../../piv/adaptiv_piv.html#piv.adaptive_piv.AdaptivePIV._deform_grid">[docs]</a>    <span class="k">def</span> <span class="nf">_deform_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">deformation_method</span><span class="p">,</span> <span class="n">ipmethod</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Deforms the regular grid according to velocity and interpolates image.</span>
 
@@ -140,7 +140,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">grid_def_b</span>  <span class="o">=</span> <span class="n">GridDeformator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_padded_fb</span><span class="p">,</span> <span class="n">shape_b</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">ipmethod</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">grid_def_b</span><span class="o">.</span><span class="n">set_velocities</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="AdaptivePIV._get_window_frames"><a class="viewcode-back" href="../../adaptiv_piv.html#piv.adaptive_piv.AdaptivePIV._get_window_frames">[docs]</a>    <span class="k">def</span> <span class="nf">_get_window_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+<div class="viewcode-block" id="AdaptivePIV._get_window_frames"><a class="viewcode-back" href="../../piv/adaptiv_piv.html#piv.adaptive_piv.AdaptivePIV._get_window_frames">[docs]</a>    <span class="k">def</span> <span class="nf">_get_window_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function override in order to include the two different deformation methods.</span>
 

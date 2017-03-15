@@ -59,7 +59,7 @@
           <div class="body" role="main">
             
   <h1>Source code for piv.grid_spec</h1><div class="highlight"><pre>
-<div class="viewcode-block" id="GridSpec"><a class="viewcode-back" href="../../grid_spec.html#piv.grid_spec.GridSpec">[docs]</a><span></span><span class="k">class</span> <span class="nc">GridSpec</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="GridSpec"><a class="viewcode-back" href="../../piv/grid_spec.html#piv.grid_spec.GridSpec">[docs]</a><span></span><span class="k">class</span> <span class="nc">GridSpec</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class for grid specifications.</span>
 
@@ -86,7 +86,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">distance</span> <span class="o">=</span> <span class="n">distance</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pad</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">search_size</span> <span class="o">-</span> <span class="n">window_size</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">])</span>
 
-<div class="viewcode-block" id="GridSpec.equal_to"><a class="viewcode-back" href="../../grid_spec.html#piv.grid_spec.GridSpec.equal_to">[docs]</a>    <span class="k">def</span> <span class="nf">equal_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_spec</span><span class="p">):</span>
+<div class="viewcode-block" id="GridSpec.equal_to"><a class="viewcode-back" href="../../piv/grid_spec.html#piv.grid_spec.GridSpec.equal_to">[docs]</a>    <span class="k">def</span> <span class="nf">equal_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid_spec</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Comparison operator for class.</span>
 
@@ -103,7 +103,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span></div>
 
-<div class="viewcode-block" id="GridSpec.get_grid_shape"><a class="viewcode-back" href="../../grid_spec.html#piv.grid_spec.GridSpec.get_grid_shape">[docs]</a>    <span class="k">def</span> <span class="nf">get_grid_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GridSpec.get_grid_shape"><a class="viewcode-back" href="../../piv/grid_spec.html#piv.grid_spec.GridSpec.get_grid_shape">[docs]</a>    <span class="k">def</span> <span class="nf">get_grid_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Getter function for the shape of the grid.</span>
 
@@ -115,7 +115,7 @@
         <span class="k">return</span> <span class="p">((</span><span class="n">lx</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">window_size</span><span class="p">)</span><span class="o">//</span><span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span>
                 <span class="p">(</span><span class="n">ly</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">window_size</span><span class="p">)</span><span class="o">//</span><span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GridSpec.get_interogation_grid_shape"><a class="viewcode-back" href="../../grid_spec.html#piv.grid_spec.GridSpec.get_interogation_grid_shape">[docs]</a>    <span class="k">def</span> <span class="nf">get_interogation_grid_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GridSpec.get_interogation_grid_shape"><a class="viewcode-back" href="../../piv/grid_spec.html#piv.grid_spec.GridSpec.get_interogation_grid_shape">[docs]</a>    <span class="k">def</span> <span class="nf">get_interogation_grid_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Getter function for the shape of the interrogation window.</span>
 
@@ -124,7 +124,7 @@
         <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_grid_shape</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">shape</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">window_size</span><span class="p">,)</span></div>
 
-<div class="viewcode-block" id="GridSpec.get_search_grid_shape"><a class="viewcode-back" href="../../grid_spec.html#piv.grid_spec.GridSpec.get_search_grid_shape">[docs]</a>    <span class="k">def</span> <span class="nf">get_search_grid_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GridSpec.get_search_grid_shape"><a class="viewcode-back" href="../../piv/grid_spec.html#piv.grid_spec.GridSpec.get_search_grid_shape">[docs]</a>    <span class="k">def</span> <span class="nf">get_search_grid_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Getter function for the shape of the search window.</span>
 
@@ -133,7 +133,7 @@
         <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_grid_shape</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">shape</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">search_size</span><span class="p">,)</span></div>
 
-<div class="viewcode-block" id="GridSpec.get_interogation_grid_strides"><a class="viewcode-back" href="../../grid_spec.html#piv.grid_spec.GridSpec.get_interogation_grid_strides">[docs]</a>    <span class="k">def</span> <span class="nf">get_interogation_grid_strides</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GridSpec.get_interogation_grid_strides"><a class="viewcode-back" href="../../piv/grid_spec.html#piv.grid_spec.GridSpec.get_interogation_grid_strides">[docs]</a>    <span class="k">def</span> <span class="nf">get_interogation_grid_strides</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Getter function for the strides of the interrogation window.</span>
 
@@ -142,7 +142,7 @@
         <span class="n">sx</span><span class="p">,</span> <span class="n">sy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame_strides</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">sx</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> <span class="n">sy</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> <span class="n">sx</span><span class="p">,</span> <span class="n">sy</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="GridSpec.get_search_grid_strides"><a class="viewcode-back" href="../../grid_spec.html#piv.grid_spec.GridSpec.get_search_grid_strides">[docs]</a>    <span class="k">def</span> <span class="nf">get_search_grid_strides</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GridSpec.get_search_grid_strides"><a class="viewcode-back" href="../../piv/grid_spec.html#piv.grid_spec.GridSpec.get_search_grid_strides">[docs]</a>    <span class="k">def</span> <span class="nf">get_search_grid_strides</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Getter function for the strides of the search window.</span>
 

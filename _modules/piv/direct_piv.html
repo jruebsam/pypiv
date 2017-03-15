@@ -64,7 +64,7 @@
 <span class="kn">from</span> <span class="nn">fft_correlator</span> <span class="k">import</span> <span class="n">FFTCorrelator</span>
 <span class="kn">from</span> <span class="nn">grid_spec</span> <span class="k">import</span> <span class="n">GridSpec</span>
 
-<div class="viewcode-block" id="DirectPIV"><a class="viewcode-back" href="../../direct_piv.html#piv.direct_piv.DirectPIV">[docs]</a><span class="k">class</span> <span class="nc">DirectPIV</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="DirectPIV"><a class="viewcode-back" href="../../piv/direct_piv.html#piv.direct_piv.DirectPIV">[docs]</a><span class="k">class</span> <span class="nc">DirectPIV</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class for the initial Piv.</span>
 
@@ -100,7 +100,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_grid_creator</span><span class="p">()</span>
 
-<div class="viewcode-block" id="DirectPIV._check_images"><a class="viewcode-back" href="../../direct_piv.html#piv.direct_piv.DirectPIV._check_images">[docs]</a>    <span class="k">def</span> <span class="nf">_check_images</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_a</span><span class="p">,</span> <span class="n">img_b</span><span class="p">):</span>
+<div class="viewcode-block" id="DirectPIV._check_images"><a class="viewcode-back" href="../../piv/direct_piv.html#piv.direct_piv.DirectPIV._check_images">[docs]</a>    <span class="k">def</span> <span class="nf">_check_images</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_a</span><span class="p">,</span> <span class="n">img_b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Function for checking weather the images have the correct type (float64/double).</span>
 <span class="sd">        The shape and strides are compared as well.</span>
@@ -117,7 +117,7 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Stride of the Images is not matching!&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">img_a</span><span class="p">,</span> <span class="n">img_b</span></div>
 
-<div class="viewcode-block" id="DirectPIV._set_images"><a class="viewcode-back" href="../../direct_piv.html#piv.direct_piv.DirectPIV._set_images">[docs]</a>    <span class="k">def</span> <span class="nf">_set_images</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_a</span><span class="p">,</span> <span class="n">img_b</span><span class="p">):</span>
+<div class="viewcode-block" id="DirectPIV._set_images"><a class="viewcode-back" href="../../piv/direct_piv.html#piv.direct_piv.DirectPIV._set_images">[docs]</a>    <span class="k">def</span> <span class="nf">_set_images</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_a</span><span class="p">,</span> <span class="n">img_b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the correlation images of the PIV algorithm.</span>
 
@@ -133,7 +133,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">frame_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_padded_fb</span><span class="p">[</span><span class="n">pad</span><span class="p">:</span><span class="o">-</span><span class="n">pad</span><span class="p">,</span> <span class="n">pad</span><span class="p">:</span><span class="o">-</span><span class="n">pad</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="DirectPIV._grid_creator"><a class="viewcode-back" href="../../direct_piv.html#piv.direct_piv.DirectPIV._grid_creator">[docs]</a>    <span class="k">def</span> <span class="nf">_grid_creator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DirectPIV._grid_creator"><a class="viewcode-back" href="../../piv/direct_piv.html#piv.direct_piv.DirectPIV._grid_creator">[docs]</a>    <span class="k">def</span> <span class="nf">_grid_creator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creates a grid according to the GridSpec.&quot;&quot;&quot;</span>
         <span class="n">shape_fa</span>    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_spec</span><span class="o">.</span><span class="n">get_interogation_grid_shape</span><span class="p">()</span>
         <span class="n">shape_fb</span>    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_spec</span><span class="o">.</span><span class="n">get_search_grid_shape</span><span class="p">()</span>
@@ -142,7 +142,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">grid_a</span> <span class="o">=</span> <span class="n">as_strided</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frame_a</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="n">strides_fa</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape_fa</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">grid_b</span> <span class="o">=</span> <span class="n">as_strided</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_padded_fb</span><span class="p">,</span> <span class="n">strides</span><span class="o">=</span><span class="n">strides_fb</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape_fb</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="DirectPIV._get_window_frames"><a class="viewcode-back" href="../../direct_piv.html#piv.direct_piv.DirectPIV._get_window_frames">[docs]</a>    <span class="k">def</span> <span class="nf">_get_window_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+<div class="viewcode-block" id="DirectPIV._get_window_frames"><a class="viewcode-back" href="../../piv/direct_piv.html#piv.direct_piv.DirectPIV._get_window_frames">[docs]</a>    <span class="k">def</span> <span class="nf">_get_window_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return sub images of image attribute a and b at position i,j.</span>
 
 <span class="sd">        :param int i: first index of grid coordinates</span>
@@ -151,7 +151,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_a</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_b</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span></div>
 
-<div class="viewcode-block" id="DirectPIV.correlate_frames"><a class="viewcode-back" href="../../direct_piv.html#piv.direct_piv.DirectPIV.correlate_frames">[docs]</a>    <span class="k">def</span> <span class="nf">correlate_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="DirectPIV.correlate_frames"><a class="viewcode-back" href="../../piv/direct_piv.html#piv.direct_piv.DirectPIV.correlate_frames">[docs]</a>    <span class="k">def</span> <span class="nf">correlate_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;gaussian&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Correlation of all grid points, creating a velocity field.</span>
 
 <span class="sd">        :param str method: Method of the peak finding algorithm</span>
@@ -164,7 +164,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">displacement</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">return</span>  <span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span></div>
 
-<div class="viewcode-block" id="DirectPIV.correlate_frames_2D"><a class="viewcode-back" href="../../direct_piv.html#piv.direct_piv.DirectPIV.correlate_frames_2D">[docs]</a>    <span class="k">def</span> <span class="nf">correlate_frames_2D</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DirectPIV.correlate_frames_2D"><a class="viewcode-back" href="../../piv/direct_piv.html#piv.direct_piv.DirectPIV.correlate_frames_2D">[docs]</a>    <span class="k">def</span> <span class="nf">correlate_frames_2D</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Correlation function for two dimensional peak finder algorithm.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">correlate_frames</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;9point&#39;</span><span class="p">)</span></div></div>
 
