@@ -1,16 +1,13 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>Class for the FFT correlator &#8212; pypiv a1 documentation</title>
-    
     <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
@@ -29,7 +26,7 @@
     <link rel="next" title="Peak detection algorithms" href="peak_detection.html" />
     <link rel="prev" title="Class for grid specifications" href="grid_spec.html" /> 
   </head>
-  <body role="document">
+  <body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -94,9 +91,9 @@ This class is also responsible for calculating the Shift after the correlation.<
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>window_a_size</strong> &#8211; size of the interrogation window</li>
-<li><strong>window_b_size</strong> &#8211; size of the search window</li>
-<li><strong>scale_fft</strong> (<em>str</em>) &#8211; if set to upscale, the padding will be upscaled</li>
+<li><strong>window_a_size</strong> – size of the interrogation window</li>
+<li><strong>window_b_size</strong> – size of the search window</li>
+<li><strong>scale_fft</strong> (<em>str</em>) – if set to upscale, the padding will be upscaled</li>
 </ul>
 </td>
 </tr>
@@ -135,8 +132,8 @@ Also if the interpolation method is unknown an exception in thrown.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>corr</strong> &#8211; correlation window</li>
-<li><strong>method</strong> &#8211; peak finder algorithm (gaussian, centroid, parabolic, 9point)</li>
+<li><strong>corr</strong> – correlation window</li>
+<li><strong>method</strong> – peak finder algorithm (gaussian, centroid, parabolic, 9point)</li>
 </ul>
 </td>
 </tr>
@@ -157,9 +154,9 @@ If a padding was needed, it is removed from the calculated displacement.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>window_a</strong> &#8211; interrogation window</li>
-<li><strong>window_b</strong> &#8211; search window</li>
-<li><strong>subpixel_method</strong> (<em>str</em>) &#8211; method for peak finder</li>
+<li><strong>window_a</strong> – interrogation window</li>
+<li><strong>window_b</strong> – search window</li>
+<li><strong>subpixel_method</strong> (<em>str</em>) – method for peak finder</li>
 </ul>
 </td>
 </tr>
@@ -181,8 +178,8 @@ To compensate for the indexing during the FFT a FFT Shift is performed.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>window_a</strong> &#8211; interrogation window</li>
-<li><strong>window_b</strong> &#8211; search window</li>
+<li><strong>window_a</strong> – interrogation window</li>
+<li><strong>window_b</strong> – search window</li>
 </ul>
 </td>
 </tr>
@@ -218,7 +215,7 @@ To compensate for the indexing during the FFT a FFT Shift is performed.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
     </div>
   </body>
 </html>

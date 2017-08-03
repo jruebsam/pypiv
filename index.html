@@ -1,16 +1,13 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>Welcome to pypiv’s documentation! &#8212; pypiv a1 documentation</title>
-    
     <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
@@ -28,7 +25,7 @@
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Class for direct Piv" href="piv/direct_piv.html" /> 
   </head>
-  <body role="document">
+  <body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -45,7 +42,7 @@
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Welcome to pypiv&#8217;s documentation!</a></li>
+<li><a class="reference internal" href="#">Welcome to pypiv’s documentation!</a></li>
 <li><a class="reference internal" href="#general-information">General Information</a></li>
 <li><a class="reference internal" href="#short-description-of-piv-and-its-application">Short description of PIV and its application</a></li>
 <li><a class="reference internal" href="#examples">Examples</a></li>
@@ -83,7 +80,7 @@
           <div class="body" role="main">
             
   <div class="section" id="welcome-to-pypiv-s-documentation">
-<h1>Welcome to pypiv&#8217;s documentation!<a class="headerlink" href="#welcome-to-pypiv-s-documentation" title="Permalink to this headline">¶</a></h1>
+<h1>Welcome to pypiv’s documentation!<a class="headerlink" href="#welcome-to-pypiv-s-documentation" title="Permalink to this headline">¶</a></h1>
 <p>The pypiv API is developed by the pypiv Developmentteam in 2016 and 2017 under the BSD3 clause.
 Initially designed to perform particle image velocimetry for double diffusive convection, the API is also capable of many more tasks.
 The Usage, described below is optimized for fluid flow and the API is not yet tested for more applications.</p>
@@ -93,7 +90,7 @@ The Usage, described below is optimized for fluid flow and the API is not yet te
 <p>This library calculates the particle image velocimetry (piv) of a pair of images.
 It consist of a Fourier based method to increase the performance.
 In order to increase the accuracy, a window deformation Method is included as well.
-The sub pixel shift finder is implemented in two versions, each with it&#8217;s downsides.
+The sub pixel shift finder is implemented in two versions, each with it’s downsides.
 A detailed explanation of every module can be found by navigating through the contents.</p>
 </div>
 <div class="section" id="short-description-of-piv-and-its-application">
@@ -102,17 +99,15 @@ A detailed explanation of every module can be found by navigating through the co
 In these images interrogation windows are set an within these the mean displacement of the particles is calculated.
 This is done by cross correlating the two interrogation windows, for which the fast Fourier transform (FFT) is use.</p>
 <p>To minimize the error, two methods are used:</p>
-<ul>
+<ul class="simple">
 <li><dl class="first docutils">
 <dt><a class="reference internal" href="piv/filters.html"><span class="doc">residual outlier detection</span></a></dt>
-<dd><p class="first last">this method uses a residual in a small neighbourhood around a point to determine weather that point is valid or not</p>
-</dd>
+<dd>this method uses a residual in a small neighbourhood around a point to determine weather that point is valid or not</dd>
 </dl>
 </li>
 <li><dl class="first docutils">
 <dt><a class="reference internal" href="piv/velofilter.html"><span class="doc">Velocity Filter</span></a></dt>
-<dd><p class="first last">this method calculates a maximum cutoff velocity and marks every velocity larger than this as not valid</p>
-</dd>
+<dd>this method calculates a maximum cutoff velocity and marks every velocity larger than this as not valid</dd>
 </dl>
 </li>
 </ul>
@@ -137,7 +132,7 @@ The accuracy of a piv process is still relying on weak peak fitting algorithms.
 These perform two times a one dimensional fit on the correlation peak.
 The reason for these is that they are much faster, then the competition.
 Problematic is that the show the pixel locking effect, which means the have a very small error for very small sub pixel shifts.
-This calculated by the example &#8220;test_subpeak_methods&#8221;.
+This calculated by the example “test_subpeak_methods”.
 With this the maximum error is calculated for various sizes of the correlation peak.
 In order to compensate this error a real two dimensional gaussian interpolation method is added.
 It can reduce the maximum error by some orders of magnitude.</p>
@@ -208,7 +203,7 @@ The test are located in the test folder of the root directory.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
     </div>
   </body>
 </html>

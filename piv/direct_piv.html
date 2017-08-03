@@ -1,16 +1,13 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>Class for direct Piv &#8212; pypiv a1 documentation</title>
-    
     <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
@@ -29,7 +26,7 @@
     <link rel="next" title="Class for grid specifications" href="grid_spec.html" />
     <link rel="prev" title="Welcome to pypiv’s documentation!" href="../index.html" /> 
   </head>
-  <body role="document">
+  <body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -49,7 +46,7 @@
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
   <p class="topless"><a href="../index.html"
-                        title="previous chapter">Welcome to pypiv&#8217;s documentation!</a></p>
+                        title="previous chapter">Welcome to pypiv’s documentation!</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="grid_spec.html"
                         title="next chapter">Class for grid specifications</a></p>
@@ -102,11 +99,11 @@ As a result of the process the velocities are set as attributes of the class.</p
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>image_a</strong> &#8211; first image to be evaluated</li>
-<li><strong>image_b</strong> &#8211; second image to be evaluated</li>
-<li><strong>window_size</strong> (<em>int</em>) &#8211; size of the interrogation window on first image</li>
-<li><strong>search_size</strong> (<em>int</em>) &#8211; size of the search window on second image</li>
-<li><strong>distance</strong> (<em>int</em>) &#8211; distance between beginning if first interrogation window and second</li>
+<li><strong>image_a</strong> – first image to be evaluated</li>
+<li><strong>image_b</strong> – second image to be evaluated</li>
+<li><strong>window_size</strong> (<em>int</em>) – size of the interrogation window on first image</li>
+<li><strong>search_size</strong> (<em>int</em>) – size of the search window on second image</li>
+<li><strong>distance</strong> (<em>int</em>) – distance between beginning if first interrogation window and second</li>
 </ul>
 </td>
 </tr>
@@ -120,24 +117,15 @@ As a result of the process the velocities are set as attributes of the class.</p
 <code class="descclassname">DirectPIV.</code><code class="descname">_check_images</code><span class="sig-paren">(</span><em>img_a</em>, <em>img_b</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/piv/direct_piv.html#DirectPIV._check_images"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#piv.direct_piv.DirectPIV._check_images" title="Permalink to this definition">¶</a></dt>
 <dd><p>Function for checking weather the images have the correct type (float64/double).
 The shape and strides are compared as well.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>img_a</strong> &#8211; first image</li>
-<li><strong>img_b</strong> &#8211; second image</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first"><strong>ValueError</strong> &#8211; shape or strides don&#8217;t match</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">images in same order as input</p>
-</td>
-</tr>
-</tbody>
-</table>
+<dl class="docutils">
+<dt>parameter:</dt>
+<dd>img_a: first image
+img_b: second image</dd>
+<dt>Error:</dt>
+<dd>ValueError: shape or strides don’t match</dd>
+<dt>Return:</dt>
+<dd>images in same order as input</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -167,7 +155,7 @@ Therefore a function creates the grid according to the GridSpec.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>method</strong> (<em>str</em>) &#8211; Method of the peak finding algorithm</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>method</strong> (<em>str</em>) – Method of the peak finding algorithm</td>
 </tr>
 </tbody>
 </table>
@@ -192,8 +180,8 @@ Read more about this in the documentation of the process module.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>i</strong> (<em>int</em>) &#8211; first index of grid coordinates</li>
-<li><strong>j</strong> (<em>int</em>) &#8211; second index of grid coordinates</li>
+<li><strong>i</strong> (<em>int</em>) – first index of grid coordinates</li>
+<li><strong>j</strong> (<em>int</em>) – second index of grid coordinates</li>
 </ul>
 </td>
 </tr>
@@ -229,7 +217,7 @@ Read more about this in the documentation of the process module.</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
     </div>
   </body>
 </html>

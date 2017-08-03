@@ -1,16 +1,13 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>piv.direct_piv &#8212; pypiv a1 documentation</title>
-    
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
@@ -27,7 +24,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
   </head>
-  <body role="document">
+  <body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -105,10 +102,13 @@
 <span class="sd">        Function for checking weather the images have the correct type (float64/double).</span>
 <span class="sd">        The shape and strides are compared as well.</span>
 
-<span class="sd">        :param img_a: first image</span>
-<span class="sd">        :param img_b: second image</span>
-<span class="sd">        :raises ValueError: shape or strides don&#39;t match</span>
-<span class="sd">        :return: images in same order as input</span>
+<span class="sd">        parameter:</span>
+<span class="sd">            img_a: first image</span>
+<span class="sd">            img_b: second image</span>
+<span class="sd">        Error:</span>
+<span class="sd">            ValueError: shape or strides don&#39;t match</span>
+<span class="sd">        Return:</span>
+<span class="sd">            images in same order as input</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">img_a</span><span class="p">,</span> <span class="n">img_b</span> <span class="o">=</span> <span class="n">img_a</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float64&#39;</span><span class="p">),</span> <span class="n">img_b</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float64&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">img_a</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">img_b</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
@@ -187,7 +187,7 @@
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
     </div>
   </body>
 </html>

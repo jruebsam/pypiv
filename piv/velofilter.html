@@ -1,16 +1,13 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>Velocity Filter &#8212; pypiv a1 documentation</title>
-    
     <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
@@ -29,7 +26,7 @@
     <link rel="next" title="Filters for outlier detection" href="filters.html" />
     <link rel="prev" title="Grid deformator class" href="grid_deformator.html" /> 
   </head>
-  <body role="document">
+  <body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -91,14 +88,14 @@ This filter is called from the main function:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>piv</strong> (<em>object</em>) &#8211; <p>PIV class object</p>
+<li><strong>piv</strong> (<em>object</em>) – <p>PIV class object</p>
 <p>This is supposed to be an object from a Direct or adaptive Class
 it is needed to get the velocities</p>
 </li>
-<li><strong>tfactor</strong> (<em>double</em>) &#8211; <p>Factor for cutoff in the velocity binning</p>
+<li><strong>tfactor</strong> (<em>double</em>) – <p>Factor for cutoff in the velocity binning</p>
 <p>The default value is set to 3 which works for many cases</p>
 </li>
-<li><strong>dalpha</strong> (<em>double</em>) &#8211; <p>value for differential velocity</p>
+<li><strong>dalpha</strong> (<em>double</em>) – <p>value for differential velocity</p>
 <p>The default is set to .01 which work for many cases
 if the velocities vary over a larger ranger use a larger value</p>
 </li>
@@ -128,13 +125,13 @@ It is called derivative because it is mathematically the derivative of the funct
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>field</strong> &#8211; is a 1D field which will be binned</li>
-<li><strong>stepsize</strong> &#8211; is the step size for the velocity</li>
+<li><strong>field</strong> – is a 1D field which will be binned</li>
+<li><strong>stepsize</strong> – is the step size for the velocity</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name" colspan="2">Return (positive,negative):</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><p class="first last">velocities and the binning result for positive half and negative half are returned
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">velocities and the binning result for positive half and negative half are returned
 as a tuple</p>
 </td>
 </tr>
@@ -154,13 +151,13 @@ It is done for the negative and positive half separately.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>field</strong> &#8211; is a 1D field which will be binned</li>
-<li><strong>stepsize</strong> &#8211; is the step size for the velocity</li>
+<li><strong>field</strong> – is a 1D field which will be binned</li>
+<li><strong>stepsize</strong> – is the step size for the velocity</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name" colspan="2">Return (positive,negative):</th></tr>
-<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><p class="first last">velocities and the binning result for positive half and negative half are returned
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last">velocities and the binning result for positive half and negative half are returned
 as a tuple of numpy arrays</p>
 </td>
 </tr>
@@ -193,7 +190,7 @@ as a tuple of numpy arrays</p>
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
     </div>
   </body>
 </html>

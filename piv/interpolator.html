@@ -1,16 +1,13 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
     <title>Cubic interpolator &#8212; pypiv a1 documentation</title>
-    
     <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
@@ -29,7 +26,7 @@
     <link rel="next" title="Grid deformator class" href="grid_deformator.html" />
     <link rel="prev" title="Class for scaling the velocity field" href="velocity_scaler.html" /> 
   </head>
-  <body role="document">
+  <body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -95,8 +92,8 @@ The output is allocated as well.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>frame</strong> &#8211; image that is deformed</li>
-<li><strong>window_size</strong> &#8211; size of the interrogation window over which is interpolated</li>
+<li><strong>frame</strong> – image that is deformed</li>
+<li><strong>window_size</strong> – size of the interrogation window over which is interpolated</li>
 </ul>
 </td>
 </tr>
@@ -115,8 +112,8 @@ The output is allocated as well.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>posx</strong> (<em>ndarray</em>) &#8211; moved x position of the deformed grid</li>
-<li><strong>posy</strong> (<em>ndarray</em>) &#8211; moved y position of the deformed grid</li>
+<li><strong>posx</strong> (<em>ndarray</em>) – moved x position of the deformed grid</li>
+<li><strong>posy</strong> (<em>ndarray</em>) – moved y position of the deformed grid</li>
 </ul>
 </td>
 </tr>
@@ -149,15 +146,15 @@ The entire module is compiled with Cython in order to decrease the computation t
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>posx</strong> (<em>double_array</em>) &#8211; x coordinates the frame is interpolated to</li>
-<li><strong>posy</strong> (<em>double_array</em>) &#8211; y coordinates the frame is interpolated to</li>
-<li><strong>x</strong> (<em>double_array</em>) &#8211; right hand side memory for interpolation in x direction</li>
-<li><strong>y</strong> (<em>double_array</em>) &#8211; right hand side memory for interpolation in y direction</li>
-<li><strong>M</strong> (<em>double_2D_array</em>) &#8211; left hand side as a matrix</li>
-<li><strong>output</strong> (<em>double_array</em>) &#8211; memory for resulting interpolated sub frame</li>
-<li><strong>frame</strong> (<em>double_2D_array</em>) &#8211; initial image which is interpolated</li>
-<li><strong>lx</strong> (<em>int</em>) &#8211; width of the frame array</li>
-<li><strong>ly</strong> (<em>int</em>) &#8211; length of the frame array</li>
+<li><strong>posx</strong> (<em>double_array</em>) – x coordinates the frame is interpolated to</li>
+<li><strong>posy</strong> (<em>double_array</em>) – y coordinates the frame is interpolated to</li>
+<li><strong>x</strong> (<em>double_array</em>) – right hand side memory for interpolation in x direction</li>
+<li><strong>y</strong> (<em>double_array</em>) – right hand side memory for interpolation in y direction</li>
+<li><strong>M</strong> (<em>double_2D_array</em>) – left hand side as a matrix</li>
+<li><strong>output</strong> (<em>double_array</em>) – memory for resulting interpolated sub frame</li>
+<li><strong>frame</strong> (<em>double_2D_array</em>) – initial image which is interpolated</li>
+<li><strong>lx</strong> (<em>int</em>) – width of the frame array</li>
+<li><strong>ly</strong> (<em>int</em>) – length of the frame array</li>
 </ul>
 </td>
 </tr>
@@ -193,7 +190,7 @@ The entire module is compiled with Cython in order to decrease the computation t
     </div>
     <div class="footer" role="contentinfo">
         &#169; Copyright 2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.
     </div>
   </body>
 </html>
