@@ -10,7 +10,6 @@ class AdaptivePIV(DirectPIV):
     Class for the adaptive piv.
 
     After the initial piv is done an adaptive piv can be performed to minimize the error or to make the grid finer.
-    This class inherits from the :doc:`initial class DirectPIV <direct_piv>`.
     Therefore the correlation function is inherited as well as the GridSpec.
     In addition to the inherited grid a new Grid is calculated by deforming the grid with respect to the prior calculated velocities.
     In the case that the new grid is supposed to be finer then the one before, the velocities need to be upscaled.
@@ -22,15 +21,21 @@ class AdaptivePIV(DirectPIV):
 
         The initialization of the super class is called to generate all necessary GridSpecs and grids.
         Additional information are the deformation method and the interpolation method.
-        
-        .. ref on methods ons implemented
 
-        :param DirectPIV piv_object: object of the initial piv
-        :param int window_size: size of the interrogation window
-        :param int search_size: size of the search window
-        :param int distance: distance between beginning of the first interrogation window and second
-        :param str deformation: deformation method
-        :param str ipmethod: interpolation method
+        Parameters
+        ----------
+        piv_object : Direct/AdaptivePIV
+            object of the initial piv
+        window_size : int 
+            size of the interrogation window
+        search_size : int 
+            size of the search window
+        distance : int
+            distance between beginning of the first interrogation window and second
+        deformation : str 
+            deformation method
+        ipmethod : str
+            interpolation method
         """
         image_a, image_b = np.copy(piv_object.frame_a), np.copy(piv_object.frame_b)
 
@@ -61,8 +66,12 @@ class AdaptivePIV(DirectPIV):
         * forward:
             Leeds to a full deformation in forward direction
 
-        :param str deformation_method: deformation method, mentioned above
-        :param str ipmethod: interpolation method passed along to the interpolator
+        Parameters
+        ----------
+        deformation_method : str
+            deformation method, mentioned above
+        ipmethod : str
+            interpolation method passed along to the interpolator
         """
         distance   = self.grid_spec.distance
         shape_b    = self.grid_spec.get_search_grid_shape()
