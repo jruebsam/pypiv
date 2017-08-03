@@ -44,10 +44,13 @@ class DirectPIV(object):
         Function for checking weather the images have the correct type (float64/double).
         The shape and strides are compared as well.
 
-        :param img_a: first image
-        :param img_b: second image
-        :raises ValueError: shape or strides don't match
-        :return: images in same order as input
+        parameter:
+            img_a: first image
+            img_b: second image
+        Error:
+            ValueError: shape or strides don't match
+        Return:
+            images in same order as input
         """
         img_a, img_b = img_a.astype('float64'), img_b.astype('float64')
         if img_a.shape != img_b.shape:
