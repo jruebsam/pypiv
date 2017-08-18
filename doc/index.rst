@@ -3,8 +3,9 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to pypiv's documentation!
+Welcome to PyPIV's documentation!
 =================================
+
 The pypiv API is developed by the pypiv Developmentteam in 2016 and 2017 under the BSD3 clause.
 Initially designed to perform particle image velocimetry for double diffusive convection, the API is also capable of many more tasks.
 The Usage, described below is optimized for fluid flow and the API is not yet tested for more applications.

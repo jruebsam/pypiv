@@ -19,14 +19,16 @@
 import os
 import sys
 import distutils.command.build
+import sphinx_bootstrap_theme
+
 from distutils.dist import Distribution
 
 bdir = distutils.command.build.build(Distribution())
 bdir.initialize_options()
 bdir.finalize_options()
 
-sys.path.append(os.path.abspath('../'+bdir.build_lib+'/pypiv/'))
-#sys.path.append(os.path.abspath('../pypiv/'))
+#sys.path.append(os.path.abspath('../'+bdir.build_lib+'/pypiv/'))
+sys.path.append(os.path.abspath('../pypiv/'))
 
 
 # -- General configuration ------------------------------------------------
@@ -88,7 +90,8 @@ language = None
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = 'sphinx'
+#pygments_style = 'sphinx'
+
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
@@ -99,8 +102,33 @@ todo_include_todos = True
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-#html_theme = 'classic'
-html_theme = 'sphinxdoc'
+#html_theme = 'sphinxdoc'
+html_theme = 'bootstrap'
+
+html_theme_options = {
+    'navbar_title': "PyPIV",
+    'navbar_site_name': "PyPIV Docs",
+    'navbar_pagenav_name' : "Page",
+
+    'navbar_links': [
+        ("Examples", "examples"),
+        ("Documentation", "api"),
+    ],
+
+
+    'globaltoc_depth': 2,
+
+    'navbar_sidebarrel' : 'false',
+
+    'navbar_fixed_top': "true",
+
+    # Bootswatch (http://bootswatch.com/) theme.
+    'bootswatch_theme': "flatly",
+    'bootstrap_version': "3",
+}
+
+html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
+
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -121,22 +149,14 @@ htmlhelp_basename = 'pypivdoc'
 
 
 # -- Options for LaTeX output ---------------------------------------------
-
 latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
-    #
     'papersize': 'a4paper',
-
     # The font size ('10pt', '11pt' or '12pt').
-    #
     # 'pointsize': '10pt',
-
     # Additional stuff for the LaTeX preamble.
-    #
     # 'preamble': '',
-
     # Latex figure (float) alignment
-    #
     'figure_align': 'htbp',
 }
 
@@ -175,3 +195,5 @@ texinfo_documents = [
 
 autoclass_content = "both"
 
+def setup(app):
+    app.add_stylesheet("my-styles.css")
