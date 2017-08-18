@@ -120,7 +120,7 @@ html_theme_options = {
 
     'navbar_sidebarrel' : 'false',
 
-    'navbar_fixed_top': "true",
+    'navbar_fixed_top': "false",
 
     # Bootswatch (http://bootswatch.com/) theme.
     'bootswatch_theme': "flatly",
