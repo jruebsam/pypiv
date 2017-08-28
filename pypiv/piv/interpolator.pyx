@@ -1,6 +1,7 @@
 # compile with
 # cython interpolator.pyx
 # gcc -shared -pthread -fPIC -fwrapv -O2 -Wall -fno-strict-aliasing -I/usr/include/python2.7 -o interpolator.so interpolator.c
+
 import numpy as np
 cimport numpy as np
 cimport cython
@@ -19,7 +20,9 @@ class CubicInterpolator(object):
 
         **__init__(frame, window_size)**
 
-        The cubic interpolation is performed in compiled c code, therefore the memory for right hand side and left hand side must be allocated and initialized for the matrix.
+        The cubic interpolation is performed in compiled c code,
+        therefore the memory for right hand side and left hand side
+        must be allocated and initialized for the matrix.
         The output is allocated as well.
 
         :param frame: image that is deformed

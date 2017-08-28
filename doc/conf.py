@@ -65,7 +65,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'pypiv'
-copyright = u'2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann'
+copyright = u'2016-2017, PyPIV Development Team'
 author = u'Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -73,7 +73,7 @@ author = u'Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann'
 # built documents.
 #
 # The short X.Y version.
-version = u'1.0'
+version = u'0.1'
 # The full version, including alpha/beta/rc tags.
 release = u'a1'
 
@@ -107,20 +107,25 @@ html_theme = 'bootstrap'
 
 html_theme_options = {
     'navbar_title': "PyPIV",
-    'navbar_site_name': "PyPIV Docs",
-    'navbar_pagenav_name' : "Page",
+    'navbar_site_name': "",
+    'source_link_position' : '',
+
+    'globaltoc_depth': -1,
+    'globaltoc_includehidden': "true",
 
     'navbar_links': [
         ("Examples", "examples"),
-        ("Documentation", "api"),
+        ("Documentation", "api_doc"),
     ],
 
 
     'globaltoc_depth': 2,
 
-    'navbar_sidebarrel' : 'false',
+    'navbar_sidebarrel': False,
+    'navbar_pagenav': True,
+    'navbar_pagenav_name': "",
 
-    'navbar_fixed_top': "false",
+    'navbar_fixed_top': False,
 
     # Bootswatch (http://bootswatch.com/) theme.
     'bootswatch_theme': "flatly",
