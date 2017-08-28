@@ -13,13 +13,11 @@ Install
 The installation can be performed directly from the git repository, a PIP package will be supported
 in the future.
 
-.. code-block:: bash
-
     git clone https://github.com/jr7/pypiv.git
     python setup.py build
     python setup.py install
 
-Builduing PyPIV requires the following software installed:
+Building PyPIV requires the following software installed:
 
 1. Python 2.7.x currently this library is only supported on Python 2.7.x support for Python 3.x will come in the future.
 2. Numpy  1.12.x
