@@ -4,7 +4,7 @@ Welcome to PyPIV!
 
 
 PyPIV is a python library for Particle Image Velocimetry (PIV), including pre and postprocessing functions.
-For a closer look of the functionality take a look at the [official webpage]{https://jr7.github.io/pypiv/ "PyPIV Homepage"} of this library
+For a closer look of the functionality take a look at the [official webpage](https://jr7.github.io/pypiv/ "PyPIV Homepage") of this library
 where you can find the Documentation and Examples.
 
 Install
