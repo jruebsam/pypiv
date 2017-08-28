@@ -11,10 +11,10 @@ that are illuminated by a laser in a plane and captured at different times.
 Through a number of computations using cross-correlation and window-deformation techniques
 it is possible to calculate a velocity field.
 
-.. image:: _static/intro1.png
+.. image:: _static/intro1.gif
     :width: 40%
 .. image:: _static/intro2.png
-    :width: 40%
+    :width: 45%
 
 
 

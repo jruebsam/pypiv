@@ -12,6 +12,7 @@ Adaptive Piv with multiple steps
 --------------------------------
 
 .. code-block:: python
+
     import pypiv
     import numpy as np
     import matplotlib.pyplot as plt
