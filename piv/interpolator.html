@@ -47,14 +47,14 @@
         </button>
         <a class="navbar-brand" href="../index.html">
           PyPIV</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
           <ul class="nav navbar-nav">
             
                 <li><a href="../examples.html">Examples</a></li>
-                <li><a href="../api.html">Documentation</a></li>
+                <li><a href="../api_doc.html">Documentation</a></li>
             
             
               <li class="dropdown globaltoc-container">
@@ -62,7 +62,7 @@
      id="dLabelGlobalToc"
      data-toggle="dropdown"
      data-target="#"
-     href="../index.html">PyPIV Docs <b class="caret"></b></a>
+     href="../index.html"> <b class="caret"></b></a>
   <ul class="dropdown-menu globaltoc"
       role="menu"
       aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
@@ -86,7 +86,7 @@
      id="dLabelLocalToc"
      data-toggle="dropdown"
      data-target="#"
-     href="#">Page <b class="caret"></b></a>
+     href="#"> <b class="caret"></b></a>
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
@@ -97,26 +97,8 @@
               
             
             
-              
-                
-  <li>
-    <a href="velocity_scaler.html" title="Previous Chapter: Class for scaling the velocity field"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; Class for sca...</span>
-    </a>
-  </li>
-  <li>
-    <a href="grid_deformator.html" title="Next Chapter: Grid deformator class"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Grid deformator class &raquo;</span>
-    </a>
-  </li>
-              
             
             
-            
-            
-              <li class="hidden-sm">
-<div id="sourcelink">
-  <a href="../_sources/piv/interpolator.rst.txt"
-     rel="nofollow">Source</a>
-</div></li>
             
           </ul>
 
@@ -141,93 +123,9 @@
   <div class="section" id="cubic-interpolator">
 <h1>Cubic interpolator<a class="headerlink" href="#cubic-interpolator" title="Permalink to this headline">¶</a></h1>
 <p>The cubic interpolator is written as its own class.</p>
-<dl class="class">
-<dt id="piv.interpolator.CubicInterpolator">
-<em class="property">class </em><code class="descclassname">piv.interpolator.</code><code class="descname">CubicInterpolator</code><a class="headerlink" href="#piv.interpolator.CubicInterpolator" title="Permalink to this definition">¶</a></dt>
-<dd><p>Interpolator Class for the window deformation</p>
-<p>This class initializes and performs the interpolation.</p>
-<p>Initialization of the interpolator.</p>
-<p><strong>__init__(frame, window_size)</strong></p>
-<p>The cubic interpolation is performed in compiled c code, therefore the memory for right hand side and left hand side must be allocated and initialized for the matrix.
-The output is allocated as well.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>frame</strong> – image that is deformed</li>
-<li><strong>window_size</strong> – size of the interrogation window over which is interpolated</li>
-</ul>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <p>It performs the interpolation by calling the interpolate function.</p>
-<dl class="method">
-<dt id="piv.interpolator.CubicInterpolator.interpolate">
-<code class="descclassname">CubicInterpolator.</code><code class="descname">interpolate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#piv.interpolator.CubicInterpolator.interpolate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Method to perform cubic interpolation of the deformed grid.</p>
-<p><strong>interpolate(posx, posy)</strong></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>posx</strong> (<em>ndarray</em>) – moved x position of the deformed grid</li>
-<li><strong>posy</strong> (<em>ndarray</em>) – moved y position of the deformed grid</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">ndarray with interpolated sub image shaped to the original shape</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 <p>The interpolation function itself is not a method of that class, but a part of the interpolator module.
 The entire module is compiled with Cython in order to decrease the computation time.</p>
-<dl class="function">
-<dt id="piv.interpolator.cubic_interpolation">
-<code class="descclassname">piv.interpolator.</code><code class="descname">cubic_interpolation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#piv.interpolator.cubic_interpolation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Function to perform cubic interpolation of a given frame and new coordinates.</p>
-<div class="line-block">
-<div class="line"><strong>cubic_interpolation(np.ndarray[np.double_t, ndim=1] posx,</strong></div>
-<div class="line-block">
-<div class="line"><strong>np.ndarray[np.double_t, ndim=1] posy,</strong></div>
-<div class="line"><strong>np.ndarray[np.double_t, ndim=1] x,</strong></div>
-<div class="line"><strong>np.ndarray[np.double_t, ndim=1] y,</strong></div>
-<div class="line"><strong>np.ndarray[np.double_t, ndim=2] M,</strong></div>
-<div class="line"><strong>np.ndarray[np.double_t, ndim=1] output,</strong></div>
-<div class="line"><strong>np.ndarray[np.double_t, ndim=2] frame, int lx, int ly)</strong></div>
-</div>
-</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>posx</strong> (<em>double_array</em>) – x coordinates the frame is interpolated to</li>
-<li><strong>posy</strong> (<em>double_array</em>) – y coordinates the frame is interpolated to</li>
-<li><strong>x</strong> (<em>double_array</em>) – right hand side memory for interpolation in x direction</li>
-<li><strong>y</strong> (<em>double_array</em>) – right hand side memory for interpolation in y direction</li>
-<li><strong>M</strong> (<em>double_2D_array</em>) – left hand side as a matrix</li>
-<li><strong>output</strong> (<em>double_array</em>) – memory for resulting interpolated sub frame</li>
-<li><strong>frame</strong> (<em>double_2D_array</em>) – initial image which is interpolated</li>
-<li><strong>lx</strong> (<em>int</em>) – width of the frame array</li>
-<li><strong>ly</strong> (<em>int</em>) – length of the frame array</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">interpolated sub frame</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 </div>
 
 
@@ -242,7 +140,7 @@ The entire module is compiled with Cython in order to decrease the computation t
       
     </p>
     <p>
-        &copy; Copyright 2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann.<br/>
+        &copy; Copyright 2016-2017, PyPIV Development Team.<br/>
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.<br/>
     </p>
   </div>

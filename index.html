@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Welcome to PyPIV’s documentation! &#8212; pypiv a1 documentation</title>
+    <title>Welcome to PyPIV! &#8212; pypiv a1 documentation</title>
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/my-styles.css" type="text/css" />
@@ -46,14 +46,14 @@
         </button>
         <a class="navbar-brand" href="#">
           PyPIV</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.0</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
           <ul class="nav navbar-nav">
             
                 <li><a href="examples.html">Examples</a></li>
-                <li><a href="api.html">Documentation</a></li>
+                <li><a href="api_doc.html">Documentation</a></li>
             
             
               <li class="dropdown globaltoc-container">
@@ -61,7 +61,7 @@
      id="dLabelGlobalToc"
      data-toggle="dropdown"
      data-target="#"
-     href="#">PyPIV Docs <b class="caret"></b></a>
+     href="#"> <b class="caret"></b></a>
   <ul class="dropdown-menu globaltoc"
       role="menu"
       aria-labelledby="dLabelGlobalToc"><p class="caption"><span class="caption-text">Contents:</span></p>
@@ -85,16 +85,16 @@
      id="dLabelLocalToc"
      data-toggle="dropdown"
      data-target="#"
-     href="#">Page <b class="caret"></b></a>
+     href="#"> <b class="caret"></b></a>
   <ul class="dropdown-menu localtoc"
       role="menu"
       aria-labelledby="dLabelLocalToc"><ul>
-<li><a class="reference internal" href="#">Welcome to PyPIV’s documentation!</a></li>
-<li><a class="reference internal" href="#general-information">General Information</a></li>
-<li><a class="reference internal" href="#short-description-of-piv-and-its-application">Short description of PIV and its application</a></li>
-<li><a class="reference internal" href="#examples">Examples</a></li>
-<li><a class="reference internal" href="#test">Test</a></li>
-<li><a class="reference internal" href="#api-documentation">API Documentation</a></li>
+<li><a class="reference internal" href="#">Welcome to PyPIV!</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#install">Install</a></li>
+<li><a class="reference internal" href="#api-overview">API Overview</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 </ul>
@@ -102,22 +102,8 @@
               
             
             
-              
-                
-  <li>
-    <a href="piv/direct_piv.html" title="Next Chapter: Class for direct Piv"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm hidden-tablet">Class for direct Piv &raquo;</span>
-    </a>
-  </li>
-              
             
             
-            
-            
-              <li class="hidden-sm">
-<div id="sourcelink">
-  <a href="_sources/index.rst.txt"
-     rel="nofollow">Source</a>
-</div></li>
             
           </ul>
 
@@ -139,85 +125,45 @@
   <div class="row">
     <div class="col-md-12 content">
       
-  <div class="section" id="welcome-to-pypiv-s-documentation">
-<h1>Welcome to PyPIV’s documentation!<a class="headerlink" href="#welcome-to-pypiv-s-documentation" title="Permalink to this headline">¶</a></h1>
-<p>The pypiv API is developed by the pypiv Developmentteam in 2016 and 2017 under the BSD3 clause.
-Initially designed to perform particle image velocimetry for double diffusive convection, the API is also capable of many more tasks.
-The Usage, described below is optimized for fluid flow and the API is not yet tested for more applications.</p>
+  <div class="section" id="welcome-to-pypiv">
+<h1>Welcome to PyPIV!<a class="headerlink" href="#welcome-to-pypiv" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>PyPIV is a python library for Particle Image Velocimetry (PIV), including pre and postprocessing functions.
+PIV is an optical technique to calculate the velocity field of  a fluid flow.
+This is done by using two imagesof a fluid containing tracer particles,
+that are illuminated by a laser in a plane and captured at different times.
+Through a number of computations using cross-correlation and window-deformation techniques
+it is possible to calculate a velocity field.</p>
+<a class="reference internal image-reference" href="_images/intro1.gif"><img alt="_images/intro1.gif" src="_images/intro1.gif" style="width: 40%;" /></a>
+<a class="reference internal image-reference" href="_images/intro2.png"><img alt="_images/intro2.png" src="_images/intro2.png" style="width: 45%;" /></a>
+<p>The PyPIV library was initially developed in 2016 and designed to
+compute fluid  flows in double diffusive convection experiments,
+for this usecase the implemented methods perform outstandingly well.
+Please keep in mind that this library is still in an alpha stage so there might be some issues.
+If you are interested in further developing, please feel free to contact us.
+Contributions are always welcome!</p>
 </div>
-<div class="section" id="general-information">
-<h1>General Information<a class="headerlink" href="#general-information" title="Permalink to this headline">¶</a></h1>
-<p>This library calculates the particle image velocimetry (piv) of a pair of images.
-It consist of a Fourier based method to increase the performance.
-In order to increase the accuracy, a window deformation Method is included as well.
-The sub pixel shift finder is implemented in two versions, each with it’s downsides.
-A detailed explanation of every module can be found by navigating through the contents.</p>
+<div class="section" id="install">
+<h2>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h2>
+<p>The installation can be performed directly from the git repository, a PIP package will be supported
+in the future.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>git clone https://github.com/jr7/pypiv.git
+python setup.py build
+python setup.py install
+</pre></div>
 </div>
-<div class="section" id="short-description-of-piv-and-its-application">
-<h1>Short description of PIV and its application<a class="headerlink" href="#short-description-of-piv-and-its-application" title="Permalink to this headline">¶</a></h1>
-<p>In particle image velocimetry two images are compared in order to generate a vector field.
-In these images interrogation windows are set an within these the mean displacement of the particles is calculated.
-This is done by cross correlating the two interrogation windows, for which the fast Fourier transform (FFT) is use.</p>
-<p>To minimize the error, two methods are used:</p>
-<ul class="simple">
-<li><dl class="first docutils">
-<dt><a class="reference internal" href="piv/filters.html"><span class="doc">residual outlier detection</span></a></dt>
-<dd>this method uses a residual in a small neighbourhood around a point to determine weather that point is valid or not</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt><a class="reference internal" href="piv/velofilter.html"><span class="doc">Velocity Filter</span></a></dt>
-<dd>this method calculates a maximum cutoff velocity and marks every velocity larger than this as not valid</dd>
-</dl>
-</li>
-</ul>
-<p>After both of these methods the filtered values are interpolated.</p>
-<p>After the first stage of the piv, an other can be set in order to reduce the error even further.
-This is called an adaptive piv.
-With in these method the formerly chosen grid is deformed to capture particles in the flow with the previously calculated velocity.
-These stages can be added up so that the grid can be refined or the error iteratively lowered.</p>
+<p>Builduing PyPIV requires the following software installed:</p>
+<ol class="arabic simple">
+<li>Python 2.7.x currently this library is only supported on Python 2.7.x support for Python 3.x will come in the future.</li>
+<li>Numpy  1.12.x</li>
+<li>SciPy  0.18.0</li>
+<li>PyFFTW 0.10.3</li>
+<li>Cython 0.23.4 optional for the use of cubic interpolation in window deformation methods</li>
+</ol>
 </div>
-<div class="section" id="examples">
-<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
-<p>In order to test the library quickly and show its potential an example folder is added.
-It contains test images of a double diffusive convection flow which are of analytically nature.
-These show results of a single direct piv and multiple adaptive piv.</p>
-<p>Early on the library had issues with 180 degree rotation.
-To show this issue, a mirror test has been added.
-It computes two times the same setup.
-One with the original image and a second with the image mirrored.
-This issue is still unsolved.</p>
-<p>An other test is added for the sub pixel peak detection.
-The accuracy of a piv process is still relying on weak peak fitting algorithms.
-These perform two times a one dimensional fit on the correlation peak.
-The reason for these is that they are much faster, then the competition.
-Problematic is that the show the pixel locking effect, which means the have a very small error for very small sub pixel shifts.
-This calculated by the example “test_subpeak_methods”.
-With this the maximum error is calculated for various sizes of the correlation peak.
-In order to compensate this error a real two dimensional gaussian interpolation method is added.
-It can reduce the maximum error by some orders of magnitude.</p>
-<img alt="_images/max_error_subpeak_windowsize_32.png" src="_images/max_error_subpeak_windowsize_32.png" />
-<p>The image shows the result of that example after 1000 randomly chosen shifts for each diameter for the different methods.
-The error axis is plotted logarithmically.
-The correlation window size is in this case comparable to the interrogation window size used for the piv (32x32).
-As one can see that the two times one dimensional methods have a almost constant maximum error of about 0.5 pixel.
-The newly implemented method for the real two dimensional gaussian interpolation has a minimum some orders of magnitude below the other methods but it is also much worse for diameters smaller and about a pixel.
-But this comes with the price of a longer calculation time, which can also be observed with that example.</p>
-<img alt="_images/mean_error_subpeak_windowsize_32.png" src="_images/mean_error_subpeak_windowsize_32.png" />
-<p>The two times one dimensional interpolation methods do show a large maximum error.
-But considering the mean error of 1000 trials as shown in the image above the error is tolerable.
-The error bars are calculated by the standard deviation of the trials.
-This can also be calculated by the example mentioned above.</p>
-</div>
-<div class="section" id="test">
-<h1>Test<a class="headerlink" href="#test" title="Permalink to this headline">¶</a></h1>
-<p>In order to assure the usability of the API unittest have been added.
-These test every component of the API separately.
-For these the pytest API has to be installed.
-The test are located in the test folder of the root directory.</p>
-</div>
-<div class="section" id="api-documentation">
-<h1>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="api-overview">
+<h2>API Overview<a class="headerlink" href="#api-overview" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
@@ -232,6 +178,7 @@ The test are located in the test folder of the root directory.</p>
 <li class="toctree-l1"><a class="reference internal" href="piv/velofilter.html">Velocity Filter</a></li>
 <li class="toctree-l1"><a class="reference internal" href="piv/filters.html">Filters for outlier detection</a></li>
 </ul>
+</div>
 </div>
 </div>
 <div class="section" id="indices-and-tables">
@@ -255,7 +202,7 @@ The test are located in the test folder of the root directory.</p>
       
     </p>
     <p>
-        &copy; Copyright 2016-2017, Jonas Ruebsam, Axel Rosenthal, Kevin Luedemann.<br/>
+        &copy; Copyright 2016-2017, PyPIV Development Team.<br/>
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.3.<br/>
     </p>
   </div>

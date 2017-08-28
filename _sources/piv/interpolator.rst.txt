@@ -12,5 +12,3 @@ It performs the interpolation by calling the interpolate function.
 The interpolation function itself is not a method of that class, but a part of the interpolator module.
 The entire module is compiled with Cython in order to decrease the computation time.
 
-.. ref on cython page
-.. autofunction:: piv.interpolator.cubic_interpolation
