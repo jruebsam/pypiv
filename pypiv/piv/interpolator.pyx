@@ -1,6 +1,7 @@
 # compile with
 # cython interpolator.pyx
 # gcc -shared -pthread -fPIC -fwrapv -O2 -Wall -fno-strict-aliasing -I/usr/include/python2.7 -o interpolator.so interpolator.c
+
 import numpy as np
 cimport numpy as np
 cimport cython
@@ -19,7 +20,9 @@ class CubicInterpolator(object):
 
         **__init__(frame, window_size)**
 
-        The cubic interpolation is performed in compiled c code, therefore the memory for right hand side and left hand side must be allocated and initialized for the matrix.
+        The cubic interpolation is performed in compiled c code,
+        therefore the memory for right hand side and left hand side
+        must be allocated and initialized for the matrix.
         The output is allocated as well.
 
         :param frame: image that is deformed
@@ -63,28 +66,6 @@ def cubic_interpolation(np.ndarray[np.double_t, ndim=1] posx,
                         np.ndarray[np.double_t, ndim=1] output,
                         np.ndarray[np.double_t, ndim=2] frame, int lx, int ly):
 
-    """
-    Function to perform cubic interpolation of a given frame and new coordinates.
-
-    | **cubic_interpolation(np.ndarray[np.double_t, ndim=1] posx,**
-    |                  **np.ndarray[np.double_t, ndim=1] posy,**
-    |                  **np.ndarray[np.double_t, ndim=1] x,**
-    |                  **np.ndarray[np.double_t, ndim=1] y,**
-    |                  **np.ndarray[np.double_t, ndim=2] M,**
-    |                  **np.ndarray[np.double_t, ndim=1] output,**
-    |                  **np.ndarray[np.double_t, ndim=2] frame, int lx, int ly)**
-
-    :param double_array posx: x coordinates the frame is interpolated to
-    :param double_array posy: y coordinates the frame is interpolated to
-    :param double_array x: right hand side memory for interpolation in x direction
-    :param double_array y: right hand side memory for interpolation in y direction
-    :param double_2D_array M: left hand side as a matrix
-    :param double_array output: memory for resulting interpolated sub frame
-    :param double_2D_array frame: initial image which is interpolated
-    :param int lx: width of the frame array
-    :param int ly: length of the frame array
-    :returns: interpolated sub frame
-    """
     cdef int i, k, l, ix, iy
     cdef float dx, dy, cx, cy, outsum
 
