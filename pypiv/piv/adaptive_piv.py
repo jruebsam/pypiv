@@ -1,9 +1,9 @@
 import numpy as np
 
-from velocity_scaler import VelocityUpscaler
-from grid_deformator import GridDeformator
-from direct_piv import DirectPIV
-from grid_spec import GridSpec
+from pypiv.piv.velocity_scaler import VelocityUpscaler
+from pypiv.piv.grid_deformator import GridDeformator
+from pypiv.piv.direct_piv import DirectPIV
+from pypiv.piv.grid_spec import GridSpec
 
 class AdaptivePIV(DirectPIV):
     """

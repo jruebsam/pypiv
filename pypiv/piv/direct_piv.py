@@ -1,7 +1,7 @@
 import numpy as np
 from numpy.lib.stride_tricks import as_strided
-from fft_correlator import FFTCorrelator
-from grid_spec import GridSpec
+from pypiv.piv.fft_correlator import FFTCorrelator
+from pypiv.piv.grid_spec import GridSpec
 
 class DirectPIV(object):
     """

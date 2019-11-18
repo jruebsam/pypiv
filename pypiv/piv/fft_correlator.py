@@ -1,7 +1,7 @@
 import pyfftw
 import numpy as np
 
-from peak_detection import find_peak
+from pypiv.piv.peak_detection import find_peak
 
 class FFTCorrelator(object):
     """

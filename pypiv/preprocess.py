@@ -1,6 +1,7 @@
 import numpy as np
 
-from scipy.misc import imread
+#from scipy.misc import imread
+from imageio import imread
 from scipy.ndimage import gaussian_filter
 from skimage.exposure import equalize_adapthist
 
