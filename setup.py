@@ -18,4 +18,5 @@ setup(name='pypiv',
       cmdclass=cmdclass,
       include_dirs = [np.get_include()],
       ext_modules=ext_modules,
+      install_requires=["numpy","scipy","matplotlib","cython","scikit-image","pyfftw"],
      )
