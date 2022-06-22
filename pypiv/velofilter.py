@@ -67,7 +67,7 @@ def calc_derivative(field,stepsize=0.01):
         pos = alpha+stepsize
         neg = alpha
         filtered = np.copy(field)
-        filtered[(filtered<=neg) | (filtered>pos)] = np.nan
+        filtered[np.logical_or((filtered<=neg) , (filtered>pos))] = np.nan
         #filtered[filtered>pos] = np.nan
         outlier = np.count_nonzero(~np.isnan(filtered))/float(np.count_nonzero(~np.isnan(field)))
         result_pos.append([alpha,outlier])
@@ -78,7 +78,7 @@ def calc_derivative(field,stepsize=0.01):
         pos = -1.*alpha
         neg = -1.*(alpha+stepsize)
         filtered = np.copy(field)
-        filtered[(filtered<=neg) | (filtered>pos)] = np.nan
+        filtered[np.logical_or((filtered<=neg) , (filtered>pos))] = np.nan
         #filtered[filtered>pos] = np.nan
         outlier = np.count_nonzero(~np.isnan(filtered))/float(np.count_nonzero(~np.isnan(field)))
         result_neg.append([-1.*alpha,outlier])
@@ -86,7 +86,7 @@ def calc_derivative(field,stepsize=0.01):
 
     return (np.array(result_pos),np.array(result_neg))
 
-def filter(piv,tfactor=3.,dalpha=.01):
+def filter(piv,tfactor=3.,dalpha=.01,demo=False):
     """
     Function for calculating the cutoff values.
 
@@ -101,6 +101,11 @@ def filter(piv,tfactor=3.,dalpha=.01):
 
         The default is set to .01 which work for many cases
         if the velocities vary over a larger ranger use a larger value
+
+    :param bool demo: return function steps for demonstration
+
+        This is turned off as a default and returns all the important values
+        and steps during the execution of this program
     """
 
     #: pre sampling
@@ -112,6 +117,11 @@ def filter(piv,tfactor=3.,dalpha=.01):
     uneg = numberun
     vpos = numbervp 
     vneg = numbervn
+    if demo:
+        upos1   = upos
+        uneg1   = uneg
+        vpos1   = vpos
+        vneg1   = vneg
 
     #: get alpha dependency
     up_alpha, un_alpha = calc_factor(piv.u,dalpha)
@@ -154,6 +164,12 @@ def filter(piv,tfactor=3.,dalpha=.01):
         nvn = np.polyfit(np.log(-vn_alpha[1:cut_vn,0]),np.log(vn_alpha[1:cut_vn,1]),1)
         vneg = -exp(-nvn[1]/nvn[0])
 
+    if demo:
+        upos2   = upos
+        uneg2   = uneg
+        vpos2   = vpos
+        vneg2   = vneg
+
     #filter + clamping
     if upos > np.max(piv.u):
         upos = np.max(piv.u)
@@ -164,15 +180,40 @@ def filter(piv,tfactor=3.,dalpha=.01):
     if vneg < np.min(piv.v):
         vneg = np.min(piv.v)
 
+    if demo:
+        upos3   = upos
+        uneg3   = uneg
+        vpos3   = vpos
+        vneg3   = vneg
+
     #equalizing the cutoff
     upos *= (0.5+numberup)
     uneg *= (0.5+numberun)
     vpos *= (0.5+numbervp)
     vneg *= (0.5+numbervn)
 
+    if demo:
+        upos4   = upos
+        uneg4   = uneg
+        vpos4   = vpos
+        vneg4   = vneg
+
     #making the mask
     masku = np.logical_or((piv.u<uneg) , (piv.u>upos))
     maskv = np.logical_or((piv.v<vneg) , (piv.v>vpos))
     piv.u[masku] = np.nan
     piv.v[maskv] = np.nan
+
+    if demo:
+        return  (upos1,uneg1,vpos1,vneg1), \
+                (upos2,uneg2,vpos2,vneg2), \
+                (upos3,uneg3,vpos3,vneg3), \
+                (upos4,uneg4,vpos4,vneg4), \
+                (numberup,numberun,numbervp,numbervn), \
+                (boundup,boundun,boundvp,boundvn), \
+                (cut_up,cut_un,cut_vp,cut_vn), \
+                (nup,nun,nvp,nvn), \
+                (up_alpha,un_alpha,vp_alpha,vn_alpha), \
+                (dup_alpha1,dun_alpha1,dvp_alpha1,dvn_alpha1),\
+                (indexup,indexun,indexvp,indexvn)
 
