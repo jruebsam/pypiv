@@ -25,7 +25,7 @@ def calc_factor(field,stepsize=0.01):
         filtered = np.copy(field)
         filtered[filtered<=neg] = np.nan
         filtered[filtered>pos] = np.nan
-        outlier = np.count_nonzero(~np.isnan(filtered))/np.float(np.count_nonzero(~np.isnan(field)))
+        outlier = np.count_nonzero(~np.isnan(filtered))/float(np.count_nonzero(~np.isnan(field)))
         result_pos.append([alpha,outlier])
         alpha += stepsize
     alpha = 0.
@@ -36,7 +36,7 @@ def calc_factor(field,stepsize=0.01):
         filtered = np.copy(field)
         filtered[filtered<=neg] = np.nan
         filtered[filtered>pos] = np.nan
-        outlier = np.count_nonzero(~np.isnan(filtered))/np.float(np.count_nonzero(~np.isnan(field)))
+        outlier = np.count_nonzero(~np.isnan(filtered))/float(np.count_nonzero(~np.isnan(field)))
         result_neg.append([-1.*alpha,outlier])
         alpha += stepsize
 
@@ -69,7 +69,7 @@ def calc_derivative(field,stepsize=0.01):
         filtered = np.copy(field)
         filtered[(filtered<=neg) | (filtered>pos)] = np.nan
         #filtered[filtered>pos] = np.nan
-        outlier = np.count_nonzero(~np.isnan(filtered))/np.float(np.count_nonzero(~np.isnan(field)))
+        outlier = np.count_nonzero(~np.isnan(filtered))/float(np.count_nonzero(~np.isnan(field)))
         result_pos.append([alpha,outlier])
         alpha += stepsize
     outlier = 1.
@@ -80,7 +80,7 @@ def calc_derivative(field,stepsize=0.01):
         filtered = np.copy(field)
         filtered[(filtered<=neg) | (filtered>pos)] = np.nan
         #filtered[filtered>pos] = np.nan
-        outlier = np.count_nonzero(~np.isnan(filtered))/np.float(np.count_nonzero(~np.isnan(field)))
+        outlier = np.count_nonzero(~np.isnan(filtered))/float(np.count_nonzero(~np.isnan(field)))
         result_neg.append([-1.*alpha,outlier])
         alpha += stepsize
 
@@ -104,10 +104,10 @@ def filter(piv,tfactor=3.,dalpha=.01):
     """
 
     #: pre sampling
-    numberup = np.count_nonzero(piv.u<=0.)/np.float(np.count_nonzero(piv.u))
-    numberun = np.count_nonzero(piv.u>0.)/np.float(np.count_nonzero(piv.u))
-    numbervp = np.count_nonzero(piv.v<=0.)/np.float(np.count_nonzero(piv.v))
-    numbervn = np.count_nonzero(piv.v>0.)/np.float(np.count_nonzero(piv.v))
+    numberup = np.count_nonzero(piv.u<=0.)/float(np.count_nonzero(piv.u))
+    numberun = np.count_nonzero(piv.u>0.)/float(np.count_nonzero(piv.u))
+    numbervp = np.count_nonzero(piv.v<=0.)/float(np.count_nonzero(piv.v))
+    numbervn = np.count_nonzero(piv.v>0.)/float(np.count_nonzero(piv.v))
     upos = numberup 
     uneg = numberun
     vpos = numbervp 
@@ -135,22 +135,22 @@ def filter(piv,tfactor=3.,dalpha=.01):
     #get indices and exponential
     if upos != 0.:
         indexup = np.where(dup_alpha<boundup)
-        cut_up = np.int(np.sum(indexup[0][0:5])/5.)
+        cut_up = int(np.sum(indexup[0][0:5])/5.)
         nup = np.polyfit(np.log( up_alpha[1:cut_up,0]),np.log(up_alpha[1:cut_up,1]),1)
         upos =  exp(-nup[1]/nup[0])
     if uneg != 0.:
         indexun = np.where(dun_alpha<boundun)
-        cut_un = np.int(np.sum(indexun[0][0:5])/5.)
+        cut_un = int(np.sum(indexun[0][0:5])/5.)
         nun = np.polyfit(np.log(-un_alpha[1:cut_un,0]),np.log(un_alpha[1:cut_un,1]),1)
         uneg = -exp(-nun[1]/nun[0])
     if vpos != 0.:
         indexvp = np.where(dvp_alpha<boundvp)
-        cut_vp = np.int(np.sum(indexvp[0][0:5])/5.)
+        cut_vp = int(np.sum(indexvp[0][0:5])/5.)
         nvp = np.polyfit(np.log( vp_alpha[1:cut_vp,0]),np.log(vp_alpha[1:cut_vp,1]),1)
         vpos =  exp(-nvp[1]/nvp[0])
     if vneg != 0.:
         indexvn = np.where(dvn_alpha<boundvn)
-        cut_vn = np.int(np.sum(indexvn[0][0:5])/5.)
+        cut_vn = int(np.sum(indexvn[0][0:5])/5.)
         nvn = np.polyfit(np.log(-vn_alpha[1:cut_vn,0]),np.log(vn_alpha[1:cut_vn,1]),1)
         vneg = -exp(-nvn[1]/nvn[0])
 
