@@ -171,8 +171,8 @@ def filter(piv,tfactor=3.,dalpha=.01):
     vneg *= (0.5+numbervn)
 
     #making the mask
-    masku = (piv.u<uneg) | (piv.u>upos)
-    maskv = (piv.v<vneg) | (piv.v>vpos)
+    masku = np.logical_or((piv.u<uneg) , (piv.u>upos))
+    maskv = np.logical_or((piv.v<vneg) , (piv.v>vpos))
     piv.u[masku] = np.nan
     piv.v[maskv] = np.nan
 
