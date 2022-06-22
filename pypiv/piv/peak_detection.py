@@ -1,5 +1,8 @@
 import numpy as np
 import numpy.linalg as nl
+import warnings
+#Just ignore an unimportant and not harmfull warning
+warnings.filterwarnings('ignore', 'invalid value encountered in log')
 
 def find_peak(corr, method='gaussian'):
     """Peak detection algorithm switch
